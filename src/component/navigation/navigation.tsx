@@ -2,6 +2,9 @@ import React, { ChangeEvent } from 'react';
 import { Select } from 'nav-frontend-skjema';
 import { ViewType, useViewStore } from '../../store/view-store';
 import './navigation.less';
+import Lenke from 'nav-frontend-lenker';
+
+const logInnUrl = 'https://app-q1.dev.adeo.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.dev.adeo.no';
 
 export function Navigation() {
 	const { changeView, view } = useViewStore();
@@ -19,6 +22,7 @@ export function Navigation() {
 					<option value={ViewType.DIALOG}>Dialog</option>
 				</Select>
 			</div>
+			<Lenke href={logInnUrl}>Log Inn</Lenke>
 		</header>
 	);
 }
