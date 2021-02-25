@@ -36,3 +36,10 @@ spec:
       value: pto-admin-prod
     - name: CORS_DOMAIN
       value: "*"
+    - name: JSON_CONFIG
+      value: >
+        {
+          "proxies": [
+            { "from": "/pto-admin-api", "to": "https://pto-admin-api.intern.nav.no", "preserveContextPath": false }
+          ]
+        }
