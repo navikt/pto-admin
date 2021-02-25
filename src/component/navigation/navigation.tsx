@@ -19,7 +19,7 @@ export function Navigation() {
 				<h1>PTO Admin</h1>
 				<Select className="navigation__visning-velger" value={view} onChange={handleOnChange}>
 					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
-					<option value={ViewType.DIALOG}>Dialog</option>
+					<option value={ViewType.EKSEMPEL}>Eksempel</option>
 				</Select>
 			</div>
 			<Lenke href={logInnUrl}>Log Inn</Lenke>

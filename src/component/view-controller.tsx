@@ -7,7 +7,7 @@ export function ViewController() {
 	const { view } = useViewStore();
 
 	switch (view) {
-		case ViewType.DIALOG:
+		case ViewType.EKSEMPEL:
 			return <ExampleView />;
 		case ViewType.HOVEDSIDE:
 			return <Hovedside />;

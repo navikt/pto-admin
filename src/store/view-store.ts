@@ -3,7 +3,7 @@ import constate from 'constate';
 
 export enum ViewType {
 	HOVEDSIDE = 'HOVEDSIDE',
-	DIALOG = 'DIALOG'
+	EKSEMPEL = 'EKSEMPEL'
 }
 
 export const [ViewStoreProvider, useViewStore] = constate(() => {
