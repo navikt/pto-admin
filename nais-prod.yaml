@@ -31,6 +31,10 @@ spec:
     buckets:
       - name: pto-admin-prod
         cascadingDelete: false
+  accessPolicy:
+    outbound:
+      external:
+        - host: pto-admin-api.intern.nav.no
   env:
     - name: GCS_BUCKET_NAME
       value: pto-admin-prod
