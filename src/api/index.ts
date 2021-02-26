@@ -19,6 +19,10 @@ interface TilgangResponse {
 	harTilgang: boolean;
 }
 
+export function me(): AxiosPromise<{ ident: string }> {
+	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/auth/me`);
+}
+
 export function fnrTilAktorId(fnr: string): AxiosPromise<AktorIdResponse> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/ident/aktorId?fnr=${fnr}`);
 }

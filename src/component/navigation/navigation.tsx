@@ -2,11 +2,11 @@ import React, { ChangeEvent } from 'react';
 import { Select } from 'nav-frontend-skjema';
 import { ViewType, useViewStore } from '../../store/view-store';
 import './navigation.less';
-import Lenke from 'nav-frontend-lenker';
-
-const logInnUrl = 'https://app-q1.dev.adeo.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.dev.adeo.no';
+import { useAppStore } from '../../store/app-store';
+import { Ingress } from 'nav-frontend-typografi';
 
 export function Navigation() {
+	const { loggedInUser } = useAppStore();
 	const { changeView, view } = useViewStore();
 
 	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
@@ -22,7 +22,7 @@ export function Navigation() {
 					<option value={ViewType.EKSEMPEL}>Eksempel</option>
 				</Select>
 			</div>
-			<Lenke href={logInnUrl}>Log Inn</Lenke>
+			<Ingress>{loggedInUser || 'Ikke logget inn'}</Ingress>
 		</header>
 	);
 }

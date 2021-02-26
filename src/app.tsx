@@ -3,6 +3,7 @@ import StoreProvider from './store/store-provider';
 import { Navigation } from './component/navigation/navigation';
 import { ViewController } from './component/view-controller';
 import './app.less';
+import { LoginCheck } from './component/login-check/login-check';
 
 function App() {
 	return (
@@ -10,7 +11,9 @@ function App() {
 			<div className="app pto-admin">
 				<Navigation />
 				<main>
-					<ViewController />
+					<LoginCheck>
+						<ViewController />
+					</LoginCheck>
 				</main>
 			</div>
 		</StoreProvider>

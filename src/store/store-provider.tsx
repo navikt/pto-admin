@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppStoreProvider } from './app-store';
 import { ViewStoreProvider } from './view-store';
 
 interface StoreProviderProps {
@@ -6,7 +7,11 @@ interface StoreProviderProps {
 }
 
 const StoreProvider = (props: StoreProviderProps) => {
-	return <ViewStoreProvider>{props.children}</ViewStoreProvider>;
+	return (
+		<AppStoreProvider>
+			<ViewStoreProvider>{props.children}</ViewStoreProvider>
+		</AppStoreProvider>
+	);
 };
 
 export default StoreProvider;

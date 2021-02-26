@@ -3,6 +3,14 @@ import { rest } from 'msw';
 import { PTO_ADMIN_API_URL } from '../api';
 
 export const handlers: RequestHandlersList = [
+	rest.get(PTO_ADMIN_API_URL + '/api/auth/me', (req, res, ctx) => {
+		return res(
+			ctx.delay(500),
+			ctx.json({
+				ident: 'Z12345'
+			})
+		);
+	}),
 	rest.get(PTO_ADMIN_API_URL + '/api/ident/fnr', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
