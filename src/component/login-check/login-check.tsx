@@ -12,8 +12,8 @@ interface LoginCheckProps {
 }
 
 const logInnUrl = erITestMiljo()
-	? 'https://veilarblogin.dev.intern.nav.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.dev.intern.nav.no'
-	: 'https://veilarblogin.intern.nav.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.intern.nav.no';
+	? 'https://veilarblogin.dev.adeo.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.dev.adeo.no'
+	: 'https://veilarblogin.nais.adeo.no/veilarblogin/api/aad-login?returnUrl=https%3A%2F%2Fpto-admin.nais.adeo.no';
 
 export function LoginCheck(props: LoginCheckProps) {
 	const { loggedInUser, setLoggedInUser } = useAppStore();
