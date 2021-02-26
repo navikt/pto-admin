@@ -19,7 +19,12 @@ interface TilgangResponse {
 	harTilgang: boolean;
 }
 
-export function me(): AxiosPromise<{ ident: string }> {
+export interface User {
+	ident: string;
+	harTilgang: boolean;
+}
+
+export function me(): AxiosPromise<User> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/auth/me`);
 }
 

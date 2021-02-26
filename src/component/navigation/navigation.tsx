@@ -22,7 +22,7 @@ export function Navigation() {
 					<option value={ViewType.EKSEMPEL}>Eksempel</option>
 				</Select>
 			</div>
-			<Ingress>{loggedInUser || 'Ikke logget inn'}</Ingress>
+			<Ingress>{loggedInUser?.ident || 'Ikke logget inn'}</Ingress>
 		</header>
 	);
 }

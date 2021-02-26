@@ -7,7 +7,8 @@ export const handlers: RequestHandlersList = [
 		return res(
 			ctx.delay(500),
 			ctx.json({
-				ident: 'Z12345'
+				ident: 'Z12345',
+				harTilgang: true
 			})
 		);
 	}),

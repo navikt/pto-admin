@@ -5,6 +5,7 @@ import { me } from '../../api';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { erITestMiljo } from '../../utils';
 import './login-check.less';
+import { Systemtittel } from 'nav-frontend-typografi';
 
 interface LoginCheckProps {
 	children?: any;
@@ -16,25 +17,20 @@ const logInnUrl = erITestMiljo()
 
 export function LoginCheck(props: LoginCheckProps) {
 	const { loggedInUser, setLoggedInUser } = useAppStore();
+	const [isAuthenticated, setIsAutenticated] = useState(false);
 	const [isPending, setIsPending] = useState(loggedInUser == null);
-	const [isLoggedIn, setIsLoggedIn] = useState(loggedInUser != null);
 
 	useEffect(() => {
-		if (!isLoggedIn) {
-			me()
-				.then(res => {
-					setLoggedInUser(res.data.ident);
-					setIsLoggedIn(true);
-				})
-				.catch()
-				.finally(() => setIsPending(false));
-		}
+		me()
+			.then(res => {
+				setLoggedInUser(res.data);
+				setIsAutenticated(true);
+			})
+			.catch(() => setIsAutenticated(false))
+			.finally(() => setIsPending(false));
+
 		// eslint-disable-next-line
 	}, []);
-
-	if (isLoggedIn) {
-		return props.children;
-	}
 
 	if (isPending) {
 		return (
@@ -44,13 +40,21 @@ export function LoginCheck(props: LoginCheckProps) {
 		);
 	}
 
-	function handleOnLoggInnClicked() {
-		window.location.href = logInnUrl;
+	if (!isAuthenticated) {
+		return (
+			<div className="login-check">
+				<Hovedknapp onClick={() => (window.location.href = logInnUrl)}>Logg inn</Hovedknapp>
+			</div>
+		);
 	}
 
-	return (
-		<div className="login-check">
-			<Hovedknapp onClick={handleOnLoggInnClicked}>Logg inn</Hovedknapp>
-		</div>
-	);
+	if (!loggedInUser?.harTilgang) {
+		return (
+			<div className="login-check">
+				<Systemtittel>Du har ikke tilgang til PTO Admin</Systemtittel>
+			</div>
+		);
+	}
+
+	return props.children;
 }
