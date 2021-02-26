@@ -9,7 +9,7 @@ spec:
   image: docker.pkg.github.com/navikt/pto-frontend/pto-frontend:43fdd666f3a803f284da73b51e248c91b2760a3d
   port: 8080
   ingresses:
-    - https://pto-admin.dev.intern.nav.no
+    - https://pto-admin.dev.adeo.no
   liveness:
     path: /internal/isAlive
     initialDelay: 10
@@ -27,23 +27,13 @@ spec:
     requests:
       cpu: 250m
       memory: 256Mi
-  gcp:
-    buckets:
-      - name: pto-admin-dev
-        cascadingDelete: false
-  accessPolicy:
-    outbound:
-      external:
-        - host: pto-admin-api.dev.intern.nav.no
   env:
-    - name: GCS_BUCKET_NAME
-      value: pto-admin-dev
     - name: CORS_DOMAIN
       value: "*"
     - name: JSON_CONFIG
       value: >
         {
           "proxies": [
-            { "from": "/pto-admin-api", "to": "https://pto-admin-api.dev.intern.nav.no", "preserveContextPath": false }
+            { "from": "/pto-admin-api", "to": "https://pto-admin-api.dev.adeo.no", "preserveContextPath": false }
           ]
         }
