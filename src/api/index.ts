@@ -57,5 +57,5 @@ export function sjekkHarTilgangTilKode7(navIdent: string): AxiosPromise<TilgangR
 }
 
 export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/tilgang/egenAnsatt?navIdent=${navIdent}`);
+	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/tilgang/skjermet?navIdent=${navIdent}`);
 }

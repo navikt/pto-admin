@@ -68,7 +68,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/egenAnsatt', (req, res, ctx) => {
+	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/skjermet', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
