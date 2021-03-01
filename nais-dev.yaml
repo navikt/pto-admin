@@ -32,10 +32,3 @@ spec:
       value: "*"
     - name: CONTEXT_PATH
       value: /pto-admin
-    - name: JSON_CONFIG
-      value: >
-        {
-          "proxies": [
-            { "from": "/pto-admin-api", "to": "https://pto-admin-api.dev.adeo.no", "preserveContextPath": false }
-          ]
-        }
