@@ -2,6 +2,7 @@
   "name": "veilarbvedtaksstottefs",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/pto-admin",
   "scripts": {
     "start": "cross-env REACT_APP_DEV=true craco start",
     "build": "cross-env craco build",

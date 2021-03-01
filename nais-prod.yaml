@@ -11,10 +11,10 @@ spec:
   ingresses:
     - https://pto-admin.nais.adeo.no
   liveness:
-    path: /internal/isAlive
+    path: /pto-admin/internal/isAlive
     initialDelay: 10
   readiness:
-    path: /internal/isReady
+    path: /pto-admin/internal/isReady
     initialDelay: 10
   replicas:
     min: 1
@@ -30,6 +30,8 @@ spec:
   env:
     - name: CORS_DOMAIN
       value: "*"
+    - name: CONTEXT_PATH
+      value: /pto-admin
     - name: JSON_CONFIG
       value: >
         {
