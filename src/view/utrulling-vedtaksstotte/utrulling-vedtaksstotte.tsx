@@ -4,7 +4,7 @@ import { Flatknapp } from 'nav-frontend-knapper';
 import { Card } from '../../component/card/card';
 import './utrulling-vedtaksstotte.less';
 import { Ingress, Normaltekst } from 'nav-frontend-typografi';
-import { hentAlleUtrullinger, rullerUtEnhet, UtrulletEnhet } from '../../api';
+import { fjernUtrulling, hentAlleUtrullinger, rullerUtEnhet, UtrulletEnhet } from '../../api';
 import { errorToast, infoToast, successToast } from '../../utils/toast-utils';
 import { formatDateTime } from '../../utils/date-utils';
 
@@ -57,7 +57,7 @@ function FjernUtrullingCard() {
 			return;
 		}
 
-		rullerUtEnhet(enhetId)
+		fjernUtrulling(enhetId)
 			.then(() => {
 				successToast(`Tilgang til ${enhetId} har blitt fjernet`);
 				setEnhetId('');
