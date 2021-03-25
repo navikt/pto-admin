@@ -2,8 +2,10 @@ import React from 'react';
 import StoreProvider from './store/store-provider';
 import { Navigation } from './component/navigation/navigation';
 import { ViewController } from './component/view-controller';
-import './app.less';
 import { LoginCheck } from './component/login-check/login-check';
+import { ToastContainer } from 'react-toastify';
+import './app.less';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 	return (
@@ -15,6 +17,7 @@ function App() {
 						<ViewController />
 					</LoginCheck>
 				</main>
+				<ToastContainer />
 			</div>
 		</StoreProvider>
 	);

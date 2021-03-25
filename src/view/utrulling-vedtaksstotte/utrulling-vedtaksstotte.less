@@ -1,0 +1,39 @@
+
+.utrulling-vedtaksstotte {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.utrulling-vedtaksstotte__card-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  > *:last-child {
+    margin-left: 2rem;
+  }
+}
+
+.utrulling-vedtaksstotte__utrullinger {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+
+  margin-top: 2rem;
+}
+
+.utrulling-vedtaksstotte__utrulling {
+  padding: 1rem;
+}
+
+.utrulling-vedtaksstotte__card-innhold {
+  display: flex;
+  flex-direction: column;
+
+  .skjemaelement {
+    margin-bottom: 1.5rem;
+  }
+}

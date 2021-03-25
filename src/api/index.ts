@@ -19,6 +19,11 @@ interface TilgangResponse {
 	harTilgang: boolean;
 }
 
+export interface UtrulletEnhet {
+	enhetId: string;
+	createdAt: string;
+}
+
 export interface User {
 	ident: string;
 	harTilgang: boolean;
@@ -58,4 +63,16 @@ export function sjekkHarTilgangTilKode7(navIdent: string): AxiosPromise<TilgangR
 
 export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<TilgangResponse> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/tilgang/skjermet?navIdent=${navIdent}`);
+}
+
+export function rullerUtEnhet(enhetId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.post(`${PTO_ADMIN_API_URL}/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
+}
+
+export function fjernUtrulling(enhetId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.delete(`${PTO_ADMIN_API_URL}/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
+}
+
+export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
+	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/admin/veilarbvedtaksstotte/utrulling`);
 }

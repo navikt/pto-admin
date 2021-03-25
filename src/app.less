@@ -1,11 +1,18 @@
 @import "~nav-frontend-typografi-style/src/index";
 @import "~nav-frontend-core/less/_variabler";
+@import "~nav-frontend-core/less/_mixins";
+@import "~nav-frontend-core/less/utilities";
+@import "~nav-frontend-core/less/hide-text";
 
 html, body {
   margin: 0;
   width: 100vw;
   height: 100vh;
   background-color: @navLysGra;
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .pto-admin {
@@ -17,4 +24,13 @@ html, body {
   margin: 0 auto;
   max-width: 1900px;
   padding: 2rem;
+}
+
+.small-card {
+  width: 464px;
+}
+
+// Two small cards plus gap
+.large-card {
+  width: 960px;
 }

@@ -19,7 +19,7 @@ export function Navigation() {
 				<h1>PTO Admin</h1>
 				<Select className="navigation__visning-velger" value={view} onChange={handleOnChange}>
 					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
-					<option value={ViewType.EKSEMPEL}>Eksempel</option>
+					<option value={ViewType.UTRULLING_VEDTAKSSTOTTE}>Utrulling vedtaksstøtte</option>
 				</Select>
 			</div>
 			<Ingress>{loggedInUser?.ident || 'Ikke logget inn'}</Ingress>
