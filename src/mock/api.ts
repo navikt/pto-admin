@@ -5,22 +5,27 @@ import { PTO_ADMIN_API_URL, UtrulletEnhet } from '../api';
 const utrulledeEnheter: UtrulletEnhet[] = [
 	{
 		enhetId: '1234',
+		navn: 'NAV Test1',
 		createdAt: '2021-03-25T07:45:24.787Z'
 	},
 	{
 		enhetId: '5678',
+		navn: 'NAV Test2',
 		createdAt: '2020-09-15T08:12:24.787Z'
 	},
 	{
 		enhetId: '4444',
+		navn: 'NAV Test3',
 		createdAt: '2021-02-21T09:23:24.787Z'
 	},
 	{
 		enhetId: '1111',
+		navn: 'NAV Test4',
 		createdAt: '2021-03-25T07:28:24.787Z'
 	},
 	{
 		enhetId: '7777',
+		navn: 'NAV Test5',
 		createdAt: '2021-03-20T10:37:24.787Z'
 	}
 ];

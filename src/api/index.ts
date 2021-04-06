@@ -21,6 +21,7 @@ interface TilgangResponse {
 
 export interface UtrulletEnhet {
 	enhetId: string;
+	navn: string;
 	createdAt: string;
 }
 

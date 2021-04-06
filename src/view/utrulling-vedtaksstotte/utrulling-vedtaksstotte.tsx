@@ -108,7 +108,8 @@ function AlleUtrulledeEnheterCard() {
 				{utrullinger.map((u, idx) => {
 					return (
 						<div key={idx} className="utrulling-vedtaksstotte__utrulling">
-							<Ingress>{u.enhetId}</Ingress>
+							<Ingress>{u.navn}</Ingress>
+							<Normaltekst>{u.enhetId}</Normaltekst>
 							<Normaltekst>{formatDateTime(u.createdAt)}</Normaltekst>
 						</div>
 					);
