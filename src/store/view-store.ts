@@ -8,7 +8,7 @@ export enum ViewType {
 }
 
 export const [ViewStoreProvider, useViewStore] = constate(() => {
-	const [view, setView] = useState<ViewType>(ViewType.KAFKA_ADMIN);
+	const [view, setView] = useState<ViewType>(ViewType.HOVEDSIDE);
 
 	const changeView = (type: ViewType) => {
 		setView(type);
