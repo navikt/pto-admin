@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
 	withCredentials: true,
 	headers: { 'Nav-Consumer-Id': 'pto-admin-api' }
 });
@@ -34,6 +34,8 @@ export function me(): AxiosPromise<User> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/auth/me`);
 }
 
+// Hovedside
+
 export function fnrTilAktorId(fnr: string): AxiosPromise<AktorIdResponse> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/ident/aktorId?fnr=${fnr}`);
 }
@@ -65,6 +67,8 @@ export function sjekkHarTilgangTilKode7(navIdent: string): AxiosPromise<TilgangR
 export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<TilgangResponse> {
 	return axiosInstance.get(`${PTO_ADMIN_API_URL}/api/tilgang/skjermet?navIdent=${navIdent}`);
 }
+
+// Utrulling vedtaksstøtte
 
 export function rullerUtEnhet(enhetId: string): AxiosPromise<TilgangResponse> {
 	return axiosInstance.post(`${PTO_ADMIN_API_URL}/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);

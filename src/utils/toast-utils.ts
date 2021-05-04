@@ -11,3 +11,7 @@ export function successToast(message: string) {
 export function infoToast(message: string) {
 	toast(message, { type: 'info', position: 'top-right' });
 }
+
+export function warningToast(message: string) {
+	toast(message, { type: 'warning', position: 'top-right' });
+}

@@ -1,6 +1,7 @@
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { rest } from 'msw';
 import { PTO_ADMIN_API_URL, UtrulletEnhet } from '../api';
+import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 
 const utrulledeEnheter: UtrulletEnhet[] = [
 	{
@@ -30,6 +31,44 @@ const utrulledeEnheter: UtrulletEnhet[] = [
 	}
 ];
 
+const kafkaRecords: KafkaRecord[] = [];
+
+for (let i = 0; i < 25; i++) {
+	const key = (i + 123) * (i + 99999);
+	const offset = i + 10000;
+
+	kafkaRecords.push({
+		key: key.toString(),
+		value:
+			'{"aktoerid":"xxxxxxx","fodselsnr":"xxxxxxxx","formidlingsgruppekode":"ARBS","iserv_fra_dato":null,"etternavn":"TESTERSEN","fornavn":"TEST","nav_kontor":"0425","kvalifiseringsgruppekode":"IKVAL","rettighetsgruppekode":"IYT","hovedmaalkode":"SKAFFEA","sikkerhetstiltak_type_kode":null,"fr_kode":null,"har_oppfolgingssak":true,"sperret_ansatt":false,"er_doed":false,"doed_fra_dato":null,"endret_dato":"2021-03-28T20:11:12+02:00"}',
+		offset,
+		timestamp: new Date().getMilliseconds(),
+		headers: [
+			{
+				name: 'CORRELATION_ID',
+				value: 'ddemc238fsdf0fd3s22'
+			}
+		]
+	});
+}
+
+const lastRecordOffsetResponse: LastRecordOffsetResponse = {
+	latestRecordOffset: 1234
+};
+
+const topicPartitionOffsets: TopicPartitionOffset[] = [
+	{
+		topicName: 'test-topic',
+		topicPartition: 0,
+		offset: 4567
+	},
+	{
+		topicName: 'test-topic',
+		topicPartition: 1,
+		offset: 4570
+	}
+];
+
 export const handlers: RequestHandlersList = [
 	rest.get(PTO_ADMIN_API_URL + '/api/auth/me', (req, res, ctx) => {
 		return res(
@@ -40,6 +79,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
+
 	rest.get(PTO_ADMIN_API_URL + '/api/ident/fnr', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
@@ -104,6 +144,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
+
 	rest.post(PTO_ADMIN_API_URL + '/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.status(200));
 	}),
@@ -112,5 +153,15 @@ export const handlers: RequestHandlersList = [
 	}),
 	rest.get(PTO_ADMIN_API_URL + '/api/admin/veilarbvedtaksstotte/utrulling', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(utrulledeEnheter));
+	}),
+
+	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/read-topic', (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.json(kafkaRecords));
+	}),
+	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/get-consumer-offsets', (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.json(topicPartitionOffsets));
+	}),
+	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/get-last-record-offset', (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.json(lastRecordOffsetResponse));
 	})
 ];
