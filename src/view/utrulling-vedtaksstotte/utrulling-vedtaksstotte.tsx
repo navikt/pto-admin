@@ -38,7 +38,7 @@ function RullUtTilEnhetCard() {
 	}
 
 	return (
-		<Card title="Rull ut til enhet" className="small-card" innholdClassName="utrulling-vedtaksstotte__card-innhold">
+		<Card title="Rull ut til enhet" className="small-card" innholdClassName="card__content">
 			<Normaltekst className="blokk-xxs">
 				Enheter som blir lagt til her vil få tilgang til vedtaksstøtte
 			</Normaltekst>
@@ -66,11 +66,7 @@ function FjernUtrullingCard() {
 	}
 
 	return (
-		<Card
-			title="Fjern utrulling fra enhet"
-			className="small-card"
-			innholdClassName="utrulling-vedtaksstotte__card-innhold"
-		>
+		<Card title="Fjern utrulling fra enhet" className="small-card" innholdClassName="card__content">
 			<Normaltekst className="blokk-xxs">
 				Enheter som blir fjernet vil miste tilgang til vedtaksstøtte
 			</Normaltekst>
@@ -98,11 +94,7 @@ function AlleUtrulledeEnheterCard() {
 	}
 
 	return (
-		<Card
-			title="Alle utrullede enheter"
-			className="large-card"
-			innholdClassName="utrulling-vedtaksstotte__card-innhold"
-		>
+		<Card title="Alle utrullede enheter" className="large-card" innholdClassName="card__content">
 			<Flatknapp onClick={handleHentAlleUtrulledeEnheter}>Hent utrullede enheter</Flatknapp>
 			<div className="utrulling-vedtaksstotte__utrullinger">
 				{utrullinger.map((u, idx) => {
