@@ -12,7 +12,7 @@ import {
 	ReadFromTopicRequest,
 	TopicPartitionOffset
 } from '../../api/kafka-admin';
-import { Input } from 'nav-frontend-skjema';
+import { Input, Select } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
 import constate from 'constate';
 import './kafka-admin.less';
@@ -48,7 +48,14 @@ function CredentialsCard() {
 			</Normaltekst>
 
 			<Input label="Username" value={username} onChange={e => setUsername(e.target.value)} />
-			<Input label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+			{/* Set "one-time-code" for å prøve å forhindre at browseren lagrer passordet */}
+			<Input
+				label="Password"
+				type="password"
+				autoComplete="one-time-code"
+				value={password}
+				onChange={e => setPassword(e.target.value)}
+			/>
 		</Card>
 	);
 }
@@ -106,7 +113,7 @@ function ConsumerOffsetsCard() {
 function LastRecordOffsetCard() {
 	const { username, password } = useCredentialsStore();
 	const [topicName, setTopicName] = useState('');
-	const [topicPartition, setTopicPartition] = useState('');
+	const [topicPartition, setTopicPartition] = useState('0');
 
 	const [lastRecordOffset, setLastRecordOffset] = useState<number | null>(null);
 
@@ -133,7 +140,7 @@ function LastRecordOffsetCard() {
 
 			<Input label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
 			<Input
-				label="Topic partition"
+				label="Topic partition (first partition starts at 0)"
 				type="number"
 				value={topicPartition}
 				onChange={e => setTopicPartition(e.target.value)}
@@ -146,24 +153,57 @@ function LastRecordOffsetCard() {
 	);
 }
 
+enum FetchFrom {
+	BEGINNING = 'BEGINNING',
+	END = 'END',
+	OFFSET = 'OFFSET'
+}
+
 function ReadFromTopicCard() {
 	const { username, password } = useCredentialsStore();
-	const [topicName, setTopicName] = useState('');
-	const [topicPartition, setTopicPartition] = useState('');
-
-	const [fromOffset, setFromOffset] = useState('');
-	const [maxRecords, setMaxRecords] = useState('');
+	const [topicNameField, setTopicNameField] = useState('');
+	const [topicPartitionField, setTopicPartitionField] = useState('0');
+	const [fetchFromField, setFetchFromField] = useState<FetchFrom>(FetchFrom.END);
+	const [fromOffsetField, setFromOffsetField] = useState('0');
+	const [maxRecordsField, setMaxRecordsField] = useState('50');
 
 	const [recordsFromTopic, setRecordsFromTopic] = useState<KafkaRecord[]>([]);
 
-	function handleReadFromTopic() {
+	async function handleReadFromTopic() {
+		const topicPartition = parseInt(topicPartitionField, 10);
+		const maxRecords = parseInt(maxRecordsField, 10);
+
+		let fetchFromOffset;
+
+		if (fetchFromField === FetchFrom.BEGINNING) {
+			fetchFromOffset = 0;
+		} else if (fetchFromField === FetchFrom.END) {
+			try {
+				const lastRecordOffset = (
+					await getLastRecordOffset({
+						username,
+						password,
+						topicName: topicNameField,
+						topicPartition
+					})
+				).data.latestRecordOffset;
+
+				fetchFromOffset = lastRecordOffset - maxRecords;
+			} catch (e) {
+				errorToast('Klarte ikke å hente siste record offset');
+				return;
+			}
+		} else {
+			fetchFromOffset = parseInt(fromOffsetField, 10);
+		}
+
 		const request: ReadFromTopicRequest = {
 			username,
 			password,
-			topicName,
-			topicPartition: parseInt(topicPartition, 10),
-			fromOffset: parseInt(fromOffset, 10),
-			maxRecords: parseInt(maxRecords, 10)
+			topicName: topicNameField,
+			topicPartition,
+			fromOffset: fetchFromOffset,
+			maxRecords
 		};
 
 		readFromTopic(request)
@@ -183,18 +223,43 @@ function ReadFromTopicCard() {
 			className="very-large-card center-horizontal"
 			innholdClassName="card__content"
 		>
-			<Normaltekst className="blokk-s">Leser meldinger fra en topic+partisjon</Normaltekst>
+			<Normaltekst className="blokk-s">
+				Leser meldinger fra en topic+partisjon. Trykk på en av meldingene for å se mer detaljert informasjon
+			</Normaltekst>
 
-			<Input label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
+			<Input label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
 			<Input
-				label="Topic partition"
+				label="Topic partition (first partition starts at 0)"
 				type="number"
-				value={topicPartition}
-				onChange={e => setTopicPartition(e.target.value)}
+				value={topicPartitionField}
+				onChange={e => setTopicPartitionField(e.target.value)}
 			/>
 
-			<Input label="From offset" type="number" value={fromOffset} onChange={e => setFromOffset(e.target.value)} />
-			<Input label="Max records" type="number" value={maxRecords} onChange={e => setMaxRecords(e.target.value)} />
+			<Select
+				label="Fetch records from"
+				value={fetchFromField}
+				onChange={e => setFetchFromField(e.target.value as FetchFrom)}
+			>
+				<option value={FetchFrom.BEGINNING}>Beginning (fetch the first records in the topic)</option>
+				<option value={FetchFrom.END}>End (fetch the last records in the topic)</option>
+				<option value={FetchFrom.OFFSET}>Offset (fetch from a specified offset)</option>
+			</Select>
+
+			{fetchFromField === FetchFrom.OFFSET ? (
+				<Input
+					label="From offset"
+					type="number"
+					value={fromOffsetField}
+					onChange={e => setFromOffsetField(e.target.value)}
+				/>
+			) : null}
+
+			<Input
+				label="Max records (max=100)"
+				type="number"
+				value={maxRecordsField}
+				onChange={e => setMaxRecordsField(e.target.value)}
+			/>
 
 			<Flatknapp onClick={handleReadFromTopic}>Fetch</Flatknapp>
 
@@ -208,15 +273,17 @@ function ReadFromTopicCard() {
 						</tr>
 					</thead>
 					<tbody>
-						{recordsFromTopic.map(record => {
-							return (
-								<tr key={record.offset}>
-									<td>{record.offset}</td>
-									<td>{record.key}</td>
-									<td className="kafka-record-value">{record.value}</td>
-								</tr>
-							);
-						})}
+						{recordsFromTopic
+							.sort((r1, r2) => r1.offset - r2.offset)
+							.map(record => {
+								return (
+									<tr key={record.offset}>
+										<td>{record.offset}</td>
+										<td>{record.key}</td>
+										<td className="kafka-record-value">{record.value}</td>
+									</tr>
+								);
+							})}
 					</tbody>
 				</table>
 			) : null}
