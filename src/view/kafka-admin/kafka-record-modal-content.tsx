@@ -43,7 +43,7 @@ export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 
 			<Label htmlFor="label">Payload</Label>
 			{isRecordValueJson ? (
-				<ReactJson src={JSON.parse(safeValue)} />
+				<ReactJson name={false} src={JSON.parse(safeValue)} />
 			) : (
 				<Textarea tellerTekst={() => null} value={safeValue} readOnly={true} onChange={NO_OP} />
 			)}
