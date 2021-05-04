@@ -15,7 +15,9 @@ import {
 import { Input, Select } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
 import constate from 'constate';
+import Modal from 'nav-frontend-modal';
 import './kafka-admin.less';
+import { KafkaRecordModalContent } from './kafka-record-modal-content';
 
 const [CredentialsStoreProvider, useCredentialsStore] = constate(() => {
 	const [username, setUsername] = useState('');
@@ -148,7 +150,11 @@ function LastRecordOffsetCard() {
 
 			<Flatknapp onClick={handleHentLastRecordOffset}>Fetch</Flatknapp>
 
-			{lastRecordOffset != null ? <Normaltekst>Offset til siste record: {lastRecordOffset}</Normaltekst> : null}
+			{lastRecordOffset != null ? (
+				<Normaltekst style={{ marginTop: '2rem' }}>
+					Offset til siste record: <strong>{lastRecordOffset}</strong>
+				</Normaltekst>
+			) : null}
 		</Card>
 	);
 }
@@ -167,6 +173,7 @@ function ReadFromTopicCard() {
 	const [fromOffsetField, setFromOffsetField] = useState('0');
 	const [maxRecordsField, setMaxRecordsField] = useState('50');
 
+	const [clickedRecord, setClickedRecord] = useState<KafkaRecord | null>(null);
 	const [recordsFromTopic, setRecordsFromTopic] = useState<KafkaRecord[]>([]);
 
 	async function handleReadFromTopic() {
@@ -277,9 +284,13 @@ function ReadFromTopicCard() {
 							.sort((r1, r2) => r1.offset - r2.offset)
 							.map(record => {
 								return (
-									<tr key={record.offset}>
+									<tr
+										key={record.offset}
+										onClick={() => setClickedRecord(record)}
+										className="kafka-record-row"
+									>
 										<td>{record.offset}</td>
-										<td>{record.key}</td>
+										<td>{record.key || 'NO_KEY'}</td>
 										<td className="kafka-record-value">{record.value}</td>
 									</tr>
 								);
@@ -287,6 +298,14 @@ function ReadFromTopicCard() {
 					</tbody>
 				</table>
 			) : null}
+			<Modal
+				isOpen={clickedRecord != null}
+				onRequestClose={() => setClickedRecord(null)}
+				closeButton={true}
+				contentLabel="View kafka record"
+			>
+				<KafkaRecordModalContent record={clickedRecord} />
+			</Modal>
 		</Card>
 	);
 }
