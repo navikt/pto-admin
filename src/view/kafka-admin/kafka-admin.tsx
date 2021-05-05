@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { errorToast, warningToast } from '../../utils/toast-utils';
+import { errorToast, successToast, warningToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
 import { Flatknapp } from 'nav-frontend-knapper';
 import {
@@ -10,6 +10,8 @@ import {
 	KafkaRecord,
 	readFromTopic,
 	ReadFromTopicRequest,
+	setConsumerOffset,
+	SetConsumerOffsetRequest,
 	TopicPartitionOffset
 } from '../../api/kafka-admin';
 import { Input, Select } from 'nav-frontend-skjema';
@@ -29,12 +31,15 @@ export function KafkaAdmin() {
 	return (
 		<div className="view kafka-admin">
 			<CredentialsStoreProvider>
-				<div className="card-row card-row--3-mini center-horizontal blokk-m">
-					<CredentialsCard />
-					<ConsumerOffsetsCard />
-					<LastRecordOffsetCard />
+				<div>
+					<div className="card-row-4-col blokk-m">
+						<CredentialsCard />
+						<ConsumerOffsetsCard />
+						<LastRecordOffsetCard />
+						<SetConsumerOffsetCard />
+					</div>
+					<ReadFromTopicCard />
 				</div>
-				<ReadFromTopicCard />
 			</CredentialsStoreProvider>
 		</div>
 	);
@@ -44,7 +49,7 @@ function CredentialsCard() {
 	const { username, setUsername, password, setPassword } = useCredentialsStore();
 
 	return (
-		<Card title="Credentials" className="mini-card" innholdClassName="card__content">
+		<Card title="Credentials" innholdClassName="card__content">
 			<Normaltekst className="blokk-s">
 				Alle funksjoner på denne siden krever at credentials fra en systembruker er utfylt
 			</Normaltekst>
@@ -89,7 +94,7 @@ function ConsumerOffsetsCard() {
 	}
 
 	return (
-		<Card title="Consumer offsets" className="mini-card" innholdClassName="card__content">
+		<Card title="Get consumer offsets" innholdClassName="card__content">
 			<Normaltekst className="blokk-s">
 				Henter siste commitet offset for alle partisjoner tilhørende en consumer gruppe for en gitt topic
 			</Normaltekst>
@@ -135,7 +140,7 @@ function LastRecordOffsetCard() {
 	}
 
 	return (
-		<Card title="Last record offset" className="mini-card" innholdClassName="card__content">
+		<Card title="Last record offset" innholdClassName="card__content">
 			<Normaltekst className="blokk-s">
 				Henter offset til siste record(melding på kafka) som ligger på en topic+partisjon
 			</Normaltekst>
@@ -155,6 +160,52 @@ function LastRecordOffsetCard() {
 					Offset til siste record: <strong>{lastRecordOffset}</strong>
 				</Normaltekst>
 			) : null}
+		</Card>
+	);
+}
+
+function SetConsumerOffsetCard() {
+	const { username, password } = useCredentialsStore();
+	const [topicNameField, setTopicNameField] = useState('');
+	const [groupIdField, setGroupIdField] = useState('');
+	const [topicPartitionField, setTopicPartitionField] = useState('0');
+	const [offsetField, setOffsetField] = useState('0');
+
+	function handleSetConsumerOffset() {
+		const request: SetConsumerOffsetRequest = {
+			username,
+			password,
+			topicName: topicNameField,
+			topicPartition: parseInt(topicPartitionField, 10),
+			offset: parseInt(offsetField, 10),
+			groupId: groupIdField
+		};
+
+		setConsumerOffset(request)
+			.then(() => successToast('Consumer offset har blitt endret'))
+			.catch(() => errorToast('Klarte ikke å sette consumer offset'));
+	}
+
+	return (
+		<Card title="Set consumer offset" className="mini-card" innholdClassName="card__content">
+			<Normaltekst className="blokk-s">
+				Setter offset til en consumer for en topic+partisjon. Det er viktig å vite at selv om offsetet blir
+				endret, så vil ikke consumere plukke opp endringen i offset før de er startet på nytt. Hvis en consumer
+				committer et nytt offset før den har blitt startet på nytt og fått hentet inn endringen, så vil den
+				overskrive offsetet fra pto-admin.
+			</Normaltekst>
+
+			<Input label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
+			<Input
+				label="Topic partition (first partition starts at 0)"
+				type="number"
+				value={topicPartitionField}
+				onChange={e => setTopicPartitionField(e.target.value)}
+			/>
+			<Input label="Consumer group id" value={groupIdField} onChange={e => setGroupIdField(e.target.value)} />
+			<Input label="Offset" type="number" value={offsetField} onChange={e => setOffsetField(e.target.value)} />
+
+			<Flatknapp onClick={handleSetConsumerOffset}>Set offset</Flatknapp>
 		</Card>
 	);
 }

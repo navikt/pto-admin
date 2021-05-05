@@ -163,5 +163,8 @@ export const handlers: RequestHandlersList = [
 	}),
 	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/get-last-record-offset', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(lastRecordOffsetResponse));
+	}),
+	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/set-consumer-offset', (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.status(200));
 	})
 ];

@@ -24,6 +24,15 @@ export interface GetLastRecordOffsetRequest {
 	topicPartition: number;
 }
 
+export interface SetConsumerOffsetRequest {
+	username: string;
+	password: string;
+	topicName: string;
+	topicPartition: number;
+	offset: number;
+	groupId: string;
+}
+
 export interface KafkaRecord {
 	key: string | null;
 	value: string | null;
@@ -74,5 +83,18 @@ export function getLastRecordOffset(request: GetLastRecordOffsetRequest): AxiosP
 		},
 		topicName: request.topicName,
 		topicPartition: request.topicPartition
+	});
+}
+
+export function setConsumerOffset(request: SetConsumerOffsetRequest): AxiosPromise {
+	return axiosInstance.post(`${PTO_ADMIN_API_URL}/api/kafka-admin/set-consumer-offset`, {
+		credentials: {
+			username: request.username,
+			password: request.password
+		},
+		topicName: request.topicName,
+		topicPartition: request.topicPartition,
+		offset: request.offset,
+		groupId: request.groupId
 	});
 }
