@@ -1,6 +1,6 @@
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { rest } from 'msw';
-import { PTO_ADMIN_API_URL, UtrulletEnhet } from '../api';
+import { UtrulletEnhet } from '../api';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 
 const utrulledeEnheter: UtrulletEnhet[] = [
@@ -70,7 +70,7 @@ const topicPartitionOffsets: TopicPartitionOffset[] = [
 ];
 
 export const handlers: RequestHandlersList = [
-	rest.get(PTO_ADMIN_API_URL + '/api/auth/me', (req, res, ctx) => {
+	rest.get('/api/auth/me', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -80,7 +80,7 @@ export const handlers: RequestHandlersList = [
 		);
 	}),
 
-	rest.get(PTO_ADMIN_API_URL + '/api/ident/fnr', (req, res, ctx) => {
+	rest.get('/api/ident/fnr', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -88,7 +88,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/ident/aktorId', (req, res, ctx) => {
+	rest.get('/api/ident/aktorId', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -96,7 +96,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/enhet', (req, res, ctx) => {
+	rest.get('/api/tilgang/enhet', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -104,7 +104,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/skriv', (req, res, ctx) => {
+	rest.get('/api/tilgang/skriv', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -112,7 +112,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/les', (req, res, ctx) => {
+	rest.get('/api/tilgang/les', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -120,7 +120,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/kode6', (req, res, ctx) => {
+	rest.get('/api/tilgang/kode6', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -128,7 +128,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/kode7', (req, res, ctx) => {
+	rest.get('/api/tilgang/kode7', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -136,7 +136,7 @@ export const handlers: RequestHandlersList = [
 			})
 		);
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/tilgang/skjermet', (req, res, ctx) => {
+	rest.get('/api/tilgang/skjermet', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
 			ctx.json({
@@ -145,26 +145,26 @@ export const handlers: RequestHandlersList = [
 		);
 	}),
 
-	rest.post(PTO_ADMIN_API_URL + '/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
+	rest.post('/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.status(200));
 	}),
-	rest.delete(PTO_ADMIN_API_URL + '/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
+	rest.delete('/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.status(200));
 	}),
-	rest.get(PTO_ADMIN_API_URL + '/api/admin/veilarbvedtaksstotte/utrulling', (req, res, ctx) => {
+	rest.get('/api/admin/veilarbvedtaksstotte/utrulling', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(utrulledeEnheter));
 	}),
 
-	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/read-topic', (req, res, ctx) => {
+	rest.post('/api/kafka-admin/read-topic', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(kafkaRecords));
 	}),
-	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/get-consumer-offsets', (req, res, ctx) => {
+	rest.post('/api/kafka-admin/get-consumer-offsets', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(topicPartitionOffsets));
 	}),
-	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/get-last-record-offset', (req, res, ctx) => {
+	rest.post('/api/kafka-admin/get-last-record-offset', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(lastRecordOffsetResponse));
 	}),
-	rest.post(PTO_ADMIN_API_URL + '/api/kafka-admin/set-consumer-offset', (req, res, ctx) => {
+	rest.post('/api/kafka-admin/set-consumer-offset', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.status(200));
 	})
 ];
