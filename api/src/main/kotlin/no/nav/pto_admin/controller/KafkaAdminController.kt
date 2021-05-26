@@ -1,7 +1,6 @@
 package no.nav.pto_admin.controller
 
 import no.nav.pto_admin.domain.KafkaRecord
-import no.nav.pto_admin.service.AuthService
 import no.nav.pto_admin.service.KafkaAdminService
 import no.nav.pto_admin.utils.Mappers.toTopicWithOffset
 import org.springframework.http.HttpStatus
@@ -13,22 +12,16 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/api/kafka-admin")
-class KafkaAdminController(
-    val kafkaAdminService: KafkaAdminService,
-    val authService: AuthService
-) {
+class KafkaAdminController(private val kafkaAdminService: KafkaAdminService) {
 
     @PostMapping("/read-topic")
     fun readTopic(@RequestBody request: ReadTopicRequest): List<KafkaRecord> {
-        authService.sjekkTilgangTilPtoAdmin()
         validateReadTopicRequestDTO(request)
         return kafkaAdminService.readTopic(request)
     }
 
     @PostMapping("/get-consumer-offsets")
     fun getOffsets(@RequestBody request: GetConsumerOffsetsRequest): List<TopicWithOffset> {
-        authService.sjekkTilgangTilPtoAdmin()
-
         return kafkaAdminService.getConsumerOffsets(request).entries.map {
             toTopicWithOffset(it.key, it.value)
         }
@@ -36,8 +29,6 @@ class KafkaAdminController(
 
     @PostMapping("/get-last-record-offset")
     fun getLastRecordOffset(@RequestBody request: GetLastRecordOffsetRequest): GetLastRecordOffsetResponse {
-        authService.sjekkTilgangTilPtoAdmin()
-
         return GetLastRecordOffsetResponse(
             latestRecordOffset = kafkaAdminService.getLastRecordOffset(request)
         )
@@ -45,7 +36,6 @@ class KafkaAdminController(
 
     @PostMapping("/set-consumer-offset")
     fun setConsumerOffset(@RequestBody request: SetConsumerOffsetRequest) {
-        authService.sjekkTilgangTilPtoAdmin()
         kafkaAdminService.setConsumerOffset(request)
     }
 

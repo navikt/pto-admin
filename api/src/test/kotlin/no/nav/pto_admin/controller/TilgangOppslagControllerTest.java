@@ -3,13 +3,15 @@ package no.nav.pto_admin.controller;
 import no.nav.common.types.identer.EnhetId;
 import no.nav.common.types.identer.NavIdent;
 import no.nav.common.types.identer.NorskIdent;
-import no.nav.pto_admin.service.AuthService;
+import no.nav.pto_admin.config.ApplicationTestConfig;
 import no.nav.pto_admin.service.TilgangOppslagService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -19,28 +21,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {TilgangOppslagController.class})
+@ContextConfiguration(classes = ApplicationTestConfig.class)
+@WebMvcTest(controllers = {TilgangOppslagController.class}, excludeAutoConfiguration = {OAuth2ClientAutoConfiguration.class})
 public class TilgangOppslagControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AuthService authService;
-
-    @MockBean
     private TilgangOppslagService tilgangOppslagService;
-
-    @Test
-    public void harTilgangTilEnhet__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/enhet")
-                        .queryParam("navIdent", "Z1234")
-                        .queryParam("enhetId", "1234")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
 
     @Test
     public void harTilgangTilEnhet__skal_sjekke_tilgang_med_parameter() throws Exception {
@@ -68,17 +57,6 @@ public class TilgangOppslagControllerTest {
     // =========================
 
     @Test
-    public void harSkrivetilgang__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/skriv")
-                        .queryParam("navIdent", "Z1234")
-                        .queryParam("norskIdent", "1234567")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
-
-    @Test
     public void harSkrivetilgang__skal_sjekke_tilgang_med_parameter() throws Exception {
         mockMvc.perform(
                 get("/api/tilgang/skriv")
@@ -102,17 +80,6 @@ public class TilgangOppslagControllerTest {
     }
 
     // =========================
-
-    @Test
-    public void harLesetilgang__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/les")
-                        .queryParam("navIdent", "Z1234")
-                        .queryParam("norskIdent", "1234567")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
 
     @Test
     public void harLesetilgang__skal_sjekke_tilgang_med_parameter() throws Exception {
@@ -140,16 +107,6 @@ public class TilgangOppslagControllerTest {
     // =========================
 
     @Test
-    public void harTilgangTilKode6__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/kode6")
-                        .queryParam("navIdent", "Z1234")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
-
-    @Test
     public void harTilgangTilKode6__skal_sjekke_tilgang_med_parameter() throws Exception {
         mockMvc.perform(
                 get("/api/tilgang/kode6")
@@ -173,16 +130,6 @@ public class TilgangOppslagControllerTest {
     // =========================
 
     @Test
-    public void harTilgangTilKode7__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/kode7")
-                        .queryParam("navIdent", "Z1234")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
-
-    @Test
     public void harTilgangTilKode7__skal_sjekke_tilgang_med_parameter() throws Exception {
         mockMvc.perform(
                 get("/api/tilgang/kode7")
@@ -204,16 +151,6 @@ public class TilgangOppslagControllerTest {
     }
 
     // =========================
-
-    @Test
-    public void harTilgangTilSkjermetPerson__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        mockMvc.perform(
-                get("/api/tilgang/skjermet")
-                        .queryParam("navIdent", "Z1234")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
 
     @Test
     public void harTilgangTilSkjermetPerson__skal_sjekke_tilgang_med_parameter() throws Exception {

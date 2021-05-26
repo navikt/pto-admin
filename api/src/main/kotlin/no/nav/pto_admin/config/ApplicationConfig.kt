@@ -11,9 +11,6 @@ import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.Credentials
 import no.nav.common.utils.NaisUtils
 import no.nav.pto_admin.proxy.PreRequestZuulFilter
-import no.nav.pto_admin.service.AuthService
-import no.nav.pto_admin.utils.AllowedUsers
-import no.nav.pto_admin.utils.parseAllowedUsersStr
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation.Bean
@@ -58,11 +55,6 @@ class ApplicationConfig {
     @Bean
     fun veilarbPep(properties: EnvironmentProperties, serviceUserCredentials: Credentials): Pep {
         return VeilarbPepFactory.get(properties.abacUrl, serviceUserCredentials.username, serviceUserCredentials.password)
-    }
-
-    @Bean
-    fun allowedUsers(properties: EnvironmentProperties): AllowedUsers {
-        return parseAllowedUsersStr(properties.allowedAdminUsers)
     }
 
 }

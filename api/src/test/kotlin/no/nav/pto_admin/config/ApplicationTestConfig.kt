@@ -3,16 +3,12 @@ package no.nav.pto_admin.config
 import no.nav.common.abac.AbacClient
 import no.nav.common.abac.Pep
 import no.nav.common.abac.domain.request.ActionId
-import no.nav.common.auth.context.AuthContextHolder
-import no.nav.common.auth.context.AuthContextHolderThreadLocal
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
 import no.nav.pto_admin.proxy.PreRequestZuulFilter
-import no.nav.pto_admin.service.AuthService
-import no.nav.pto_admin.utils.AllowedUsers
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,13 +19,9 @@ import org.springframework.context.annotation.Import
 @Import(value = [TestConfig::class])
 class ApplicationTestConfig {
 
-    companion object {
-        const val INNLOGGET_VEILEDER = "Z123456"
-    }
-
     @Bean
-    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider, authService: AuthService): PreRequestZuulFilter {
-        return PreRequestZuulFilter(authService, systemUserTokenProvider)
+    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider): PreRequestZuulFilter {
+        return PreRequestZuulFilter(systemUserTokenProvider)
     }
 
     @Bean
@@ -55,11 +47,6 @@ class ApplicationTestConfig {
                 TODO("Not yet implemented")
             }
         }
-    }
-
-    @Bean
-    fun authContextHolder(): AuthContextHolder {
-        return AuthContextHolderThreadLocal.instance()
     }
 
     @Bean
@@ -120,11 +107,6 @@ class ApplicationTestConfig {
             }
 
         }
-    }
-
-    @Bean
-    fun allowedUsers(): AllowedUsers {
-        return AllowedUsers(listOf(INNLOGGET_VEILEDER))
     }
 
 }

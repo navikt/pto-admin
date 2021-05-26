@@ -2,13 +2,15 @@ package no.nav.pto_admin.controller;
 
 import no.nav.common.types.identer.AktorId;
 import no.nav.common.types.identer.Fnr;
-import no.nav.pto_admin.service.AuthService;
+import no.nav.pto_admin.config.ApplicationTestConfig;
 import no.nav.pto_admin.service.IdentOppslagService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,29 +20,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = {IdentOppslagController.class})
+@ContextConfiguration(classes = ApplicationTestConfig.class)
+@WebMvcTest(controllers = {IdentOppslagController.class}, excludeAutoConfiguration = {OAuth2ClientAutoConfiguration.class})
 public class IdentOppslagControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AuthService authService;
-
-    @MockBean
     private IdentOppslagService identOppslagService;
-
-    @Test
-    public void fnrTilAktorId__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        when(identOppslagService.fnrTilAktorId(any())).thenReturn(AktorId.of(""));
-
-        mockMvc.perform(
-                get("/api/ident/aktorId")
-                        .queryParam("fnr", "1234567")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
 
     @Test
     public void fnrTilAktorId__skal_sjekke_tilgang_med_parameter() throws Exception {
@@ -66,18 +54,6 @@ public class IdentOppslagControllerTest {
     }
 
     // =========================
-
-    @Test
-    public void aktorIdTilFnr__skal_sjekke_tilgang_til_pto_admin() throws Exception {
-        when(identOppslagService.aktorIdTilFnr(any())).thenReturn(Fnr.of(""));
-
-        mockMvc.perform(
-                get("/api/ident/fnr")
-                        .queryParam("aktorId", "7654321")
-        );
-
-        verify(authService, times(1)).sjekkTilgangTilPtoAdmin();
-    }
 
     @Test
     public void aktorIdTilFnr__skal_sjekke_tilgang_med_parameter() throws Exception {

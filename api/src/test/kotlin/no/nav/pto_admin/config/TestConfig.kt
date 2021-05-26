@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import
 @Configuration
 @Import(value = [
     TestFilterConfig::class,
-    WebConfig::class,
+    TestWebSecurityConfig::class,
     PingController::class,
     IdentOppslagController::class,
     IdentOppslagService::class,
