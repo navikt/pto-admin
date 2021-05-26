@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env REACT_APP_DEV=true craco start",
-    "build": "cross-env PUBLIC_URL=/pto-admin craco build",
+    "build": "cross-env craco build",
     "lint": "tslint ./src/**/*.ts*",
     "lint:fix": "tslint ./src/**/**/**/**/*.ts* --fix",
     "test": "echo \"Tests not yet implemented\"",
