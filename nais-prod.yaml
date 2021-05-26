@@ -48,4 +48,3 @@ spec:
       value: https://app.adeo.no/veilarbvedtaksstotte/api/admin
   envFrom:
     - configmap: pto-config
-    - secret: pto-admin
