@@ -5,7 +5,6 @@ import { me } from '../../api';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { erITestMiljo } from '../../utils';
 import './login-check.less';
-import { Systemtittel } from 'nav-frontend-typografi';
 
 interface LoginCheckProps {
 	children?: any;
@@ -44,14 +43,6 @@ export function LoginCheck(props: LoginCheckProps) {
 		return (
 			<div className="login-check">
 				<Hovedknapp onClick={() => (window.location.href = logInnUrl)}>Logg inn</Hovedknapp>
-			</div>
-		);
-	}
-
-	if (!loggedInUser?.harTilgang) {
-		return (
-			<div className="login-check">
-				<Systemtittel>Du har ikke tilgang til PTO Admin</Systemtittel>
 			</div>
 		);
 	}
