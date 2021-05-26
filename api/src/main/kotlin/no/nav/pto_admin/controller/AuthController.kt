@@ -12,9 +12,9 @@ class AuthController(val authService: AuthService) {
     @GetMapping("/me")
     fun me(): User {
         val ident = authService.hentInnloggetBrukerIdent()
-        return User(ident.orElseThrow(), authService.harTilgangTilPtoAdmin())
+        return User(ident.orElseThrow())
     }
 
-    data class User(val ident: String, val harTilgang: Boolean)
+    data class User(val ident: String)
 
 }

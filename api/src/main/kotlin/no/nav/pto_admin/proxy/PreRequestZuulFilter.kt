@@ -14,11 +14,10 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants
 import org.springframework.http.HttpHeaders
 
 class PreRequestZuulFilter(
-    private val authService: AuthService,
     private val systemUserTokenProvider: SystemUserTokenProvider
 ) : ZuulFilter() {
 
-    val log = LoggerFactory.getLogger(PreRequestZuulFilter::class.java)
+    private val log = LoggerFactory.getLogger(PreRequestZuulFilter::class.java)
 
     override fun filterType(): String {
         return FilterConstants.PRE_TYPE
@@ -34,13 +33,6 @@ class PreRequestZuulFilter(
 
     override fun run(): Any? {
         val ctx = RequestContext.getCurrentContext()
-        if (!authService.harTilgangTilPtoAdmin()) {
-            ctx.responseStatusCode = 403
-            if (ctx.responseBody == null) {
-                ctx.setSendZuulResponse(false)
-            }
-            return null
-        }
 
         log.info("Proxying request", ctx.request.requestURI)
 

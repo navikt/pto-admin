@@ -25,7 +25,6 @@ export interface UtrulletEnhet {
 
 export interface User {
 	ident: string;
-	harTilgang: boolean;
 }
 
 export function me(): AxiosPromise<User> {

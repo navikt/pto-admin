@@ -34,6 +34,10 @@ spec:
   azure:
     application:
       enabled: true
+      tenant: nav.no
+      claims:
+        groups:
+          - id: 41126212-6cb5-4c67-9ce1-22f7a686b298
   vault:
     enabled: true
     paths:
@@ -44,4 +48,3 @@ spec:
       value: https://app-q1.adeo.no/veilarbvedtaksstotte/api/admin
   envFrom:
     - configmap: pto-config
-    - secret: pto-admin

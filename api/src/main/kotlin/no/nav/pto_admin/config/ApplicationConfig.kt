@@ -29,8 +29,8 @@ class ApplicationConfig {
    }
 
     @Bean
-    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider, authService: AuthService): PreRequestZuulFilter {
-        return PreRequestZuulFilter(authService, systemUserTokenProvider)
+    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider): PreRequestZuulFilter {
+        return PreRequestZuulFilter(systemUserTokenProvider)
     }
 
     @Bean
