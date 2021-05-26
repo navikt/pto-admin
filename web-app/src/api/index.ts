@@ -24,7 +24,7 @@ export interface UtrulletEnhet {
 }
 
 export interface User {
-	ident: string;
+	navn: string;
 }
 
 export function me(): AxiosPromise<User> {

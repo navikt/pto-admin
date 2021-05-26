@@ -11,10 +11,10 @@ class AuthController(val authService: AuthService) {
 
     @GetMapping("/me")
     fun me(): User {
-        val ident = authService.hentInnloggetBrukerIdent()
-        return User(ident.orElseThrow())
+        val brukerNavn = authService.hentInnloggetBrukerNavn()
+        return User(brukerNavn.orElse("Ukjent"))
     }
 
-    data class User(val ident: String)
+    data class User(val navn: String)
 
 }

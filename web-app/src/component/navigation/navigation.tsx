@@ -23,7 +23,7 @@ export function Navigation() {
 					<option value={ViewType.KAFKA_ADMIN}>Kafka Admin</option>
 				</Select>
 			</div>
-			<Ingress>{loggedInUser?.ident || 'Ikke logget inn'}</Ingress>
+			<Ingress>{loggedInUser?.navn || ''}</Ingress>
 		</header>
 	);
 }
