@@ -31,6 +31,8 @@ export function me(): AxiosPromise<User> {
 	return axiosInstance.get(`/api/auth/me`);
 }
 
+export type JobId = string;
+
 // Hovedside
 
 export function fnrTilAktorId(fnr: string): AxiosPromise<AktorIdResponse> {
@@ -77,4 +79,10 @@ export function fjernUtrulling(enhetId: string): AxiosPromise<TilgangResponse> {
 
 export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
 	return axiosInstance.get(`/api/admin/veilarbvedtaksstotte/utrulling`);
+}
+
+// Republisering vedtaksstøtte
+
+export function republiserInnsatsbehovVedtaksstotte(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/innsatsbehovVedtaksstotte`);
 }

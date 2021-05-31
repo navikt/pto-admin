@@ -153,7 +153,9 @@ export const handlers: RequestHandlersList = [
 	rest.get('/api/admin/veilarbvedtaksstotte/utrulling', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(utrulledeEnheter));
 	}),
-
+	rest.post('/api/admin/veilarbvedtaksstotte/republiser/innsatsbehovVedtaksstotte', (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.json('job_id_123'));
+	}),
 	rest.post('/api/kafka-admin/read-topic', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(kafkaRecords));
 	}),
