@@ -46,5 +46,7 @@ spec:
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
       value: https://app-q1.adeo.no/veilarbvedtaksstotte/api/admin
+    - name: VEILARBOPPFOLGING_ADMIN_API_URL
+      value: https://app-q1.adeo.no/veilarboppfolging/api/admin
   envFrom:
     - configmap: pto-config
