@@ -20,6 +20,7 @@ export function Navigation() {
 				<Select className="navigation__visning-velger" value={view} onChange={handleOnChange}>
 					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
 					<option value={ViewType.UTRULLING_VEDTAKSSTOTTE}>Utrulling vedtaksstøtte</option>
+					<option value={ViewType.REPUBLISERING_KAFKA}>Republisering Kafka</option>
 					<option value={ViewType.KAFKA_ADMIN}>Kafka Admin</option>
 				</Select>
 			</div>
