@@ -41,6 +41,7 @@
     "dayjs": "^1.10.4",
     "lodash.throttle": "^4.1.1",
     "nav-frontend-alertstriper": "^3.0.42",
+    "nav-frontend-alertstriper-style": "^2.0.33",
     "nav-frontend-core": "^5.1.1",
     "nav-frontend-ikoner-assets": "^2.0.10",
     "nav-frontend-js-utils": "^1.0.17",
