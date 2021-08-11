@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { JobId, republiserInnsatsbehovVedtaksstotte } from '../../api';
+import { JobId, republiserEndringPaNyForVeileder, republiserInnsatsbehovVedtaksstotte } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
 import Modal from 'nav-frontend-modal';
@@ -21,6 +21,12 @@ export function RepubliseringKafka() {
 				request={republiserInnsatsbehovVedtaksstotte}
 			/>
 
+			<RepubliseringsKort
+				tittel="Republiser endring på ny for veileder i veilarboppfolging"
+				beskrivelse="Republiserer om tildelt veileder er ny for en bruker, for alle brukere som er under
+					oppfølging og har en tildelt veileder."
+				request={republiserEndringPaNyForVeileder}
+			/>
 		</div>
 	);
 }

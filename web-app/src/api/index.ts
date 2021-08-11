@@ -86,3 +86,9 @@ export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
 export function republiserInnsatsbehovVedtaksstotte(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/innsatsbehovVedtaksstotte`);
 }
+
+// Republisering veilarboppfolging
+
+export function republiserEndringPaNyForVeileder(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/endring-pa-ny-for-veileder-brukere-under-oppfolging`);
+}
