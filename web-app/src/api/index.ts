@@ -86,3 +86,9 @@ export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
 export function republiserInnsatsbehovVedtaksstotte(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/innsatsbehovVedtaksstotte`);
 }
+
+// Republisering veilarbdialog
+
+export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { JobId, republiserInnsatsbehovVedtaksstotte } from '../../api';
+import { JobId, republiserEndringPaaDialog, republiserInnsatsbehovVedtaksstotte } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
 import Modal from 'nav-frontend-modal';
@@ -20,7 +20,12 @@ export function RepubliseringKafka() {
 					nyere i Arena, så vil innsatsbehovet fra vedtak i Arena bli republisert."
 				request={republiserInnsatsbehovVedtaksstotte}
 			/>
-
+			<RepubliseringsKort
+				tittel="Republiser endring på dialog i veilarbdialog"
+				beskrivelse="Republiser endring på dialog i veilarbdialog for alle brukere som har en aktiv dialog
+					(dvs. ikke historisk)."
+				request={republiserEndringPaaDialog}
+			/>
 		</div>
 	);
 }
