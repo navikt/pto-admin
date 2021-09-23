@@ -50,5 +50,7 @@ spec:
       value: https://app-q1.adeo.no/veilarboppfolging/api/admin
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.dev.intern.nav.no/veilarbarena/api/admin
+    - name: VEILARBDIALOG_ADMIN_API_URL
+      value: https://app-q1.adeo.no/veilarbdialog/api/admin
   envFrom:
     - configmap: pto-config
