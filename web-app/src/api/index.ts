@@ -92,3 +92,7 @@ export function republiserInnsatsbehovVedtaksstotte(): AxiosPromise<JobId> {
 export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
 }
+
+export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
+}
