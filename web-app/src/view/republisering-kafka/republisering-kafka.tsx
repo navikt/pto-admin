@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
 import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { JobId, republiserEndringPaaDialog, republiserInnsatsbehovVedtaksstotte } from '../../api';
+import {
+	JobId,
+	republiserEndringPaaDialog,
+	republiserEndringPaaOppfolgingsbrukere,
+	republiserInnsatsbehovVedtaksstotte
+} from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
 import Modal from 'nav-frontend-modal';
@@ -25,6 +30,11 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser endring på dialog i veilarbdialog for alle brukere som har en aktiv dialog
 					(dvs. ikke historisk)."
 				request={republiserEndringPaaDialog}
+			/>
+			<RepubliseringsKort
+				tittel="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)"
+				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
+				request={republiserEndringPaaOppfolgingsbrukere}
 			/>
 		</div>
 	);
