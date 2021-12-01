@@ -6,7 +6,7 @@ import {
 	JobId,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
-	republiserInnsatsbehovVedtaksstotte
+	republiserSiste14aVedtak
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
@@ -19,11 +19,9 @@ export function RepubliseringKafka() {
 		<div className="view republisering-kafka">
 
 			<RepubliseringsKort
-				tittel="Republiser innsatsbehov fra Modia vedtaksstøtte"
-				beskrivelse="Republiserer innsatsbehov for brukere som har fått vedtak i Modia vedtaksstøtte. Republiserer ikke
-					for brukere som bare har vedtak i Arena, men dersom en bruker har vedtak i Modia vedtaksstøtte og et
-					nyere i Arena, så vil innsatsbehovet fra vedtak i Arena bli republisert."
-				request={republiserInnsatsbehovVedtaksstotte}
+				tittel="Republiser siste 14a vedtak i veilarbvedtaksstotte"
+				beskrivelse="Republiserer siste 14a vedtak for brukere som har vedtak i Modia vedtaksstøtte eller i Arena."
+				request={republiserSiste14aVedtak}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"

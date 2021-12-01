@@ -83,8 +83,8 @@ export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
 
 // Republisering vedtaksstøtte
 
-export function republiserInnsatsbehovVedtaksstotte(): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/innsatsbehovVedtaksstotte`);
+export function republiserSiste14aVedtak(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak`);
 }
 
 // Republisering veilarbdialog
