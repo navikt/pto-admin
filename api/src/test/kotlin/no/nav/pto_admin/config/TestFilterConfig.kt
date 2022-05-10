@@ -23,7 +23,7 @@ class TestFilterConfig {
     fun setStandardHeadersFilterRegistrationBean(): FilterRegistrationBean<SetStandardHttpHeadersFilter> {
         val registration = FilterRegistrationBean<SetStandardHttpHeadersFilter>()
         registration.filter = SetStandardHttpHeadersFilter()
-        registration.order = 3
+        registration.order = 2
         registration.addUrlPatterns("/*")
         return registration
     }

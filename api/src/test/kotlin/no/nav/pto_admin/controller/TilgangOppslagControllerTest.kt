@@ -5,8 +5,7 @@ import no.nav.common.types.identer.NavIdent
 import no.nav.common.types.identer.NorskIdent
 import no.nav.pto_admin.config.ApplicationTestConfig
 import no.nav.pto_admin.service.TilgangOppslagService
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -16,12 +15,10 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAu
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
-@RunWith(SpringRunner::class)
 @ContextConfiguration(classes = [ApplicationTestConfig::class])
 @WebMvcTest(
     controllers = [TilgangOppslagController::class],

@@ -4,25 +4,18 @@ import no.nav.common.abac.AbacClient
 import no.nav.common.abac.Pep
 import no.nav.common.abac.domain.request.ActionId
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
+import no.nav.common.client.aktoroppslag.BrukerIdenter
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
-import no.nav.pto_admin.proxy.PreRequestZuulFilter
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 @Configuration
-@EnableZuulProxy
 @Import(value = [TestConfig::class])
 class ApplicationTestConfig {
-
-    @Bean
-    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider): PreRequestZuulFilter {
-        return PreRequestZuulFilter(systemUserTokenProvider)
-    }
 
     @Bean
     fun aktorOppslagClient(): AktorOppslagClient {
@@ -44,6 +37,10 @@ class ApplicationTestConfig {
             }
 
             override fun hentAktorIdBolk(p0: MutableList<Fnr>?): MutableMap<Fnr, AktorId> {
+                TODO("Not yet implemented")
+            }
+
+            override fun hentIdenter(p0: EksternBrukerId?): BrukerIdenter {
                 TODO("Not yet implemented")
             }
         }
