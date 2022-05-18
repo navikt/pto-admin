@@ -6,8 +6,12 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.client.reactive.ReactorResourceFactory
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveAuthorizationCodeTokenResponseClient
+import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeReactiveAuthenticationManager
+import org.springframework.security.oauth2.client.oidc.authentication.ReactiveOidcIdTokenDecoderFactory
+import org.springframework.security.oauth2.client.registration.ClientRegistration
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoderFactory
 import org.springframework.web.reactive.function.client.WebClient
 
 @Configuration
@@ -38,5 +42,10 @@ class ClientHttpConnectorConfig {
         @Value("\${spring.security.oauth2.client.provider.azure.jwk-set-uri}") jwkSetUri: String
     ): ReactiveJwtDecoder {
         return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).webClient(webClient).build()
+    }
+
+    @Bean
+    fun reactiveJwtDecoderFactory(reactiveJwtDecoder: ReactiveJwtDecoder): ReactiveJwtDecoderFactory<ClientRegistration> {
+        return ReactiveJwtDecoderFactory { reactiveJwtDecoder}
     }
 }
