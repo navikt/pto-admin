@@ -18,7 +18,7 @@
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.6.21</kotlin.version>
-        <common.version>2.2022.05.02_07.06-a137d5557025</common.version>
+        <common.version>2.2022.05.13_07.24-6eadb37dec31</common.version>
         <okhttp.version>4.9.3</okhttp.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
         <mock-oauth2-server.version>0.4.7</mock-oauth2-server.version>
@@ -121,6 +121,11 @@
             <artifactId>kafka</artifactId>
             <version>${common.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -160,13 +165,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- Trenger denne for com.squareup.okhttp3.mockwebserver -->
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
