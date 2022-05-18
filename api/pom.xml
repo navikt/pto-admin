@@ -21,7 +21,7 @@
         <common.version>2.2022.05.02_07.06-a137d5557025</common.version>
         <okhttp.version>4.9.3</okhttp.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
-        <mock-oauth2-server.version>0.4.6</mock-oauth2-server.version>
+        <mock-oauth2-server.version>0.4.7</mock-oauth2-server.version>
     </properties>
 
     <dependencies>
@@ -138,6 +138,12 @@
             <artifactId>mock-oauth2-server</artifactId>
             <version>${mock-oauth2-server.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito.kotlin</groupId>
