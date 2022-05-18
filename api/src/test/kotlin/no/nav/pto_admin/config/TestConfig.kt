@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Import
 @Import(value = [
     WebSecurityConfig::class,
     GatewayConfig::class,
+    ClientHttpConnectorConfig::class,
     PingController::class,
     IdentOppslagController::class,
     IdentOppslagService::class,
