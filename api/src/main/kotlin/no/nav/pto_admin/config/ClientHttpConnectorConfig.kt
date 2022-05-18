@@ -7,6 +7,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.client.reactive.ReactorResourceFactory
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveAuthorizationCodeTokenResponseClient
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
+import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
 import org.springframework.web.reactive.function.client.WebClient
 
 @Configuration
@@ -32,10 +33,10 @@ class ClientHttpConnectorConfig {
     }
 
     @Bean
-    fun nimbusReactiveJwtDecoder(
+    fun reactiveJwtDecoder(
         webClient: WebClient,
         @Value("\${spring.security.oauth2.client.provider.azure.jwk-set-uri}") jwkSetUri: String
-    ): NimbusReactiveJwtDecoder {
+    ): ReactiveJwtDecoder {
         return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).webClient(webClient).build()
     }
 }
