@@ -6,9 +6,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.client.reactive.ReactorResourceFactory
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveAuthorizationCodeTokenResponseClient
-import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeReactiveAuthenticationManager
-import org.springframework.security.oauth2.client.oidc.authentication.ReactiveOidcIdTokenDecoderFactory
 import org.springframework.security.oauth2.client.registration.ClientRegistration
+import org.springframework.security.oauth2.client.userinfo.DefaultReactiveOAuth2UserService
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoderFactory
@@ -46,6 +45,13 @@ class ClientHttpConnectorConfig {
 
     @Bean
     fun reactiveJwtDecoderFactory(reactiveJwtDecoder: ReactiveJwtDecoder): ReactiveJwtDecoderFactory<ClientRegistration> {
-        return ReactiveJwtDecoderFactory { reactiveJwtDecoder}
+        return ReactiveJwtDecoderFactory { reactiveJwtDecoder }
+    }
+
+    @Bean
+    fun defaultReactiveOAuth2UserService(webClient: WebClient): DefaultReactiveOAuth2UserService {
+        val userService = DefaultReactiveOAuth2UserService()
+        userService.setWebClient(webClient)
+        return userService
     }
 }
