@@ -37,6 +37,7 @@ object SetupLocalEnvironment {
 
         System.setProperty("AZURE_APP_CLIENT_ID", "pto-admin")
         System.setProperty("AZURE_OPENID_CONFIG_ISSUER", server.issuerUrl(issuerId).toString())
+        System.setProperty("AZURE_OPENID_CONFIG_JWKS_URI", server.jwksUrl(issuerId).toString())
     }
 
     fun startTargetProxyApps() {
