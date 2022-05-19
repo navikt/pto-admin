@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.client.reactive.ReactorResourceFactory
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveAuthorizationCodeTokenResponseClient
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService
 import org.springframework.security.oauth2.client.registration.ClientRegistration
 import org.springframework.security.oauth2.client.userinfo.DefaultReactiveOAuth2UserService
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder
@@ -52,6 +53,15 @@ class ClientHttpConnectorConfig {
     fun defaultReactiveOAuth2UserService(webClient: WebClient): DefaultReactiveOAuth2UserService {
         val userService = DefaultReactiveOAuth2UserService()
         userService.setWebClient(webClient)
+        return userService
+    }
+
+    @Bean
+    fun oidcReactiveOAuth2UserService(
+        defaultReactiveOAuth2UserService: DefaultReactiveOAuth2UserService
+    ): OidcReactiveOAuth2UserService {
+        val userService = OidcReactiveOAuth2UserService()
+        userService.setOauth2UserService(defaultReactiveOAuth2UserService)
         return userService
     }
 }
