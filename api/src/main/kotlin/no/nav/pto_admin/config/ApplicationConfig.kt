@@ -5,18 +5,20 @@ import no.nav.common.abac.VeilarbPepFactory
 import no.nav.common.auth.context.AuthContextHolder
 import no.nav.common.auth.context.AuthContextHolderThreadLocal
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
-import no.nav.common.client.aktorregister.AktorregisterHttpClient
+import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
+import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
+import no.nav.common.client.pdl.PdlClientImpl
 import no.nav.common.sts.NaisSystemUserTokenProvider
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.Credentials
+import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
-import no.nav.pto_admin.proxy.PreRequestZuulFilter
+import no.nav.common.utils.UrlUtils
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@EnableZuulProxy
+
 @Configuration
 @EnableConfigurationProperties(EnvironmentProperties::class)
 class ApplicationConfig {
@@ -26,15 +28,17 @@ class ApplicationConfig {
    }
 
     @Bean
-    fun preRequestZuulFilter(systemUserTokenProvider: SystemUserTokenProvider): PreRequestZuulFilter {
-        return PreRequestZuulFilter(systemUserTokenProvider)
-    }
-
-    @Bean
-    fun aktorOppslagClient(properties: EnvironmentProperties, systemUserTokenProvider: SystemUserTokenProvider): AktorOppslagClient {
-        return AktorregisterHttpClient(
-                properties.aktorregisterUrl, APPLICATION_NAME, systemUserTokenProvider::getSystemUserToken
+    fun aktorOppslagClient(systemUserTokenProvider: SystemUserTokenProvider): AktorOppslagClient {
+        val pdlUrl =
+            if (EnvironmentUtils.isProduction().orElseThrow()) UrlUtils.createProdInternalIngressUrl("pdl-api")
+            else UrlUtils.createDevInternalIngressUrl("pdl-api")
+        val pdlClient = PdlClientImpl(
+            pdlUrl,
+            systemUserTokenProvider::getSystemUserToken,
+            systemUserTokenProvider::getSystemUserToken,
         )
+
+        return CachedAktorOppslagClient(PdlAktorOppslagClient(pdlClient))
     }
 
     @Bean
@@ -56,5 +60,4 @@ class ApplicationConfig {
     fun veilarbPep(properties: EnvironmentProperties, serviceUserCredentials: Credentials): Pep {
         return VeilarbPepFactory.get(properties.abacUrl, serviceUserCredentials.username, serviceUserCredentials.password)
     }
-
 }

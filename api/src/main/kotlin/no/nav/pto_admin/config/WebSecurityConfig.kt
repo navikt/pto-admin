@@ -1,23 +1,29 @@
 package no.nav.pto_admin.config
 
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpMethod.GET
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.web.server.ServerHttpSecurity
+import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec
+import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher
 
-@Configuration
-@EnableWebSecurity
-class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
-    override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .antMatchers("/internal/**", "/oauth2/**").permitAll()
-            .anyRequest().authenticated()
+@EnableWebFluxSecurity
+class WebSecurityConfig {
+
+    @Bean
+    fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain? {
+        http
+            .authorizeExchange { authorize: AuthorizeExchangeSpec ->
+                authorize
+                    .pathMatchers(GET, "/internal/**").permitAll()
+                    .pathMatchers(GET, "/oauth2/**").permitAll()
+                    .anyExchange().authenticated()
+            }
+            .oauth2Login().authenticationMatcher(PathPatternParserServerWebExchangeMatcher("/oauth2/callback"))
             .and()
-            .csrf().disable() // Use SameSite=lax instead
-            .oauth2Login()
-            .redirectionEndpoint { it.baseUri("/oauth2/callback") }
-            .defaultSuccessUrl("/index.html")
+            .csrf().disable() // session cookie er SameSite lax
+        return http.build()
     }
-
 }

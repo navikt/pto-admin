@@ -35,6 +35,7 @@ spec:
     application:
       enabled: true
       tenant: nav.no
+      allowAllUsers: false
       claims:
         groups:
           - id: 41126212-6cb5-4c67-9ce1-22f7a686b298
@@ -45,12 +46,12 @@ spec:
         mountPath: /var/run/secrets/nais.io/service_user
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
-      value: https://app.adeo.no/veilarbvedtaksstotte/api/admin
+      value: https://veilarbvedtaksstotte.nais.adeo.no
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://app.adeo.no/veilarboppfolging/api/admin
+      value: https://veilarboppfolging.nais.adeo.no
     - name: VEILARBARENA_ADMIN_API_URL
-      value: https://veilarbarena.intern.nav.no/veilarbarena/api/admin
+      value: https://veilarbarena.intern.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
-      value: https://app.adeo.no/veilarbdialog/api/admin
+      value: https://veilarbdialog.nais.adeo.no
   envFrom:
     - configmap: pto-config

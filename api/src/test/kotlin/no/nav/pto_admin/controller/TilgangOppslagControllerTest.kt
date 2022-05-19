@@ -4,169 +4,166 @@ import no.nav.common.types.identer.EnhetId
 import no.nav.common.types.identer.NavIdent
 import no.nav.common.types.identer.NorskIdent
 import no.nav.pto_admin.config.ApplicationTestConfig
+import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.TilgangOppslagService
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.reactive.server.WebTestClient
 
-@RunWith(SpringRunner::class)
 @ContextConfiguration(classes = [ApplicationTestConfig::class])
-@WebMvcTest(
-    controllers = [TilgangOppslagController::class],
-    excludeAutoConfiguration = [OAuth2ClientAutoConfiguration::class]
+@WebFluxTest(
+    controllers = [TilgangOppslagController::class]
 )
 class TilgangOppslagControllerTest {
 
+    init {
+        SetupLocalEnvironment.setup()
+    }
+
     @Autowired
-    private lateinit var mockMvc: MockMvc
+    private lateinit var webClient: WebTestClient
 
     @MockBean
     private lateinit var tilgangOppslagService: TilgangOppslagService
 
     @Test
-    fun harTilgangTilEnhet__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/enhet")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("enhetId", "1234")
-        )
+    fun harTilgangTilEnhet__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harTilgangTilEnhet(NavIdent("Z1234"), EnhetId("1234"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harTilgangTilEnhet(NavIdent.of("Z1234"), EnhetId.of("1234"))
+        loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harTilgangTilEnhet__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harTilgangTilEnhet(any(), any()))
-            .thenReturn(true)
+    fun harTilgangTilEnhet__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harTilgangTilEnhet(NavIdent("Z1234"), EnhetId("1234"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/enhet")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("enhetId", "1234")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
     }
 
     @Test
-    fun harSkrivetilgang__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/skriv")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("norskIdent", "1234567")
-        )
+    fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harSkrivetilgang(NavIdent.of("Z1234"), NorskIdent.of("1234567"))
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harSkrivetilgang__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harSkrivetilgang(any(), any()))
-            .thenReturn(true)
+    fun harSkrivetilgang__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/skriv")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("norskIdent", "1234567")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
     }
 
     @Test
-    fun harLesetilgang__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/les")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("norskIdent", "1234567")
-        )
+    fun harLesetilgang__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harLesetilgang(NavIdent.of("Z1234"), NorskIdent.of("1234567"))
+        loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harLesetilgang__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harLesetilgang(any(), any()))
-            .thenReturn(true)
+    fun harLesetilgang__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/les")
-                .queryParam("navIdent", "Z1234")
-                .queryParam("norskIdent", "1234567")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
     }
 
     @Test
-    fun harTilgangTilKode6__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/kode6")
-                .queryParam("navIdent", "Z1234")
-        )
+    fun harTilgangTilKode6__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harTilgangTilKode6(NavIdent("Z1234"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harTilgangTilKode6(NavIdent.of("Z1234"))
+        loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harTilgangTilKode6__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harTilgangTilKode6(any())).thenReturn(true)
+    fun harTilgangTilKode6__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harTilgangTilKode6(NavIdent("Z1234"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/kode6")
-                .queryParam("navIdent", "Z1234")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
     }
 
     @Test
-    fun harTilgangTilKode7__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/kode7")
-                .queryParam("navIdent", "Z1234")
-        )
+    fun harTilgangTilKode7__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harTilgangTilKode7(NavIdent("Z1234"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harTilgangTilKode7(NavIdent.of("Z1234"))
+        loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harTilgangTilKode7__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harTilgangTilKode7(any())).thenReturn(true)
+    fun harTilgangTilKode7__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harTilgangTilKode7(NavIdent("Z1234"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/kode7")
-                .queryParam("navIdent", "Z1234")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
     }
 
     @Test
-    fun harTilgangTilSkjermetPerson__skal_sjekke_tilgang_med_parameter() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/skjermet")
-                .queryParam("navIdent", "Z1234")
-        )
+    fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_false() {
+        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(NavIdent("Z1234"))).thenReturn(false)
 
-        verify(tilgangOppslagService, times(1))
-            .harTilgangTilSkjermetPerson(NavIdent.of("Z1234"))
+        loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":false}""")
     }
 
     @Test
-    fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang() {
-        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(any())).thenReturn(true)
+    fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_true() {
+        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(NavIdent("Z1234"))).thenReturn(true)
 
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/tilgang/skjermet")
-                .queryParam("navIdent", "Z1234")
-        ).andExpect(MockMvcResultMatchers.content().json("{ \"harTilgang\": true  }"))
+        loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody(String::class.java)
+            .isEqualTo("""{"harTilgang":true}""")
+    }
+
+    fun loggedInWebClient(): WebTestClient {
+        return webClient.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
     }
 }

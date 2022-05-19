@@ -1,17 +1,18 @@
 package no.nav.pto_admin
 
 import no.nav.pto_admin.config.ApplicationTestConfig
-import org.springframework.boot.SpringApplication
+import no.nav.pto_admin.config.ClientHttpConnectorConfig
+import no.nav.pto_admin.config.SetupLocalEnvironment
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
+import org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration
+import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
 
-@EnableAutoConfiguration(exclude = [OAuth2ClientAutoConfiguration::class])
-@Import(ApplicationTestConfig::class)
+@EnableAutoConfiguration(exclude = [ReactiveUserDetailsServiceAutoConfiguration::class])
+@Import(value = [ApplicationTestConfig::class, ClientHttpConnectorConfig::class])
 class LocalApplication
 
 fun main(args: Array<String>) {
-    val application = SpringApplication(LocalApplication::class.java)
-    application.setAdditionalProfiles("local")
-    application.run(*args)
+    SetupLocalEnvironment.setup()
+    runApplication<LocalApplication>(*args)
 }
