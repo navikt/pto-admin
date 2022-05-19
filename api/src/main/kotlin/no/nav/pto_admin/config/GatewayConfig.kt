@@ -46,7 +46,7 @@ class GatewayConfig {
                     exchange.request.mutate().header(LogFilter.PREFERRED_NAV_CALL_ID_HEADER_NAME, callId).build()
                 }
 
-                log.info("Proxyer request til " + exchange.request.remoteAddress + exchange.request.path)
+                log.info("Proxyer request til " + exchange.request.uri)
 
                 return chain.filter(exchange)
             }
