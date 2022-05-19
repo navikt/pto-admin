@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -46,7 +47,7 @@ class GatewayConfig {
                     exchange.request.mutate().header(LogFilter.PREFERRED_NAV_CALL_ID_HEADER_NAME, callId).build()
                 }
 
-                log.info("Proxyer request til " + exchange.request.uri)
+                log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
 
                 return chain.filter(exchange)
             }
