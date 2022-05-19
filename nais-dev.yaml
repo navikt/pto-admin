@@ -35,6 +35,7 @@ spec:
     application:
       enabled: true
       tenant: nav.no
+      allowAllUsers: false
       claims:
         groups:
           - id: 41126212-6cb5-4c67-9ce1-22f7a686b298
