@@ -6,7 +6,8 @@ import {
 	JobId,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
-	republiserSiste14aVedtak
+	republiserSiste14aVedtak,
+	republiserVedtak14aFattetDvh
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
@@ -22,6 +23,11 @@ export function RepubliseringKafka() {
 				tittel="Republiser siste 14a vedtak i veilarbvedtaksstotte"
 				beskrivelse="Republiserer siste 14a vedtak for brukere som har vedtak i Modia vedtaksstøtte eller i Arena."
 				request={republiserSiste14aVedtak}
+			/>
+			<RepubliseringsKort
+				tittel="Republiser fattede 14a vedtak i veilarbvedtaksstotte til DVH"
+				beskrivelse="Republiser alle fattede 14a vedtak i veilarbvedtaksstotte på topic for DVH."
+				request={republiserVedtak14aFattetDvh}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
