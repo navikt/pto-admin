@@ -87,6 +87,10 @@ export function republiserSiste14aVedtak(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak`);
 }
 
+export function republiserVedtak14aFattetDvh(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh`);
+}
+
 // Republisering veilarbdialog
 
 export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
