@@ -22,6 +22,7 @@ export function Navigation() {
 					<option value={ViewType.UTRULLING_VEDTAKSSTOTTE}>Utrulling vedtaksstøtte</option>
 					<option value={ViewType.REPUBLISERING_KAFKA}>Republisering Kafka</option>
 					<option value={ViewType.KAFKA_ADMIN}>Kafka Admin</option>
+					<option value={ViewType.VEILARBPORTEFOLJE}>Veilarbportefolje</option>
 				</Select>
 			</div>
 			<Ingress>{loggedInUser?.navn || ''}</Ingress>

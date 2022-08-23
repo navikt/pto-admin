@@ -100,3 +100,17 @@ export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
+
+export function indekser(aktorId: string): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/indekser/bruker?aktoer=${aktorId}`);
+}
+
+export function hovedindeksering(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/indekser/hovedindeksering`);
+}
+
+export function hovedindekseringNyttAlias(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/indekser/hovedindekseringalias`);}
+
+
+

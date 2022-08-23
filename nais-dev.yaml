@@ -53,5 +53,7 @@ spec:
       value: https://veilarbarena.dev.intern.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: https://veilarbdialog-q1.nais.preprod.local
+    - name: VEILARBPORTEFOLJE_ADMIN_API_URL
+      value: https://veilarbportefolje.dev-fss-pub.nais.io
   envFrom:
     - configmap: pto-config
