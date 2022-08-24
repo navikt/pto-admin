@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { hovedindeksering, hovedindekseringNyttAlias, indekser, JobId } from '../../api';
+import {
+    assignAliasToIndex,
+    createIndex,
+    deleteIndex,
+    getAliases,
+    hovedindeksering,
+    hovedindekseringNyttAlias,
+    indekserAktoer,
+    indekserFnr,
+    JobId
+} from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
@@ -17,8 +27,14 @@ export function Veilarbportefolje() {
             <AdminKnappMedInput
                 tittel="Oppdater bruker i OpenSearch"
                 beskrivelse="Knappen reindekserer bruker"
-                inputType="aktoerId"
-                request={indekser}
+                inputType="AktørId"
+                request={indekserAktoer}
+            />
+            <AdminKnappMedInput
+                tittel="Oppdater bruker i OpenSearch"
+                beskrivelse="Knappen reindekserer bruker"
+                inputType="Fnr"
+                request={indekserFnr}
             />
             <AdminKnapp
                 tittel="Hovedindeksering"
@@ -32,6 +48,32 @@ export function Veilarbportefolje() {
                 Dette vil også skape noen warnings i loggene.
                 "
                 request={hovedindekseringNyttAlias}
+            />
+
+            <AdminKnapp
+                tittel="Hent indekser"
+                beskrivelse="Henter alle akitve indekser."
+                request={getAliases}
+            />
+
+            <AdminKnapp
+                tittel="Lag indeks"
+                beskrivelse="Lager tom indeks i OpenSearch. Navn er auto generert."
+                request={createIndex}
+            />
+
+            <AdminKnappMedInput
+                tittel="Indeks til alias"
+                beskrivelse="Kobler en indeks til et gitt alias (assignAliasToIndex)."
+                inputType="Indeks navn"
+                request={assignAliasToIndex}
+            />
+
+            <AdminKnappMedInput
+                tittel="Slett indeks"
+                beskrivelse="Sletter indeks i OpenSearch."
+                inputType="Indeks navn"
+                request={deleteIndex}
             />
         </div>
     );
@@ -60,15 +102,14 @@ function AdminKnapp(props: AdminKnappProps) {
     return (
         <>
             <Card title={props.tittel}
-                  className="large-card"
-                  innholdClassName="republisering-kafka-kort__innhold">
+                  className="veilarbportefolje-card">
                 <Normaltekst className="blokk-xxs">
                     {props.beskrivelse}
                 </Normaltekst>
                 {jobId && <AlertStripe type="suksess" form="inline">
                     Jobb startet med jobId: {jobId}
                 </AlertStripe>}
-                <Flatknapp onClick={() => setOpen(true)}>
+                <Flatknapp className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
                     {props.tittel}
                 </Flatknapp>
             </Card>
@@ -87,11 +128,11 @@ interface AdminKnappInputProps {
     tittel: string
     beskrivelse: string
     inputType: string
-    request: (id: string) => AxiosPromise<JobId>
+    request: (id: string) => AxiosPromise<string | boolean>
 }
 
 function AdminKnappMedInput(props: AdminKnappInputProps) {
-    const [jobId, setJobId] = useState<string | undefined>(undefined);
+    const [respons, setRespons] = useState<string | boolean | undefined>(undefined);
     const [isOpen, setOpen] = useState(false);
     const [id, setid] = useState('');
     const inputType = props.inputType;
@@ -100,7 +141,7 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
         if (id) {
             props.request(id)
                 .then((resp) => {
-                    setJobId(resp.data);
+                    setRespons(resp.data);
                     successToast(`${props.tittel} er startet`);
                 })
                 .catch(() => errorToast(`Klarte ikke å utføre handling: ${props.tittel}`))
@@ -111,17 +152,15 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
 
     return (
         <>
-            <Card title={props.tittel}
-                  className="large-card"
-                  innholdClassName="republisering-kafka-kort__innhold">
+            <Card title={props.tittel} className="veilarbportefolje-card">
                 <Normaltekst className="blokk-xxs">
                     {props.beskrivelse}
                 </Normaltekst>
                 <Input label={inputType} value={id} onChange={e => setid(e.target.value)}/>
-                {jobId && <AlertStripe type="suksess" form="inline">
-                    Jobb startet med jobId: {jobId}
+                {respons && <AlertStripe type="suksess" form="inline">
+                    Respons: {respons}
                 </AlertStripe>}
-                <Flatknapp onClick={() => setOpen(true)}>
+                <Flatknapp className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
                     {props.tittel}
                 </Flatknapp>
             </Card>

@@ -63,7 +63,7 @@ spring:
         - id: veilarbportefolje
           uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
           predicates:
-            - Path=/api/admin/**
+            - Path=/api/admin/veilarbportefolje/**
 
 app:
   env:
