@@ -170,5 +170,9 @@ export const handlers: RequestHandlersList = [
 	}),
 	rest.post('/api/kafka-admin/set-consumer-offset', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.status(200));
+	}),
+	rest.get('/api/admin/veilarbportefolje/opensearch/getAliases', (req, res, ctx) => {
+	    return res(ctx.delay(500), ctx.status(200),
+		    ctx.body('{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}}'));
 	})
 ];

@@ -93,7 +93,11 @@ function AdminKnapp(props: AdminKnappProps) {
     const handleAdminResponse = () => {
         props.request()
             .then((resp) => {
-                setJobId(resp.data);
+                if(isJsonString(resp.data)) {
+                    setJobId(JSON.stringify(resp.data));
+                } else {
+                    setJobId(resp.data);
+                }
                 successToast(`${props.tittel} er startet`);
             })
             .catch(() => errorToast(`Klarte ikke å utføre handling: ${props.tittel}`));
@@ -132,7 +136,7 @@ interface AdminKnappInputProps {
 }
 
 function AdminKnappMedInput(props: AdminKnappInputProps) {
-    const [respons, setRespons] = useState<string | boolean | undefined>(undefined);
+    const [respons, setRespons] = useState<string | undefined>(undefined);
     const [isOpen, setOpen] = useState(false);
     const [id, setid] = useState('');
     const inputType = props.inputType;
@@ -141,7 +145,14 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
         if (id) {
             props.request(id)
                 .then((resp) => {
-                    setRespons(resp.data);
+                    const data = resp.data;
+                    if(typeof data === 'string' && isJsonString(data)) {
+                        setRespons(JSON.stringify(data));
+                    } else if(typeof data === 'boolean') {
+                        setRespons(data ? 'true' : 'false')
+                    } else {
+                        setRespons(data);
+                    }
                     successToast(`${props.tittel} er startet`);
                 })
                 .catch(() => errorToast(`Klarte ikke å utføre handling: ${props.tittel}`))
@@ -172,6 +183,15 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
             />
         </>
     );
+}
+
+function isJsonString(str: string): boolean {
+    try {
+        JSON.stringify(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
 
