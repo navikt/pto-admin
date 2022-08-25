@@ -30,6 +30,9 @@ const [CredentialsStoreProvider, useCredentialsStore] = constate(() => {
 export function KafkaAdmin() {
 	return (
 		<div className="view kafka-admin">
+			<p> Bruk heller: <a href="https://pto-kafka-manager.dev.intern.nav.no">pto-kafka-manager dev url</a>
+			eller <a href="https://pto-kafka-manager.intern.nav.no">pto-kafka-manager prod url</a>
+			</p>
 			<CredentialsStoreProvider>
 				<div>
 					<div className="card-row-4-col blokk-m">
