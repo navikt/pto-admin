@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Flatknapp, Hovedknapp } from 'nav-frontend-knapper';
-import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Flatknapp } from 'nav-frontend-knapper';
+import { Normaltekst } from 'nav-frontend-typografi';
 import {
 	JobId,
 	republiserEndringPaaDialog,
@@ -11,9 +11,9 @@ import {
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import './republisering-kafka.less';
-import Modal from 'nav-frontend-modal';
 import { AxiosPromise } from 'axios';
 import AlertStripe from 'nav-frontend-alertstriper';
+import BekreftModal from '../../component/bekreft-modal';
 
 export function RepubliseringKafka() {
 	return (
@@ -88,36 +88,3 @@ function RepubliseringsKort(props: RepubliseringsKortProps) {
 	);
 }
 
-interface BekreftModalProps {
-	isOpen: boolean;
-	setOpen: (isOpen: boolean) => void;
-	action: () => void;
-	description: string;
-}
-
-function BekreftModal(props: BekreftModalProps) {
-	return (<Modal
-		className="bekreft-modal"
-		isOpen={props.isOpen}
-		onRequestClose={() => {
-			props.setOpen(false);
-		}}
-		closeButton={true}
-		contentLabel="Bekreft handling"
-	>
-		<div className="bekreft-modal__innhold">
-			<Systemtittel>Sikker?</Systemtittel>
-			<Normaltekst>
-				{props.description}
-			</Normaltekst>
-			<Hovedknapp
-				className="bekreft-modal__bekreft"
-				onClick={() => {
-					props.setOpen(false);
-					props.action();
-				}}>
-				Bekreft
-			</Hovedknapp>
-		</div>
-	</Modal>);
-}
