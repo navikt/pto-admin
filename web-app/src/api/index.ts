@@ -100,3 +100,37 @@ export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
+
+// Veilarbportefolje admin-funksjoner
+export function indekserAktoer(aktorId: string): AxiosPromise<string> {
+	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);
+}
+
+export function indekserFnr(fnr: string): AxiosPromise<string> {
+	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr?fnr=${fnr}`);
+}
+
+export function hovedindeksering(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`);
+}
+
+export function hovedindekseringNyttAlias(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukereNyIndex`);
+}
+
+export function assignAliasToIndex(indexName: string): AxiosPromise<string> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex?indexName=${indexName}`);
+}
+
+export function deleteIndex(indexName: string): AxiosPromise<boolean> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex?indexName=${indexName}`);
+}
+
+export function createIndex(): AxiosPromise<string> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/createIndex`);
+}
+
+export function getAliases(): AxiosPromise<string> {
+	return axiosInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
+}
+
