@@ -1,32 +1,10 @@
-name: Test, build, push and deploy
-on: push
-env:
-  IMAGE_TAG: ${{ github.sha }}
-  IMAGE: ghcr.io/${{ github.repository }}/pto-admin
-  PRINT_PAYLOAD: true
+name: Deploy to dev
+on:
+  workflow_dispatch:
 jobs:
-  test:
-    name: Run tests
-    runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Run maven tests
-        run: mvn -f ./api/pom.xml -B verify
-
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -66,10 +44,8 @@ jobs:
           context: .
           push: true
           tags: ${{ env.IMAGE }}:${{ env.IMAGE_TAG }}
-
   deploy-dev:
     name: Deploy application to dev
-    if: github.ref == 'refs/heads/main'
     needs: test-build-and-push
     runs-on: ubuntu-latest
     steps:
@@ -90,27 +66,3 @@ jobs:
           tag_name: release/dev@${{ env.IMAGE_TAG }}
           release_name: Release to dev
           prerelease: true
-
-  deploy-prod:
-    name: Deploy application to prod
-    if: github.ref == 'refs/heads/main'
-    needs: deploy-dev
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Deploy application
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-fss
-          RESOURCE: nais-prod.yaml
-          VAR: version=${{ env.IMAGE_TAG }}
-      - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: release/prod@${{ env.IMAGE_TAG }}
-          release_name: Release to prod
-          prerelease: false
