@@ -48,12 +48,12 @@ spec:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
       value: https://veilarbvedtaksstotte-q1.nais.preprod.local
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://veilarboppfolging-q1.nais.preprod.local
+      value: https://veilarboppfolging.dev.intern.nav.no
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.dev.intern.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: https://veilarbdialog-q1.nais.preprod.local
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
-      value: https://veilarbportefolje-q1.nais.preprod.local
+      value: https://veilarbportefolje.dev.intern.nav.no
   envFrom:
     - configmap: pto-config
