@@ -14,6 +14,10 @@ import no.nav.common.utils.Credentials
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
 import no.nav.common.utils.UrlUtils
+import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.pto_admin.utils.AzureSystemTokenProvider
+import no.nav.pto_admin.utils.SystembrukereAzure
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,6 +43,29 @@ class ApplicationConfig {
         )
 
         return CachedAktorOppslagClient(PdlAktorOppslagClient(pdlClient))
+    }
+
+    @Bean
+    fun azureAdMachineToMachineTokenClient(): AzureAdMachineToMachineTokenClient {
+        return AzureAdTokenClientBuilder.builder()
+            .withNaisDefaults()
+            .buildMachineToMachineTokenClient()
+    }
+
+    @Bean
+    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient): AzureSystemTokenProvider {
+        val veilarbportefoljeTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                String.format(
+                    "api://%s-fss.pto.veilarbportefolje/.default",
+                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+                )
+            )
+        }
+
+        val systemTokenSuppliers: Map<SystembrukereAzure, () -> String> =
+            mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider)
+        return AzureSystemTokenProvider(systemTokenSuppliers)
     }
 
     @Bean

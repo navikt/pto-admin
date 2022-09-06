@@ -5,6 +5,8 @@ import no.nav.common.log.LogFilter.NAV_CALL_ID_HEADER_NAMES
 import no.nav.common.rest.client.RestUtils
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.IdUtils
+import no.nav.pto_admin.utils.AzureSystemTokenProvider
+import no.nav.pto_admin.utils.SystembrukereAzure
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,9 +23,11 @@ import reactor.core.publisher.Mono
 @Configuration
 class GatewayConfig {
 
-
     @Autowired
     lateinit var systemUserTokenProvider: SystemUserTokenProvider
+
+    @Autowired
+    lateinit var azureSystemTokenProvider: AzureSystemTokenProvider
 
     @Bean
     fun customGlobalFilter(): GlobalFilter {
@@ -32,13 +36,23 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-                exchange.request.mutate()
-                    .header(
-                        HttpHeaders.AUTHORIZATION,
-                        RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
-                    )
-                    .build()
-
+                if (exchange.request.path.toString().contains("/api/admin/veilarbportefolje/")) {
+                    exchange.request.mutate()
+                        .header(
+                            HttpHeaders.AUTHORIZATION,
+                            RestUtils.createBearerToken(
+                                azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
+                            )
+                        )
+                        .build()
+                } else {
+                    exchange.request.mutate()
+                        .header(
+                            HttpHeaders.AUTHORIZATION,
+                            RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
+                        )
+                        .build()
+                }
                 val callId =
                     NAV_CALL_ID_HEADER_NAMES.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
                         ?: IdUtils.generateId()
