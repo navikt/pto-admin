@@ -62,6 +62,7 @@ class ApplicationConfig {
                 )
             )
         }
+
         val systemTokenSuppliers: Map<SystembrukereAzure, () -> String> =
             mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider)
         return AzureSystemTokenProvider(systemTokenSuppliers)

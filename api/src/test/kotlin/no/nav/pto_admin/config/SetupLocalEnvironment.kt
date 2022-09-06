@@ -59,6 +59,7 @@ object SetupLocalEnvironment {
         System.setProperty("VEILARBOPPFOLGING_ADMIN_API_URL", appUrl)
         System.setProperty("VEILARBARENA_ADMIN_API_URL", appUrl)
         System.setProperty("VEILARBDIALOG_ADMIN_API_URL", appUrl)
+        System.setProperty("VEILARBPORTEFOLJE_ADMIN_API_URL", appUrl)
     }
 
 }
