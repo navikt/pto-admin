@@ -62,9 +62,18 @@ class ApplicationConfig {
                 )
             )
         }
+        val veilarbvedtaksstotteTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                String.format(
+                    "api://%s-fss.pto.veilarbvedtaksstotte/.default",
+                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+                )
+            )
+        }
 
         val systemTokenSuppliers: Map<SystembrukereAzure, () -> String> =
-            mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider)
+            mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
+                SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider)
         return AzureSystemTokenProvider(systemTokenSuppliers)
     }
 

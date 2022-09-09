@@ -36,23 +36,17 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-                if (exchange.request.path.toString().contains("/api/admin/veilarbportefolje/")) {
-                    exchange.request.mutate()
-                        .header(
-                            HttpHeaders.AUTHORIZATION,
-                            RestUtils.createBearerToken(
-                                azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
-                            )
-                        )
-                        .build()
-                } else {
-                    exchange.request.mutate()
-                        .header(
-                            HttpHeaders.AUTHORIZATION,
-                            RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
-                        )
-                        .build()
-                }
+                val bearerToken: String =
+                    if (exchange.request.path.toString().contains("/api/admin/veilarbportefolje/")) {
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
+                    } else if (exchange.request.path.toString().contains("/api/admin/veilarbvedtaksstotte/")) {
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
+                    } else {
+                        RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
+                    }
+                exchange.request.mutate()
+                    .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                    .build()
                 val callId =
                     NAV_CALL_ID_HEADER_NAMES.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
                         ?: IdUtils.generateId()
