@@ -38,10 +38,13 @@ class GatewayConfig {
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
                 val bearerToken: String =
                     if (exchange.request.path.toString().contains("/api/admin/veilarbportefolje/")) {
+                        log.info("Bruker veilarbportefolje azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
                     } else if (exchange.request.path.toString().contains("/api/admin/veilarbvedtaksstotte/")) {
+                        log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
+                        log.info("Bruker nais STS token")
                         RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
                     }
                 exchange.request.mutate()
