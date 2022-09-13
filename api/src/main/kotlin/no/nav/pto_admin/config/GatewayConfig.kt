@@ -17,11 +17,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.util.UriBuilder
 import reactor.core.publisher.Mono
-import java.net.URI
-import java.net.URL
-
 
 @Configuration
 class GatewayConfig {
