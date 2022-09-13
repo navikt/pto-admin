@@ -39,13 +39,11 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-                val requestHost = URI(exchange.request.path.toString()).host
-                log.info("host: $requestHost")
                 val bearerToken: String =
-                    if (requestHost.contains("veilarbportefolje")) {
+                    if (exchange.request.path.toString().contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
-                    } else if (requestHost.contains("veilarbvedtaksstotte")) {
+                    } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
