@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
-
 @Configuration
 class GatewayConfig {
 
@@ -37,15 +36,18 @@ class GatewayConfig {
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
                 val bearerToken: String =
-                    if (exchange.request.path.toString().contains("/api/admin/veilarbportefolje/")) {
+                    if (exchange.request.path.toString().contains("veilarbportefolje")) {
+                        log.info("Bruker veilarbportefolje azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
-                    } else if (exchange.request.path.toString().contains("/api/admin/veilarbvedtaksstotte/")) {
+                    } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte")) {
+                        log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
-                        RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
+                        log.info("Bruker nais STS token")
+                        systemUserTokenProvider.systemUserToken
                     }
                 exchange.request.mutate()
-                    .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                    .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
                     .build()
                 val callId =
                     NAV_CALL_ID_HEADER_NAMES.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
