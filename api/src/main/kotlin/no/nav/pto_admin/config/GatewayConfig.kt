@@ -46,10 +46,10 @@ class GatewayConfig {
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
                         log.info("Bruker nais STS token")
-                        RestUtils.createBearerToken(systemUserTokenProvider.systemUserToken)
+                        systemUserTokenProvider.systemUserToken)
                     }
                 exchange.request.mutate()
-                    .header(HttpHeaders.AUTHORIZATION, bearerToken)
+                    .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
                     .build()
                 val callId =
                     NAV_CALL_ID_HEADER_NAMES.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
