@@ -17,7 +17,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.web.server.ServerWebExchange
+import org.springframework.web.util.UriBuilder
 import reactor.core.publisher.Mono
+import java.net.URI
+import java.net.URL
 
 
 @Configuration
@@ -36,17 +39,18 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-                log.info("path: "+ exchange.request.path.toString())
+                val requestHost = URI(exchange.request.path.toString()).host
+                log.info("host: $requestHost")
                 val bearerToken: String =
-                    if (exchange.request.path.toString().contains("veilarbportefolje/")) {
+                    if (requestHost.contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
-                    } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte/")) {
+                    } else if (requestHost.contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
                         log.info("Bruker nais STS token")
-                        systemUserTokenProvider.systemUserToken)
+                        systemUserTokenProvider.systemUserToken
                     }
                 exchange.request.mutate()
                     .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
