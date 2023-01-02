@@ -68,8 +68,6 @@ spring:
 app:
   env:
     stsDiscoveryUrl: ${SECURITY_TOKEN_SERVICE_DISCOVERY_URL}
-    openAmDiscoveryUrl: ${OPENAM_DISCOVERY_URL}
-    veilarbloginOpenAmClientId: ${VEILARBLOGIN_OPENAM_CLIENT_ID}
     abacUrl: ${ABAC_PDP_ENDPOINT_URL}
     allowedAdminUsers: ${ALLOWED_ADMIN_USERS}
     onPremKafkaBrokersUrl: ${KAFKA_BROKERS_URL}

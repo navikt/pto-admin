@@ -6,8 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 data class EnvironmentProperties (
     var stsDiscoveryUrl: String = "",
     var abacUrl: String = "",
-    var openAmDiscoveryUrl: String = "",
-    var veilarbloginOpenAmClientId: String = "",
     var allowedAdminUsers: String = "",
     var onPremKafkaBrokersUrl: String = ""
 )
