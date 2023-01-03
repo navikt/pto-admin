@@ -1,5 +1,4 @@
-import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-import { rest } from 'msw';
+import { RequestHandler, rest } from 'msw';
 import { UtrulletEnhet } from '../api';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 
@@ -69,7 +68,7 @@ const topicPartitionOffsets: TopicPartitionOffset[] = [
 	}
 ];
 
-export const handlers: RequestHandlersList = [
+export const handlers: RequestHandler[] = [
 	rest.get('/api/auth/me', (req, res, ctx) => {
 		return res(
 			ctx.delay(500),
