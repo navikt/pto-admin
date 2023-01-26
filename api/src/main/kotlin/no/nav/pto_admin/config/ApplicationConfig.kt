@@ -16,6 +16,9 @@ import no.nav.common.utils.NaisUtils
 import no.nav.common.utils.UrlUtils
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
+import no.nav.poao_tilgang.client.PoaoTilgangClient
+import no.nav.poao_tilgang.client.PoaoTilgangHttpClient
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -95,5 +98,16 @@ class ApplicationConfig {
     @Bean
     fun veilarbPep(properties: EnvironmentProperties, serviceUserCredentials: Credentials): Pep {
         return VeilarbPepFactory.get(properties.abacUrl, serviceUserCredentials.username, serviceUserCredentials.password)
+    }
+    @Bean
+    fun poaoTilgangClient(
+        properties: EnvironmentProperties,
+        tokenClient: AzureAdMachineToMachineTokenClient
+    ): PoaoTilgangClient {
+        return PoaoTilgangCachedClient(
+            PoaoTilgangHttpClient(
+                properties.poaoTilgangUrl,
+                { tokenClient.createMachineToMachineToken(properties.poaoTilgangScope) })
+        )
     }
 }
