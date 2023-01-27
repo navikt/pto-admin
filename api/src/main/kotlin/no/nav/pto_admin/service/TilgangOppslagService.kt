@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
 @Service
-class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authService: AuthService, val auditLogService: AuditLogService) {
+class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authService: AuthService) {
 
     fun sjekkAnsattTilgangTilEnhet(enhetId: EnhetId?): Boolean {
                 var tilgang = true
@@ -17,7 +17,6 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
                     NavAnsattTilgangTilNavEnhetPolicyInput(authService.getInnloggetAnsattUUID(), enhetId.toString())
                 ).getOrThrow()
 
-                auditLogService.auditLogWithMessageAndDestinationUserId("Bedt om tilgang til enhet ", enhetId.toString(), authService.getInnloggetAnsattUUID().toString() )
                 if (tilgangResult.isDeny) {
                     tilgang = false
                     throw ResponseStatusException(HttpStatus.FORBIDDEN, "Ikke tilgang til enhet")
@@ -30,7 +29,7 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
             NavAnsattTilgangTilEksternBrukerPolicyInput(authService.getInnloggetAnsattUUID(), tilgangType, norskIdent.toString())
         ).getOrThrow()
-        auditLogService.auditLogWithMessageAndDestinationUserId("Bedt om tilgang til bruker ", norskIdent.toString(), authService.getInnloggetAnsattUUID().toString() )
+
         if (tilgangResult.isDeny) {
             tilgang = false
             throw ResponseStatusException(HttpStatus.FORBIDDEN, "Ikke tilgang til enhet")
@@ -54,7 +53,7 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
             NavAnsattBehandleStrengtFortroligBrukerePolicyInput(navAnsattAzureId)
         ).getOrThrow()
-        auditLogService.auditLogWithMessageAndDestinationUserId("Sjekk om tilgang til kode 6","kode 6 brukere", navAnsattAzureId.toString())
+
         if (tilgangResult.isPermit) {
             tilgang = true }
         return tilgang
@@ -65,7 +64,7 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
             NavAnsattBehandleFortroligBrukerePolicyInput(navAnsattAzureId)
         ).getOrThrow()
-        auditLogService.auditLogWithMessageAndDestinationUserId("Sjekk om tilgang til kode 7","kode 7 brukere", navAnsattAzureId.toString())
+
         if (tilgangResult.isPermit) {
             tilgang = true }
         return tilgang
