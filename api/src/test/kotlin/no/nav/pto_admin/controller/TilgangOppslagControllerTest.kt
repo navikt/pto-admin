@@ -1,7 +1,6 @@
 package no.nav.pto_admin.controller
 
 import no.nav.common.types.identer.EnhetId
-import no.nav.common.types.identer.NavIdent
 import no.nav.common.types.identer.NorskIdent
 import no.nav.pto_admin.config.ApplicationTestConfig
 import no.nav.pto_admin.config.SetupLocalEnvironment
@@ -14,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.util.*
 
 @ContextConfiguration(classes = [ApplicationTestConfig::class])
 @WebFluxTest(
@@ -30,12 +30,13 @@ class TilgangOppslagControllerTest {
 
     @MockBean
     private lateinit var tilgangOppslagService: TilgangOppslagService
+    private val navAnsattAzureId: UUID = UUID.randomUUID()
 
     @Test
     fun harTilgangTilEnhet__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harTilgangTilEnhet(EnhetId("1234"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
+        loggedInWebClient().get().uri("/api/tilgang/enhet?navAnsattAzureId=Z1234&enhetId=1234")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -57,7 +58,7 @@ class TilgangOppslagControllerTest {
     fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harSkrivetilgang(NorskIdent("1234567"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=Z1234&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -68,7 +69,7 @@ class TilgangOppslagControllerTest {
     fun harSkrivetilgang__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harSkrivetilgang(NorskIdent("1234567"))).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=Z1234&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -79,7 +80,7 @@ class TilgangOppslagControllerTest {
     fun harLesetilgang__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harLesetilgang(NorskIdent("1234567"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=Z1234&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -90,7 +91,7 @@ class TilgangOppslagControllerTest {
     fun harLesetilgang__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harLesetilgang(NorskIdent("1234567"))).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=Z1234&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -99,7 +100,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilKode6__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harTilgangTilKode6(NavIdent("Z1234"))).thenReturn(false)
+        whenever(tilgangOppslagService.harTilgangTilKode6(navAnsattAzureId)).thenReturn(false)
 
         loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
             .exchange()
@@ -110,7 +111,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilKode6__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harTilgangTilKode6(NavIdent("Z1234"))).thenReturn(true)
+        whenever(tilgangOppslagService.harTilgangTilKode6(navAnsattAzureId)).thenReturn(true)
 
         loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
             .exchange()
@@ -121,7 +122,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilKode7__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harTilgangTilKode7(NavIdent("Z1234"))).thenReturn(false)
+        whenever(tilgangOppslagService.harTilgangTilKode7(navAnsattAzureId)).thenReturn(false)
 
         loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
             .exchange()
@@ -132,7 +133,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilKode7__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harTilgangTilKode7(NavIdent("Z1234"))).thenReturn(true)
+        whenever(tilgangOppslagService.harTilgangTilKode7(navAnsattAzureId)).thenReturn(true)
 
         loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
             .exchange()
@@ -143,7 +144,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(NavIdent("Z1234"))).thenReturn(false)
+        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(navAnsattAzureId)).thenReturn(false)
 
         loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
             .exchange()
@@ -154,7 +155,7 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(NavIdent("Z1234"))).thenReturn(true)
+        whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(navAnsattAzureId)).thenReturn(true)
 
         loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
             .exchange()

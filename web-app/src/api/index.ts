@@ -24,6 +24,7 @@ export interface UtrulletEnhet {
 }
 
 export interface User {
+	navAnsattAzureId: string;
 	navn: string;
 }
 
@@ -43,28 +44,28 @@ export function aktorIdTilFnr(aktorId: string): AxiosPromise<FnrResponse> {
 	return axiosInstance.get(`/api/ident/fnr?aktorId=${aktorId}`);
 }
 
-export function sjekkHarTilgangTilEnhet(navIdent: string, enhetId: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/enhet?navIdent=${navIdent}&enhetId=${enhetId}`);
+export function sjekkHarTilgangTilEnhet(navAnsattAzureId: string, enhetId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/enhet?navAnsattAzureId=${navAnsattAzureId}&enhetId=${enhetId}`);
 }
 
-export function sjekkHarSkrivetilgang(navIdent: string, norskIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/skriv?navIdent=${navIdent}&norskIdent=${norskIdent}`);
+export function sjekkHarSkrivetilgang(navAnsattAzureId: string, norskIdent: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/skriv?navAnsattAzureId=${navAnsattAzureId}&norskIdent=${norskIdent}`);
 }
 
-export function sjekkHarLesetilgang(navIdent: string, norskIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/les?navIdent=${navIdent}&norskIdent=${norskIdent}`);
+export function sjekkHarLesetilgang(navAnsattAzureId: string, norskIdent: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/les?navAnsattAzureId=${navAnsattAzureId}&norskIdent=${norskIdent}`);
 }
 
-export function sjekkHarTilgangTilKode6(navIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/kode6?navIdent=${navIdent}`);
+export function sjekkHarTilgangTilKode6(navAnsattAzureId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/kode6?navAnsattAzureId=${navAnsattAzureId}`);
 }
 
-export function sjekkHarTilgangTilKode7(navIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/kode7?navIdent=${navIdent}`);
+export function sjekkHarTilgangTilKode7(navAnsattAzureId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/kode7?navAnsattAzureId=${navAnsattAzureId}`);
 }
 
-export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
+export function sjekkHarTilgangTilEgenAnsatt(navAnsattAzureId: string): AxiosPromise<TilgangResponse> {
+	return axiosInstance.get(`/api/tilgang/skjermet?navAnsattAzureId=${navAnsattAzureId}`);
 }
 
 // Utrulling vedtaksstøtte

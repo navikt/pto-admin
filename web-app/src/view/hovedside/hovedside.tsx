@@ -69,20 +69,20 @@ function AktorIdTilFnrCard() {
 }
 
 function HarTilgangTilEnhetCard() {
-	const [navIdent, setNavIdent] = useState('');
+	const [navAnsattAzureIdent, setNavAnsattAzureIdent] = useState('');
 	const [enhetId, setEnhetId] = useState('');
 	const [harTilgang, setHarTilgang] = useState<boolean | null>(null);
 
 	function handleOnSjekkTilgangTilEnhet() {
 		setHarTilgang(null);
-		sjekkHarTilgangTilEnhet(navIdent, enhetId)
+		sjekkHarTilgangTilEnhet(navAnsattAzureIdent, enhetId)
 			.then(res => setHarTilgang(res.data.harTilgang))
 			.catch(e => alert('Klarte ikke å sjekke tilgang på enhet:\n' + e.toString()));
 	}
 
 	return (
 		<Card title="Tilgang til enhet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<Input label="NAV Ident" value={navAnsattAzureIdent} onChange={e => setNavAnsattAzureIdent(e.target.value)} />
 			<Input label="Enhet Id" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
 			<Normaltekst className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -96,20 +96,20 @@ function HarTilgangTilEnhetCard() {
 }
 
 function HarSkrivetilgangCard() {
-	const [navIdent, setNavIdent] = useState('');
+	const [navAnsattAzureId, setNavAnsattAzureId] = useState('');
 	const [fnr, setFnr] = useState('');
 	const [harTilgang, setHarTilgang] = useState<boolean | null>(null);
 
 	function handleOnSjekkHarSkrivetilgang() {
 		setHarTilgang(null);
-		sjekkHarSkrivetilgang(navIdent, fnr)
+		sjekkHarSkrivetilgang(navAnsattAzureId, fnr)
 			.then(res => setHarTilgang(res.data.harTilgang))
 			.catch(e => alert('Klarte ikke å sjekke skrivetilgang:\n' + e.toString()));
 	}
 
 	return (
 		<Card title="Skrivetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<Input label="NAV Ident" value={navAnsattAzureId} onChange={e => setNavAnsattAzureId(e.target.value)} />
 			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
 			<Normaltekst className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -123,20 +123,20 @@ function HarSkrivetilgangCard() {
 }
 
 function HarLesetilgangCard() {
-	const [navIdent, setNavIdent] = useState('');
+	const [navAnsattAzureId, setNavAnsattAzureId] = useState('');
 	const [fnr, setFnr] = useState('');
 	const [harTilgang, setHarTilgang] = useState<boolean | null>(null);
 
 	function handleOnSjekkHarLesetilgang() {
 		setHarTilgang(null);
-		sjekkHarLesetilgang(navIdent, fnr)
+		sjekkHarLesetilgang(navAnsattAzureId, fnr)
 			.then(res => setHarTilgang(res.data.harTilgang))
 			.catch(e => alert('Klarte ikke å sjekke lesetilgang:\n' + e.toString()));
 	}
 
 	return (
 		<Card title="Lesetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<Input label="NAV Ident" value={navAnsattAzureId} onChange={e => setNavAnsattAzureId(e.target.value)} />
 			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
 			<Normaltekst className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -156,7 +156,7 @@ enum Tilgang {
 }
 
 function HarTilgangTilKodeOgSkjermetCard() {
-	const [navIdent, setNavIdent] = useState('');
+	const [navAnsattAzureId, setnavAnsattAzureId] = useState('');
 	const [tilgang, setTilgang] = useState<Tilgang>(Tilgang.KODE_6);
 	const [harTilgang, setHarTilgang] = useState<boolean | null>(null);
 
@@ -170,13 +170,13 @@ function HarTilgangTilKodeOgSkjermetCard() {
 
 		switch (tilgang) {
 			case Tilgang.KODE_6:
-				tilgangPromise = sjekkHarTilgangTilKode6(navIdent);
+				tilgangPromise = sjekkHarTilgangTilKode6(navAnsattAzureId);
 				break;
 			case Tilgang.KODE_7:
-				tilgangPromise = sjekkHarTilgangTilKode7(navIdent);
+				tilgangPromise = sjekkHarTilgangTilKode7(navAnsattAzureId);
 				break;
 			case Tilgang.SKJERMET:
-				tilgangPromise = sjekkHarTilgangTilEgenAnsatt(navIdent);
+				tilgangPromise = sjekkHarTilgangTilEgenAnsatt(navAnsattAzureId);
 				break;
 			default:
 				alert('Tilgang ikke satt');
@@ -192,7 +192,7 @@ function HarTilgangTilKodeOgSkjermetCard() {
 
 	return (
 		<Card title="Kode 6/7 og skjermet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<Input label="NAV Ident" value={navAnsattAzureId} onChange={e => setnavAnsattAzureId(e.target.value)} />
 			<Select label="Tilgang" onChange={e => setTilgang(e.target.value as Tilgang)}>
 				<option value={Tilgang.KODE_6}>Kode 6</option>
 				<option value={Tilgang.KODE_7}>Kode 7</option>

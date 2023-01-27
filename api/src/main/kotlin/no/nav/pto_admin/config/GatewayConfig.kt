@@ -1,8 +1,9 @@
 package no.nav.pto_admin.config
 
-import no.nav.common.log.LogFilter
-import no.nav.common.log.LogFilter.NAV_CALL_ID_HEADER_NAMES
+import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
+import no.nav.common.rest.filter.SetHeaderFilter
 import no.nav.common.rest.client.RestUtils
+import no.nav.common.rest.filter.LogRequestFilter
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.IdUtils
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
@@ -50,11 +51,11 @@ class GatewayConfig {
                     .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
                     .build()
                 val callId =
-                    NAV_CALL_ID_HEADER_NAMES.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
+                    NAV_CALL_ID_HEADER_NAME.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
                         ?: IdUtils.generateId()
 
                 if (callId != null) {
-                    exchange.request.mutate().header(LogFilter.PREFERRED_NAV_CALL_ID_HEADER_NAME, callId).build()
+                    exchange.request.mutate().header(LogRequestFilter.NAV_CALL_ID_HEADER_NAME, callId).build()
                 }
 
                 log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
