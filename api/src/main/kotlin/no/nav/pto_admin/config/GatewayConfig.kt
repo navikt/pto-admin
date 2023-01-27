@@ -1,15 +1,14 @@
 package no.nav.pto_admin.config
 
 import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
-import no.nav.common.rest.filter.SetHeaderFilter
 import no.nav.common.rest.client.RestUtils
-import no.nav.common.rest.filter.LogRequestFilter
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.IdUtils
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
@@ -50,18 +49,20 @@ class GatewayConfig {
                 exchange.request.mutate()
                     .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
                     .build()
-                val callId =
-                    NAV_CALL_ID_HEADER_NAME.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
-                        ?: IdUtils.generateId()
+                var callId = MDC.get(NAV_CALL_ID_HEADER_NAME)
+               if ( callId == null ) {callId = IdUtils.generateId()}
+/*            val callId =
+               NAV_CALL_ID_HEADER_NAME.flatMap { exchange.request.headers[it] ?: emptyList() }.find { true }
+                   ?: IdUtils.generateId()
+*/
+           if (callId != null) {
+               exchange.request.mutate().header(NAV_CALL_ID_HEADER_NAME, callId).build()
+           }
 
-                if (callId != null) {
-                    exchange.request.mutate().header(LogRequestFilter.NAV_CALL_ID_HEADER_NAME, callId).build()
-                }
+           log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
 
-                log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
-
-                return chain.filter(exchange)
-            }
-        }
-    }
+           return chain.filter(exchange)
+       }
+   }
+}
 }
