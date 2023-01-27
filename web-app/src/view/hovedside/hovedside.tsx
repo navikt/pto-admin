@@ -109,7 +109,7 @@ function HarSkrivetilgangCard() {
 
 	return (
 		<Card title="Skrivetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navAnsattAzureId} onChange={e => setNavAnsattAzureId(e.target.value)} />
+			<Input label="NAV Ansatt Azure ID" value={navAnsattAzureId} onChange={e => setNavAnsattAzureId(e.target.value)} />
 			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
 			<Normaltekst className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}

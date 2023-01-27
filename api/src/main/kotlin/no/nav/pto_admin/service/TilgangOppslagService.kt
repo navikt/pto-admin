@@ -9,12 +9,12 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
 @Service
-class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authService: AuthService) {
+class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient) {
 
-    fun sjekkAnsattTilgangTilEnhet(enhetId: EnhetId?): Boolean {
+    fun sjekkAnsattTilgangTilEnhet(navAnsattAzureId: UUID, enhetId: EnhetId?): Boolean {
                 var tilgang = true
                 val tilgangResult = poaoTilgangClient.evaluatePolicy(
-                    NavAnsattTilgangTilNavEnhetPolicyInput(authService.getInnloggetAnsattUUID(), enhetId.toString())
+                    NavAnsattTilgangTilNavEnhetPolicyInput(navAnsattAzureId, enhetId.toString())
                 ).getOrThrow()
 
                 if (tilgangResult.isDeny) {
@@ -24,10 +24,10 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
                 return tilgang
             }
 
-    fun sjekkAnsattTilgangTilEksternBruker(norskIdent: NorskIdent, tilgangType: TilgangType): Boolean {
+    fun sjekkAnsattTilgangTilEksternBruker(navAnsattAzureId: UUID, norskIdent: NorskIdent, tilgangType: TilgangType): Boolean {
         var tilgang = true
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
-            NavAnsattTilgangTilEksternBrukerPolicyInput(authService.getInnloggetAnsattUUID(), tilgangType, norskIdent.toString())
+            NavAnsattTilgangTilEksternBrukerPolicyInput(navAnsattAzureId, tilgangType, norskIdent.toString())
         ).getOrThrow()
 
         if (tilgangResult.isDeny) {
@@ -36,38 +36,32 @@ class TilgangOppslagService(val poaoTilgangClient: PoaoTilgangClient, val authSe
         }
         return tilgang
     }
-    fun harTilgangTilEnhet(enhetId: EnhetId): Boolean {
-        return sjekkAnsattTilgangTilEnhet(enhetId)
+    fun harTilgangTilEnhet(navAnsattAzureId: UUID, enhetId: EnhetId): Boolean {
+        return sjekkAnsattTilgangTilEnhet(navAnsattAzureId, enhetId)
     }
 
-    fun harLesetilgang(norskIdent: NorskIdent): Boolean {
-        return sjekkAnsattTilgangTilEksternBruker(norskIdent, TilgangType.LESE)
+    fun harLesetilgang(navAnsattAzureId: UUID, norskIdent: NorskIdent): Boolean {
+        return sjekkAnsattTilgangTilEksternBruker(navAnsattAzureId, norskIdent, TilgangType.LESE)
     }
 
-    fun harSkrivetilgang(norskIdent: NorskIdent): Boolean {
-        return sjekkAnsattTilgangTilEksternBruker(norskIdent, TilgangType.SKRIVE)
+    fun harSkrivetilgang(navAnsattAzureId: UUID, norskIdent: NorskIdent): Boolean {
+        return sjekkAnsattTilgangTilEksternBruker(navAnsattAzureId, norskIdent, TilgangType.SKRIVE)
     }
 
     fun harTilgangTilKode6(navAnsattAzureId: UUID): Boolean {
-        var tilgang = false
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
             NavAnsattBehandleStrengtFortroligBrukerePolicyInput(navAnsattAzureId)
         ).getOrThrow()
 
-        if (tilgangResult.isPermit) {
-            tilgang = true }
-        return tilgang
+        return tilgangResult.isPermit
     }
 
     fun harTilgangTilKode7(navAnsattAzureId: UUID): Boolean {
-        var tilgang = false
         val tilgangResult = poaoTilgangClient.evaluatePolicy(
             NavAnsattBehandleFortroligBrukerePolicyInput(navAnsattAzureId)
         ).getOrThrow()
 
-        if (tilgangResult.isPermit) {
-            tilgang = true }
-        return tilgang
+        return tilgangResult.isPermit
     }
 //TODO mangler!!
     fun harTilgangTilSkjermetPerson(navAnsattAzureId: UUID): Boolean {

@@ -15,7 +15,7 @@ class TilgangOppslagController(private val tilgangOppslagService: TilgangOppslag
 
     @GetMapping("/enhet")
     fun harTilgangTilEnhet(@RequestParam navAnsattAzureId: UUID, @RequestParam enhetId: EnhetId): HarTilgangResponse {
-        return HarTilgangResponse(tilgangOppslagService.harTilgangTilEnhet(enhetId))
+        return HarTilgangResponse(tilgangOppslagService.harTilgangTilEnhet(navAnsattAzureId, enhetId))
     }
 
     @GetMapping("/skriv")
@@ -23,7 +23,7 @@ class TilgangOppslagController(private val tilgangOppslagService: TilgangOppslag
         @RequestParam navAnsattAzureId: UUID,
         @RequestParam norskIdent: NorskIdent
     ): HarTilgangResponse {
-        return HarTilgangResponse(tilgangOppslagService.harSkrivetilgang(norskIdent))
+        return HarTilgangResponse(tilgangOppslagService.harSkrivetilgang(navAnsattAzureId, norskIdent))
     }
 
     @GetMapping("/les")
@@ -31,7 +31,7 @@ class TilgangOppslagController(private val tilgangOppslagService: TilgangOppslag
         @RequestParam navAnsattAzureId: UUID,
         @RequestParam norskIdent: NorskIdent
     ): HarTilgangResponse {
-        return HarTilgangResponse(tilgangOppslagService.harLesetilgang(norskIdent))
+        return HarTilgangResponse(tilgangOppslagService.harLesetilgang(navAnsattAzureId, norskIdent))
     }
 
     @GetMapping("/kode6")
