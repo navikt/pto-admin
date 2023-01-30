@@ -36,7 +36,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilEnhet__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harTilgangTilEnhet(navAnsattAzureId, EnhetId("1234"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/enhet?navAnsattAzureId=Z1234&enhetId=1234")
+        loggedInWebClient().get().uri("/api/tilgang/enhet?navAnsattAzureId=${navAnsattAzureId}&enhetId=1234")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -47,7 +47,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilEnhet__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harTilgangTilEnhet(navAnsattAzureId, EnhetId("1234"))).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
+        loggedInWebClient().get().uri("/api/tilgang/enhet?navAnsattAzureId=$navAnsattAzureId&enhetId=1234")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -58,7 +58,7 @@ class TilgangOppslagControllerTest {
     fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harSkrivetilgang(navAnsattAzureId, NorskIdent("1234567"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=$navAnsattAzureId&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -69,7 +69,7 @@ class TilgangOppslagControllerTest {
     fun harSkrivetilgang__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harSkrivetilgang(navAnsattAzureId, NorskIdent("1234567"))).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/skriv?navAnsattAzureId=$navAnsattAzureId&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -80,7 +80,7 @@ class TilgangOppslagControllerTest {
     fun harLesetilgang__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harLesetilgang(navAnsattAzureId, NorskIdent("1234567"))).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=$navAnsattAzureId&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -91,7 +91,7 @@ class TilgangOppslagControllerTest {
     fun harLesetilgang__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harLesetilgang(navAnsattAzureId, NorskIdent("1234567"))).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=Z1234&norskIdent=1234567")
+        loggedInWebClient().get().uri("/api/tilgang/les?navAnsattAzureId=$navAnsattAzureId&norskIdent=1234567")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -102,7 +102,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilKode6__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harTilgangTilKode6(navAnsattAzureId)).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/kode6?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -113,7 +113,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilKode6__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harTilgangTilKode6(navAnsattAzureId)).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/kode6?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/kode6?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -124,7 +124,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilKode7__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harTilgangTilKode7(navAnsattAzureId)).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/kode7?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -135,7 +135,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilKode7__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harTilgangTilKode7(navAnsattAzureId)).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/kode7?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/kode7?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -146,7 +146,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_false() {
         whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(navAnsattAzureId)).thenReturn(false)
 
-        loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/skjermet?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -157,7 +157,7 @@ class TilgangOppslagControllerTest {
     fun harTilgangTilSkjermetPerson__skal_returnere_har_tilgang_true() {
         whenever(tilgangOppslagService.harTilgangTilSkjermetPerson(navAnsattAzureId)).thenReturn(true)
 
-        loggedInWebClient().get().uri("/api/tilgang/skjermet?navIdent=Z1234")
+        loggedInWebClient().get().uri("/api/tilgang/skjermet?navAnsattAzureId=$navAnsattAzureId")
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
