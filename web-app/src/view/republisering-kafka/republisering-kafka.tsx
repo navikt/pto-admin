@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import { Flatknapp } from 'nav-frontend-knapper';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { Input } from 'nav-frontend-skjema';
 import {
 	JobId,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
+	republiserOppfolgingsperiodeForBruker,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh
 } from '../../api';
@@ -18,7 +20,6 @@ import BekreftModal from '../../component/bekreft-modal';
 export function RepubliseringKafka() {
 	return (
 		<div className="view republisering-kafka">
-
 			<RepubliseringsKort
 				tittel="Republiser siste 14a vedtak i veilarbvedtaksstotte"
 				beskrivelse="Republiserer siste 14a vedtak for brukere som har vedtak i Modia vedtaksstøtte eller i Arena."
@@ -40,51 +41,101 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
 			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser oppfølgingsperiode for bruker"
+				beskrivelse="Republiser oppfølgingsperiode for bruker"
+				inputLabel={'Aktør-ID'}
+				request={republiserOppfolgingsperiodeForBruker}
+			/>
 		</div>
 	);
 }
 
 interface RepubliseringsKortProps {
-	tittel: string
-	beskrivelse: string
-	request: () => AxiosPromise<JobId>
+	tittel: string;
+	beskrivelse: string;
+	request: () => AxiosPromise<JobId>;
 }
 
-function RepubliseringsKort(props: RepubliseringsKortProps) {
+interface RepubliseringsKortMedInputProps {
+	tittel: string;
+	beskrivelse: string;
+	inputLabel: string;
+	request: (input: string) => AxiosPromise<JobId>;
+}
+
+function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }: RepubliseringsKortMedInputProps) {
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
+	const [input, setInput] = useState<string>('');
 
 	const handleRepubliseringsResponse = () => {
-		props.request()
-			.then((resp) => {
+		request(input)
+			.then(resp => {
 				setJobId(resp.data);
-				successToast(`${props.tittel} er startet`);
+				successToast(`${tittel} er startet`);
 			})
-			.catch(() => errorToast(`Klarte ikke å starte republisering av ${props.tittel}`));
+			.catch(() => errorToast(`Klarte ikke å starte republisering av ${tittel}`));
 	};
 
 	return (
 		<>
-			<Card title={props.tittel}
-				  className="large-card"
-				  innholdClassName="republisering-kafka-kort__innhold">
-				<Normaltekst className="blokk-xxs">
-					{props.beskrivelse}
-				</Normaltekst>
-				{jobId && <AlertStripe type="suksess" form="inline">
-					Jobb startet med jobId: {jobId}
-				</AlertStripe>}
-				<Flatknapp onClick={() => setOpen(true)}>
-					Utfør republisering
-				</Flatknapp>
+			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
+				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
+				<Input
+					label={inputLabel}
+					value={input}
+					onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+				/>
+				{jobId && (
+					<AlertStripe type="suksess" form="inline">
+						Jobb startet med jobId: {jobId}
+					</AlertStripe>
+				)}
+				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
 			</Card>
 
-			<BekreftModal action={handleRepubliseringsResponse}
-						  isOpen={isOpen}
-						  setOpen={setOpen}
-						  description={props.tittel}
+			<BekreftModal
+				action={handleRepubliseringsResponse}
+				isOpen={isOpen}
+				setOpen={setOpen}
+				description={tittel}
 			/>
 		</>
 	);
 }
 
+function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKortProps) {
+	const [jobId, setJobId] = useState<string | undefined>(undefined);
+	const [isOpen, setOpen] = useState(false);
+
+	const handleRepubliseringsResponse = () => {
+		request()
+			.then(resp => {
+				setJobId(resp.data);
+				successToast(`${tittel} er startet`);
+			})
+			.catch(() => errorToast(`Klarte ikke å starte republisering av ${tittel}`));
+	};
+
+	return (
+		<>
+			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
+				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
+				{jobId && (
+					<AlertStripe type="suksess" form="inline">
+						Jobb startet med jobId: {jobId}
+					</AlertStripe>
+				)}
+				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
+			</Card>
+
+			<BekreftModal
+				action={handleRepubliseringsResponse}
+				isOpen={isOpen}
+				setOpen={setOpen}
+				description={tittel}
+			/>
+		</>
+	);
+}

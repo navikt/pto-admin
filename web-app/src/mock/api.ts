@@ -38,8 +38,7 @@ for (let i = 0; i < 25; i++) {
 
 	kafkaRecords.push({
 		key: key.toString(),
-		value:
-			'{"aktoerid":"xxxxxxx","fodselsnr":"xxxxxxxx","formidlingsgruppekode":"ARBS","iserv_fra_dato":null,"etternavn":"TESTERSEN","fornavn":"TEST","nav_kontor":"0425","kvalifiseringsgruppekode":"IKVAL","rettighetsgruppekode":"IYT","hovedmaalkode":"SKAFFEA","sikkerhetstiltak_type_kode":null,"fr_kode":null,"har_oppfolgingssak":true,"sperret_ansatt":false,"er_doed":false,"doed_fra_dato":null,"endret_dato":"2021-03-28T20:11:12+02:00"}',
+		value: '{"aktoerid":"xxxxxxx","fodselsnr":"xxxxxxxx","formidlingsgruppekode":"ARBS","iserv_fra_dato":null,"etternavn":"TESTERSEN","fornavn":"TEST","nav_kontor":"0425","kvalifiseringsgruppekode":"IKVAL","rettighetsgruppekode":"IYT","hovedmaalkode":"SKAFFEA","sikkerhetstiltak_type_kode":null,"fr_kode":null,"har_oppfolgingssak":true,"sperret_ansatt":false,"er_doed":false,"doed_fra_dato":null,"endret_dato":"2021-03-28T20:11:12+02:00"}',
 		offset,
 		timestamp: 1620126765357,
 		headers: [
@@ -153,10 +152,10 @@ export const handlers: RequestHandler[] = [
 		return res(ctx.delay(500), ctx.json(utrulledeEnheter));
 	}),
 	rest.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json('job_id_123'));
+		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
 	}),
 	rest.post('/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json('job_id_321'));
+		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
 	}),
 	rest.post('/api/kafka-admin/read-topic', (req, res, ctx) => {
 		return res(ctx.delay(500), ctx.json(kafkaRecords));
@@ -171,7 +170,15 @@ export const handlers: RequestHandler[] = [
 		return res(ctx.delay(500), ctx.status(200));
 	}),
 	rest.get('/api/admin/veilarbportefolje/opensearch/getAliases', (req, res, ctx) => {
-	    return res(ctx.delay(500), ctx.status(200),
-		    ctx.body('{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}}'));
+		return res(
+			ctx.delay(500),
+			ctx.status(200),
+			ctx.body(
+				'{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}}'
+			)
+		);
+	}),
+	rest.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, (req, res, ctx) => {
+		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
 	})
 ];
