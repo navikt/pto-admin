@@ -101,6 +101,12 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
 
+// Republisering veilarboppfolging
+
+export function republiserOppfolgingsperiodeForBruker(aktorId: String): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, { aktorId });
+}
+
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);
@@ -133,4 +139,3 @@ export function createIndex(): AxiosPromise<string> {
 export function getAliases(): AxiosPromise<string> {
 	return axiosInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
 }
-
