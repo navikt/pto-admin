@@ -10,7 +10,7 @@ spec:
   port: 8080
   webproxy: true
   ingresses:
-    - https://pto-admin.intern.dev.nav.no
+    - https://pto-admin.dev.intern.nav.no
   prometheus:
     enabled: true
     path: /internal/prometheus
