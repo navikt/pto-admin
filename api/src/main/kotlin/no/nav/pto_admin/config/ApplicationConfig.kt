@@ -8,14 +8,19 @@ import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
 import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
 import no.nav.common.client.pdl.PdlClientImpl
+import no.nav.common.featuretoggle.UnleashClient
+import no.nav.common.featuretoggle.UnleashClientImpl
 import no.nav.common.sts.NaisSystemUserTokenProvider
 import no.nav.common.sts.SystemUserTokenProvider
+import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
+import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.common.utils.Credentials
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
 import no.nav.common.utils.UrlUtils
-import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
-import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
+import no.nav.poao_tilgang.client.PoaoTilgangClient
+import no.nav.poao_tilgang.client.PoaoTilgangHttpClient
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -96,4 +101,20 @@ class ApplicationConfig {
     fun veilarbPep(properties: EnvironmentProperties, serviceUserCredentials: Credentials): Pep {
         return VeilarbPepFactory.get(properties.abacUrl, serviceUserCredentials.username, serviceUserCredentials.password)
     }
+
+	@Bean
+	fun unleashClient(properties: EnvironmentProperties): UnleashClient {
+		return UnleashClientImpl(properties.unleashUrl, APPLICATION_NAME)
+	}
+	@Bean
+	fun poaoTilgangClient(
+		properties: EnvironmentProperties,
+		tokenClient: AzureAdMachineToMachineTokenClient
+	): PoaoTilgangClient {
+		return PoaoTilgangCachedClient(
+			PoaoTilgangHttpClient(
+				properties.poaoTilgangUrl,
+				{ tokenClient.createMachineToMachineToken(properties.poaoTilgangScope) })
+		)
+	}
 }
