@@ -1,6 +1,5 @@
 package no.nav.pto_admin.config
 
-import no.nav.common.rest.filter.LogRequestFilter
 import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
 import no.nav.common.rest.client.RestUtils
 import no.nav.common.sts.SystemUserTokenProvider

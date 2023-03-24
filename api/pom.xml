@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.9</version>
+        <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,10 +40,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -79,6 +75,12 @@
 			<groupId>com.github.navikt.poao-tilgang</groupId>
 			<artifactId>client</artifactId>
 			<version>2023.03.17_11.36-31ab7c6e4216</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
         <dependency>
             <groupId>com.github.navikt.common-java-modules</groupId>
@@ -167,7 +169,7 @@
         <dependency>
             <groupId>org.mockito.kotlin</groupId>
             <artifactId>mockito-kotlin</artifactId>
-            <version>3.2.0</version>
+            <version>4.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
