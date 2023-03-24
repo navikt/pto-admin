@@ -23,6 +23,7 @@ management:
 spring:
   main:
     banner-mode: off
+    allow-bean-definition-overriding: true
   security:
     oauth2:
       client:
