@@ -34,6 +34,7 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
+				log.info("kommer inn med url: ${exchange.request.path}")
                 val bearerToken: String =
                     if (exchange.request.path.toString().contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")

@@ -42,7 +42,7 @@ spring:
   cloud:
     gateway:
       default-filters:
-        - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
+        - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3$\4
         - RemoveRequestHeader=Cookie
       routes:
         - id: veilarbvedtaksstotte
@@ -65,7 +65,10 @@ spring:
           uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
           predicates:
             - Path=/api/admin/veilarbportefolje/**
-
+        - id: catchalltest
+          uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
+          predicates:
+            - Path=/**
 app:
   env:
     stsDiscoveryUrl: ${SECURITY_TOKEN_SERVICE_DISCOVERY_URL}
