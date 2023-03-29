@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.9</version>
+        <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,7 +18,7 @@
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.6.21</kotlin.version>
-        <common.version>2.2022.08.31_10.30-f0905803be03</common.version>
+        <common.version>3.2023.03.28_15.23-b029b8c7a3f3</common.version>
         <okhttp.version>4.10.0</okhttp.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
         <mock-oauth2-server.version>0.4.7</mock-oauth2-server.version>
@@ -77,52 +77,52 @@
         </dependency>
 
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>log</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>util</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>types</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>abac</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>client</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>token-client</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>sts</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>auth</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>health</artifactId>
             <version>${common.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>kafka</artifactId>
             <version>${common.version}</version>
         </dependency>
@@ -162,7 +162,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>no.nav.common</groupId>
+            <groupId>com.github.navikt.common-java-modules</groupId>
             <artifactId>test</artifactId>
             <version>${common.version}</version>
             <scope>test</scope>
@@ -222,5 +222,15 @@
             </plugin>
         </plugins>
     </build>
-
+	<repositories>
+		<!-- Legger til central eksplisitt for prioritet over jitpack -->
+		<repository>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>jitpack</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 </project>
