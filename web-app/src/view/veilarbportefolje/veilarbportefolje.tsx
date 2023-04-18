@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     assignAliasToIndex,
+    Avvik14aStatistikk,
     createIndex,
     deleteIndex,
     getAliases,
+    hentAvvik14aStatistikk,
     hovedindeksering,
     hovedindekseringNyttAlias,
     indekserAktoer,
     indekserFnr,
     JobId
 } from '../../api';
-import { AxiosPromise } from 'axios';
-import { errorToast, successToast } from '../../utils/toast-utils';
-import { Card } from '../../component/card/card';
-import { Normaltekst } from 'nav-frontend-typografi';
+import {AxiosPromise} from 'axios';
+import {errorToast, successToast} from '../../utils/toast-utils';
+import {Card} from '../../component/card/card';
+import {Ingress, Normaltekst} from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { Flatknapp } from 'nav-frontend-knapper';
+import {Flatknapp} from 'nav-frontend-knapper';
 import BekreftModal from '../../component/bekreft-modal';
-import { Input } from 'nav-frontend-skjema';
+import {Input} from 'nav-frontend-skjema';
 
 import './veilarbportefolje.less'
 
@@ -75,6 +77,8 @@ export function Veilarbportefolje() {
                 inputType="Indeks navn"
                 request={deleteIndex}
             />
+
+            <Avvik14aStatistikkCard/>
         </div>
     );
 }
@@ -93,7 +97,7 @@ function AdminKnapp(props: AdminKnappProps) {
     const handleAdminResponse = () => {
         props.request()
             .then((resp) => {
-                if(isJsonString(resp.data)) {
+                if (isJsonString(resp.data)) {
                     setJobId(JSON.stringify(resp.data));
                 } else {
                     setJobId(resp.data);
@@ -146,9 +150,9 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
             props.request(id)
                 .then((resp) => {
                     const data = resp.data;
-                    if(typeof data === 'string' && isJsonString(data)) {
+                    if (typeof data === 'string' && isJsonString(data)) {
                         setRespons(JSON.stringify(data));
-                    } else if(typeof data === 'boolean') {
+                    } else if (typeof data === 'boolean') {
                         setRespons(data ? 'true' : 'false')
                     } else {
                         setRespons(data);
@@ -182,6 +186,40 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
                           description={props.tittel}
             />
         </>
+    );
+}
+
+function Avvik14aStatistikkCard() {
+    const [statistikk, setStatistikk] = useState<Avvik14aStatistikk>();
+
+    function handleHentAvvik14aStatistikk() {
+        hentAvvik14aStatistikk()
+            .then(res => setStatistikk(res.data))
+            .catch(() => errorToast('Klarte ikke å hente avvik § 14 a-vedtak statistikk'));
+    }
+
+    return (
+        <Card title="Avvik § 14 a-vedtak statistikk" className="small-card" innholdClassName="card__content">
+            <Flatknapp onClick={handleHentAvvik14aStatistikk}>Hent avvik § 14 a-vedtak statistikk</Flatknapp>
+            {statistikk ? <div>
+                <div>
+                    <Ingress>Innsatsgruppe ulik</Ingress>
+                    <Normaltekst>{statistikk.antallMedInnsatsgruppeUlik}</Normaltekst>
+                </div>
+                <div>
+                    <Ingress>Hovedmål ulik</Ingress>
+                    <Normaltekst>{statistikk.antallMedHovedmaalUlik}</Normaltekst>
+                </div>
+                <div>
+                    <Ingress>Innsatsgruppe og hovedmål ulik</Ingress>
+                    <Normaltekst>{statistikk.antallMedInnsatsgruppeOgHovedmaalUlik}</Normaltekst>
+                </div>
+                <div>
+                    <Ingress>Innsatsgruppe mangler</Ingress>
+                    <Normaltekst>{statistikk.antallMedInnsatsgruppeManglerINyKilde}</Normaltekst>
+                </div>
+            </div> : <></>}
+        </Card>
     );
 }
 
