@@ -15,9 +15,9 @@ management:
       group:
         liveness:
           include: livenessState
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
 
 spring:

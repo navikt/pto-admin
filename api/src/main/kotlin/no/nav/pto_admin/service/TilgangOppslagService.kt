@@ -68,5 +68,5 @@ class TilgangOppslagService(val veilarbPep: Pep, val poaoTilgangClient: PoaoTilg
         return veilarbPep.harVeilederTilgangTilEgenAnsatt(navIdent)
     }
 
-	private fun hentBrukerAzureId() = authService.hentInnloggetBrukerAzureId().block() ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Kan ikke finne brukeren")
+	private fun hentBrukerAzureId() = authService.hentInnloggetBrukerAzureId().toFuture().get() ?: throw ResponseStatusException(HttpStatus.FORBIDDEN, "Kan ikke finne brukeren")
 }
