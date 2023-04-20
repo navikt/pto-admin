@@ -3,17 +3,23 @@ package no.nav.pto_admin.config
 import no.nav.common.abac.AbacClient
 import no.nav.common.abac.Pep
 import no.nav.common.abac.domain.request.ActionId
+import no.nav.common.auth.context.AuthContextHolder
+import no.nav.common.auth.context.AuthContextHolderThreadLocal
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.BrukerIdenter
+import no.nav.common.featuretoggle.UnleashClient
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.sts.SystemUserTokenProvider
-import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
-import no.nav.common.types.identer.*
+import no.nav.common.types.identer.AktorId
+import no.nav.common.types.identer.EksternBrukerId
+import no.nav.common.types.identer.EnhetId
+import no.nav.common.types.identer.Fnr
+import no.nav.common.types.identer.NavIdent
 import no.nav.common.utils.Credentials
+import no.nav.poao_tilgang.client.PoaoTilgangClient
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -121,5 +127,15 @@ class ApplicationTestConfig {
     fun azureSystemTokenProvider(): AzureSystemTokenProvider {
         return AzureSystemTokenProvider(mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to {"SYSTEM_USER_TOKEN_AZURE"}))
     }
+
+	@Bean
+	fun poaoTilgangClient(): PoaoTilgangClient {
+		return mock(PoaoTilgangClient::class.java)
+	}
+
+	@Bean
+	fun unleashClient(): UnleashClient? {
+		return mock(UnleashClient::class.java)
+	}
 
 }
