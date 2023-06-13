@@ -8,7 +8,7 @@ import {
     hovedindekseringNyttAlias,
     indekserAktoer,
     indekserFnr,
-    JobId
+    JobId, pdlLastInnData
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -74,6 +74,11 @@ export function Veilarbportefolje() {
                 beskrivelse="Sletter indeks i OpenSearch."
                 inputType="Indeks navn"
                 request={deleteIndex}
+            />
+            <AdminKnapp
+                tittel="Hent PDL data"
+                beskrivelse="Hent PDL data for alle oppfølging brukere."
+                request={pdlLastInnData}
             />
         </div>
     );

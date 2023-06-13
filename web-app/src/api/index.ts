@@ -139,3 +139,7 @@ export function createIndex(): AxiosPromise<string> {
 export function getAliases(): AxiosPromise<string> {
 	return axiosInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
 }
+
+export function pdlLastInnData(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
+}
