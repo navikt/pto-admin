@@ -6,7 +6,7 @@ import { Input } from 'nav-frontend-skjema';
 import {
 	JobId,
 	republiserEndringPaaDialog,
-	republiserEndringPaaOppfolgingsbrukere,
+	republiserEndringPaaOppfolgingsbrukere, republiserKvpPerioder,
 	republiserOppfolgingsperiodeForBruker,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh
@@ -40,6 +40,11 @@ export function RepubliseringKafka() {
 				tittel="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)"
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
+			/>
+			<RepubliseringsKort
+				tittel="Republiser kvp-perioder"
+				beskrivelse="Republiser start(melding) og slutt(melding) på alle kvp-perioder for alle brukere."
+				request={republiserKvpPerioder}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser oppfølgingsperiode for bruker"

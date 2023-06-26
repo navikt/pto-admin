@@ -107,6 +107,10 @@ export function republiserOppfolgingsperiodeForBruker(aktorId: String): AxiosPro
 	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, { aktorId });
 }
 
+export function republiserKvpPerioder(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/kvp-perioder`, { aktorId });
+}
+
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);
