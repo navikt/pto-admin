@@ -7,5 +7,8 @@ data class EnvironmentProperties (
     var stsDiscoveryUrl: String = "",
     var abacUrl: String = "",
     var allowedAdminUsers: String = "",
-    var onPremKafkaBrokersUrl: String = ""
+    var onPremKafkaBrokersUrl: String = "",
+	var unleashUrl: String = "",
+	var poaoTilgangUrl: String = "",
+	var poaoTilgangScope: String = ""
 )
