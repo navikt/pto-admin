@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -17,11 +17,11 @@
 
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.6.21</kotlin.version>
-        <common.version>3.2023.03.28_15.23-b029b8c7a3f3</common.version>
-        <okhttp.version>4.10.0</okhttp.version>
-        <spring-cloud.version>2021.0.2</spring-cloud.version>
-        <mock-oauth2-server.version>0.4.7</mock-oauth2-server.version>
+        <kotlin.version>1.8.20</kotlin.version>
+        <common.version>3.2023.06.27_13.10-a13ff6f90290</common.version>
+        <okhttp.version>4.11.0</okhttp.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
+        <mock-oauth2-server.version>0.5.9</mock-oauth2-server.version>
     </properties>
 
     <dependencies>
@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>com.github.navikt.poao-tilgang</groupId>
 			<artifactId>client</artifactId>
-			<version>2023.03.17_11.36-31ab7c6e4216</version>
+			<version>2023.06.27_11.32-9ec4bae09a0a</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>2.8.1</version>
+            <version>3.1.6</version>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -137,7 +137,7 @@
             <version>${common.version}</version>
         </dependency>
 		<dependency>
-			<groupId>no.nav.common</groupId>
+			<groupId>com.github.navikt.common-java-modules</groupId>
 			<artifactId>feature-toggle</artifactId>
 			<version>${common.version}</version>
 		</dependency>
@@ -173,7 +173,7 @@
         <dependency>
             <groupId>org.mockito.kotlin</groupId>
             <artifactId>mockito-kotlin</artifactId>
-            <version>3.2.0</version>
+            <version>5.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
