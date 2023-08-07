@@ -38,7 +38,7 @@ spec:
       allowAllUsers: false
       claims:
         groups:
-          - id: 41126212-6cb5-4c67-9ce1-22f7a686b298
+          - id: 6844decc-33c2-421f-b8e9-d1015f497174
   vault:
     enabled: true
     paths:
