@@ -73,7 +73,7 @@ class ApplicationTestConfig {
                 return true
             }
 
-            @Deprecated("Deprecated in Java")
+            @Deprecated("Deprecated in Java", ReplaceWith("true"))
             override fun harTilgangTilEnhetMedSperre(p0: String?, p1: EnhetId?): Boolean {
                 return true
             }
