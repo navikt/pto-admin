@@ -73,16 +73,11 @@ class ApplicationTestConfig {
                 return true
             }
 
-            @Deprecated("Deprecated in Java")
             override fun harTilgangTilEnhetMedSperre(p0: String?, p1: EnhetId?): Boolean {
                 return true
             }
 
-			override fun harTilgangTilEnhetMedSperre(p0: NavIdent?, p1: EnhetId?): Boolean {
-				return true
-			}
-
-			override fun harVeilederTilgangTilPerson(p0: NavIdent?, p1: ActionId?, p2: EksternBrukerId?): Boolean {
+            override fun harVeilederTilgangTilPerson(p0: NavIdent?, p1: ActionId?, p2: EksternBrukerId?): Boolean {
                 return true
             }
 
