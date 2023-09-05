@@ -90,9 +90,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Release to dev
-          target_commitish: master
+          target_commitish: main
           tag_name: release/dev@${{ env.IMAGE_TAG }}
-          prerelease: false
+          prerelease: true
 
   deploy-prod:
     name: Deploy application to prod
@@ -115,6 +115,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Release to prod
-          target_commitish: master
+          target_commitish: main
           tag_name: release/prod@${{ env.IMAGE_TAG }}
           prerelease: false
