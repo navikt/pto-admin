@@ -10,8 +10,8 @@ import org.springframework.security.web.server.util.matcher.PathPatternParserSer
 
 
 @EnableWebFluxSecurity
+@Configuration
 class WebSecurityConfig {
-
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain? {
         http
