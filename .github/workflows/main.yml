@@ -4,8 +4,6 @@ env:
   IMAGE_TAG: ${{ github.sha }}
   IMAGE: ghcr.io/${{ github.repository }}/pto-admin
   PRINT_PAYLOAD: true
-permissions:
-  packages: write
 jobs:
   test:
     name: Run tests
@@ -28,6 +26,8 @@ jobs:
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
