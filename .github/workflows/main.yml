@@ -26,6 +26,8 @@ jobs:
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
