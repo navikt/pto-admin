@@ -85,13 +85,12 @@ jobs:
           RESOURCE: nais-dev.yaml
           VAR: version=${{ env.IMAGE_TAG }}
       - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
+          name: Release to dev
+          target_commitish: master
           tag_name: release/dev@${{ env.IMAGE_TAG }}
-          release_name: Release to dev
-          prerelease: true
+          prerelease: false
 
   deploy-prod:
     name: Deploy application to prod
@@ -109,10 +108,9 @@ jobs:
           RESOURCE: nais-prod.yaml
           VAR: version=${{ env.IMAGE_TAG }}
       - name: Create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
+          name: Release to prod
+          target_commitish: master
           tag_name: release/prod@${{ env.IMAGE_TAG }}
-          release_name: Release to prod
           prerelease: false
