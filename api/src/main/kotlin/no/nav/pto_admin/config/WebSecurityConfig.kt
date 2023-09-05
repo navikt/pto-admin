@@ -18,6 +18,7 @@ class WebSecurityConfig {
                 authorize
                     .pathMatchers(GET, "/internal/**").permitAll()
                     .pathMatchers(GET, "/oauth2/**").permitAll()
+                    .pathMatchers("/api/auth/oauth2/callback").permitAll()
                     .anyExchange().authenticated()
             }
             .oauth2Login {}
