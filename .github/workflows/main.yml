@@ -5,6 +5,7 @@ env:
   IMAGE: ghcr.io/${{ github.repository }}/pto-admin
   PRINT_PAYLOAD: true
 permissions:
+  packages: write
   contents: write
 jobs:
   test:
@@ -28,8 +29,6 @@ jobs:
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
@@ -76,8 +75,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: test-build-and-push
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -101,8 +98,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: deploy-dev
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
