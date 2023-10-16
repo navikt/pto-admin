@@ -38,7 +38,7 @@ export function Veilarbportefolje() {
             />
             <AdminKnapp
                 tittel="Hovedindeksering"
-                beskrivelse="Oppdaterer alle brukere i opensearch. Tar typ 10min i produksjon."
+                beskrivelse="Oppdaterer alle brukere i opensearch. Tar ca 20 min i produksjon."
                 request={hovedindeksering}
             />
             <AdminKnapp
@@ -46,19 +46,20 @@ export function Veilarbportefolje() {
                 beskrivelse="Skriver alle brukere til en ny indeks.
                 Alle oppdateringer til gammel indeks vil stanse mens jobben kjører.
                 Dette vil også skape noen warnings i loggene.
+                Kun nødvendig dersom det er gjort endringer på opensearch_settings.json.
                 "
                 request={hovedindekseringNyttAlias}
             />
 
             <AdminKnapp
                 tittel="Hent indekser"
-                beskrivelse="Henter alle akitve indekser."
+                beskrivelse="Henter alle aktive indekser."
                 request={getAliases}
             />
 
             <AdminKnapp
                 tittel="Lag indeks"
-                beskrivelse="Lager tom indeks i OpenSearch. Navn er auto generert."
+                beskrivelse="Lager tom indeks i OpenSearch. Navn er autogenerert."
                 request={createIndex}
             />
 
@@ -77,7 +78,7 @@ export function Veilarbportefolje() {
             />
             <AdminKnapp
                 tittel="Hent PDL data"
-                beskrivelse="Hent PDL data for alle oppfølging brukere."
+                beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
                 request={pdlLastInnData}
             />
         </div>
