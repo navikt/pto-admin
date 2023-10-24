@@ -44,9 +44,12 @@ export function Veilarbportefolje() {
             <AdminKnapp
                 tittel="Hovedindeksering: Nytt alias"
                 beskrivelse="Skriver alle brukere til en ny indeks.
+                NB! Det er kun nødvendig å kjøre denne i stedet for 'vanlig' hovedindeksering dersom det er gjort endringer på opensearch_settings.json i veilarbportefolje.
+                Indekseringen tar ca 20 min i produksjon.
                 Alle oppdateringer til gammel indeks vil stanse mens jobben kjører.
-                Dette vil også skape noen warnings i loggene.
-                Kun nødvendig dersom det er gjort endringer på opensearch_settings.json.
+                 Dette betyr at veiledere vil oppleve forsinkelse på
+                oppdateringer som skjer i perioden mens jobben pågår. Forsøk å legge denne
+                jobben til slutten av en arbeidsdag.
                 "
                 request={hovedindekseringNyttAlias}
             />
