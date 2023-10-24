@@ -38,27 +38,31 @@ export function Veilarbportefolje() {
             />
             <AdminKnapp
                 tittel="Hovedindeksering"
-                beskrivelse="Oppdaterer alle brukere i opensearch. Tar typ 10min i produksjon."
+                beskrivelse="Oppdaterer alle brukere i opensearch. Tar ca 20 min i produksjon."
                 request={hovedindeksering}
             />
             <AdminKnapp
                 tittel="Hovedindeksering: Nytt alias"
                 beskrivelse="Skriver alle brukere til en ny indeks.
+                NB! Det er kun nødvendig å kjøre denne i stedet for 'vanlig' hovedindeksering dersom det er gjort endringer på opensearch_settings.json i veilarbportefolje.
+                Indekseringen tar ca 20 min i produksjon.
                 Alle oppdateringer til gammel indeks vil stanse mens jobben kjører.
-                Dette vil også skape noen warnings i loggene.
+                 Dette betyr at veiledere vil oppleve forsinkelse på
+                oppdateringer som skjer i perioden mens jobben pågår. Forsøk å legge denne
+                jobben til slutten av en arbeidsdag.
                 "
                 request={hovedindekseringNyttAlias}
             />
 
             <AdminKnapp
                 tittel="Hent indekser"
-                beskrivelse="Henter alle akitve indekser."
+                beskrivelse="Henter alle aktive indekser."
                 request={getAliases}
             />
 
             <AdminKnapp
                 tittel="Lag indeks"
-                beskrivelse="Lager tom indeks i OpenSearch. Navn er auto generert."
+                beskrivelse="Lager tom indeks i OpenSearch. Navn er autogenerert."
                 request={createIndex}
             />
 
@@ -77,7 +81,7 @@ export function Veilarbportefolje() {
             />
             <AdminKnapp
                 tittel="Hent PDL data"
-                beskrivelse="Hent PDL data for alle oppfølging brukere."
+                beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
                 request={pdlLastInnData}
             />
         </div>
