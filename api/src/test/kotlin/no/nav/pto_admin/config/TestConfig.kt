@@ -1,9 +1,9 @@
 package no.nav.pto_admin.config
 
-import no.nav.pto_admin.controller.AuthController
-import no.nav.pto_admin.controller.IdentOppslagController
-import no.nav.pto_admin.controller.PingController
-import no.nav.pto_admin.controller.TilgangOppslagController
+import no.nav.pto_admin.controller.v1.AuthController
+import no.nav.pto_admin.controller.v1.IdentOppslagController
+import no.nav.pto_admin.controller.v1.PingController
+import no.nav.pto_admin.controller.v1.TilgangOppslagController
 import no.nav.pto_admin.service.AuthService
 import no.nav.pto_admin.service.IdentOppslagService
 import no.nav.pto_admin.service.TilgangOppslagService

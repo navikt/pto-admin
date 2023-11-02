@@ -1,6 +1,6 @@
 package no.nav.pto_admin.utils
 
-import no.nav.pto_admin.controller.KafkaAdminController
+import no.nav.pto_admin.controller.v1.KafkaAdminController
 import no.nav.pto_admin.domain.KafkaRecord
 import no.nav.pto_admin.domain.KafkaRecordHeader
 import org.apache.kafka.clients.consumer.ConsumerRecord

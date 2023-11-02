@@ -1,4 +1,4 @@
-package no.nav.pto_admin.controller
+package no.nav.pto_admin.controller.v1
 
 import no.nav.common.types.identer.EnhetId
 import no.nav.common.types.identer.NavIdent
