@@ -1,4 +1,4 @@
-package no.nav.pto_admin.controller
+package no.nav.pto_admin.controller.v2
 
 import no.nav.common.types.identer.AktorId
 import no.nav.common.types.identer.Fnr
@@ -13,12 +13,13 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.function.BodyInserters
 
 @ContextConfiguration(classes = [ApplicationTestConfig::class])
 @WebFluxTest(
-    controllers = [IdentOppslagController::class]
+    controllers = [IdentOppslagV2Controller::class]
 )
-class IdentOppslagControllerTest {
+class IdentOppslagV2ControllerTest {
 
     init {
         SetupLocalEnvironment.setup()
@@ -37,7 +38,10 @@ class IdentOppslagControllerTest {
     fun fnrTilAktorId__returnerer_forventet_respons() {
         whenever(identOppslagService.fnrTilAktorId(fnr)).thenReturn(aktorId)
 
-        loggedInWebClient().get().uri("/api/ident/aktorId?fnr=$fnr")
+        loggedInWebClient()
+            .post()
+            .uri("/api/v2/ident/hent-aktorId")
+            .body(BodyInserters.fromValue(IdentOppslagV2Controller.FnrTilAktorIdRequest(fnr)))
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)
@@ -48,7 +52,10 @@ class IdentOppslagControllerTest {
     fun aktorIdTilFnr__returnerer_forventet_respons() {
         whenever(identOppslagService.aktorIdTilFnr(aktorId)).thenReturn(fnr)
 
-        loggedInWebClient().get().uri("/api/ident/fnr?aktorId=$aktorId")
+        loggedInWebClient()
+            .post()
+            .uri("/api/v2/ident/hent-fnr")
+            .body(BodyInserters.fromValue(IdentOppslagV2Controller.AktorIdTilFnrRequest(aktorId)))
             .exchange()
             .expectStatus().isOk
             .expectBody(String::class.java)

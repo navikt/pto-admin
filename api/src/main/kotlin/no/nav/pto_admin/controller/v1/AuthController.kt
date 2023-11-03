@@ -1,4 +1,4 @@
-package no.nav.pto_admin.controller
+package no.nav.pto_admin.controller.v1
 
 import no.nav.pto_admin.service.AuthService
 import org.springframework.web.bind.annotation.GetMapping

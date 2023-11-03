@@ -2,7 +2,7 @@ package no.nav.pto_admin.service
 
 import no.nav.common.kafka.util.KafkaPropertiesBuilder
 import no.nav.pto_admin.config.EnvironmentProperties
-import no.nav.pto_admin.controller.KafkaAdminController
+import no.nav.pto_admin.controller.v1.KafkaAdminController
 import no.nav.pto_admin.domain.KafkaRecord
 import no.nav.pto_admin.utils.Mappers.toKafkaRecordHeader
 import org.apache.kafka.clients.consumer.ConsumerConfig

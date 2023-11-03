@@ -1,8 +1,8 @@
-package no.nav.pto_admin.controller
+package no.nav.pto_admin.controller.v1
 
 import no.nav.pto_admin.domain.KafkaRecord
 import no.nav.pto_admin.service.KafkaAdminService
-import no.nav.pto_admin.utils.Mappers.toTopicWithOffset
+import no.nav.pto_admin.utils.Mappers
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,7 +23,7 @@ class KafkaAdminController(private val kafkaAdminService: KafkaAdminService) {
     @PostMapping("/get-consumer-offsets")
     fun getOffsets(@RequestBody request: GetConsumerOffsetsRequest): List<TopicWithOffset> {
         return kafkaAdminService.getConsumerOffsets(request).entries.map {
-            toTopicWithOffset(it.key, it.value)
+            Mappers.toTopicWithOffset(it.key, it.value)
         }
     }
 

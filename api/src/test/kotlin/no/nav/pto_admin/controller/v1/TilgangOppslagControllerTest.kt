@@ -1,4 +1,4 @@
-package no.nav.pto_admin.controller
+package no.nav.pto_admin.controller.v1
 
 import no.nav.common.types.identer.EnhetId
 import no.nav.common.types.identer.NavIdent
@@ -34,7 +34,11 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilEnhet__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harTilgangTilEnhet(NavIdent("Z1234"), EnhetId("1234"))).thenReturn(Mono.just(false))
+        whenever(tilgangOppslagService.harTilgangTilEnhet(NavIdent("Z1234"), EnhetId("1234"))).thenReturn(
+            Mono.just(
+                false
+            )
+        )
 
         loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
             .exchange()
@@ -45,7 +49,12 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harTilgangTilEnhet__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harTilgangTilEnhet(NavIdent("Z1234"), EnhetId("1234"))).thenReturn(Mono.just(true))
+        whenever(
+            tilgangOppslagService.harTilgangTilEnhet(
+                NavIdent("Z1234"),
+                EnhetId("1234")
+            )
+        ).thenReturn(Mono.just(true))
 
         loggedInWebClient().get().uri("/api/tilgang/enhet?navIdent=Z1234&enhetId=1234")
             .exchange()
@@ -56,7 +65,11 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(Mono.just(false))
+        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(
+            Mono.just(
+                false
+            )
+        )
 
         loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
             .exchange()
@@ -67,7 +80,11 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harSkrivetilgang__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(Mono.just(true))
+        whenever(tilgangOppslagService.harSkrivetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(
+            Mono.just(
+                true
+            )
+        )
 
         loggedInWebClient().get().uri("/api/tilgang/skriv?navIdent=Z1234&norskIdent=1234567")
             .exchange()
@@ -78,7 +95,11 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harLesetilgang__skal_returnere_har_tilgang_false() {
-        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(Mono.just(false))
+        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(
+            Mono.just(
+                false
+            )
+        )
 
         loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
             .exchange()
@@ -89,7 +110,11 @@ class TilgangOppslagControllerTest {
 
     @Test
     fun harLesetilgang__skal_returnere_har_tilgang_true() {
-        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(Mono.just(true))
+        whenever(tilgangOppslagService.harLesetilgang(NavIdent("Z1234"), NorskIdent("1234567"))).thenReturn(
+            Mono.just(
+                true
+            )
+        )
 
         loggedInWebClient().get().uri("/api/tilgang/les?navIdent=Z1234&norskIdent=1234567")
             .exchange()
