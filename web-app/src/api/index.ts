@@ -36,11 +36,11 @@ export type JobId = string;
 // Hovedside
 
 export function fnrTilAktorId(fnr: string): AxiosPromise<AktorIdResponse> {
-	return axiosInstance.post('/api/v2/ident/hent-aktorId', {fnr});
+	return axiosInstance.post(`/api/v2/ident/hent-aktorId`, {fnr});
 }
 
 export function aktorIdTilFnr(aktorId: string): AxiosPromise<FnrResponse> {
-	return axiosInstance.post('/api/v2/ident/hent-fnr', {aktorId});
+	return axiosInstance.post(`/api/v2/ident/hent-fnr`, {aktorId});
 }
 
 export function sjekkHarTilgangTilEnhet(navIdent: string, enhetId: string): AxiosPromise<TilgangResponse> {
@@ -48,11 +48,11 @@ export function sjekkHarTilgangTilEnhet(navIdent: string, enhetId: string): Axio
 }
 
 export function sjekkHarSkrivetilgang(navIdent: string, norskIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.post('/api/v2/tilgang/hent-skriv', {navIdent, norskIdent});
+	return axiosInstance.post(`/api/v2/tilgang/hent-skriv`, {navIdent, norskIdent});
 }
 
 export function sjekkHarLesetilgang(navIdent: string, norskIdent: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.post('/api/v2/tilgang/hent-les', {navIdent, norskIdent});
+	return axiosInstance.post(`/api/v2/tilgang/hent-les`, {navIdent, norskIdent});
 }
 
 export function sjekkHarTilgangTilKode6(navIdent: string): AxiosPromise<TilgangResponse> {
