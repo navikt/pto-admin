@@ -9,7 +9,6 @@ import no.nav.pto_admin.controller.v2.TilgangOppslagV2Controller
 import no.nav.pto_admin.service.AuthService
 import no.nav.pto_admin.service.IdentOppslagService
 import no.nav.pto_admin.service.TilgangOppslagService
-import no.nav.pto_admin.service.UnleashService
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
@@ -25,7 +24,6 @@ import org.springframework.context.annotation.Import
     TilgangOppslagV2Controller::class,
     TilgangOppslagService::class,
     AuthController::class,
-	AuthService::class,
-	UnleashService::class
+	AuthService::class
 ])
 class TestConfig

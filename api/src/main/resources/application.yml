@@ -68,7 +68,6 @@ spring:
 app:
   env:
     stsDiscoveryUrl: ${SECURITY_TOKEN_SERVICE_DISCOVERY_URL}
-    abacUrl: ${ABAC_PDP_ENDPOINT_URL}
     allowedAdminUsers: ${ALLOWED_ADMIN_USERS}
     onPremKafkaBrokersUrl: ${KAFKA_BROKERS_URL}
     poaoTilgangUrl: ${POAO_TILGANG_URL:#{null}}

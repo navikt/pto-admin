@@ -1,15 +1,11 @@
 package no.nav.pto_admin.config
 
-import no.nav.common.abac.Pep
-import no.nav.common.abac.VeilarbPepFactory
 import no.nav.common.auth.context.AuthContextHolder
 import no.nav.common.auth.context.AuthContextHolderThreadLocal
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
 import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
 import no.nav.common.client.pdl.PdlClientImpl
-import no.nav.common.featuretoggle.UnleashClient
-import no.nav.common.featuretoggle.UnleashClientImpl
 import no.nav.common.sts.NaisSystemUserTokenProvider
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.Credentials
@@ -97,15 +93,6 @@ class ApplicationConfig {
         return NaisSystemUserTokenProvider(properties.stsDiscoveryUrl, serviceUserCredentials.username, serviceUserCredentials.password)
     }
 
-    @Bean
-    fun veilarbPep(properties: EnvironmentProperties, serviceUserCredentials: Credentials): Pep {
-        return VeilarbPepFactory.get(properties.abacUrl, serviceUserCredentials.username, serviceUserCredentials.password)
-    }
-
-	@Bean
-	fun unleashClient(properties: EnvironmentProperties): UnleashClient {
-		return UnleashClientImpl(properties.unleashUrl, APPLICATION_NAME)
-	}
 	@Bean
 	fun poaoTilgangClient(
 		properties: EnvironmentProperties,
