@@ -72,5 +72,4 @@ app:
     onPremKafkaBrokersUrl: ${KAFKA_BROKERS_URL}
     poaoTilgangUrl: ${POAO_TILGANG_URL:#{null}}
     poaoTilgangScope: ${POAO_TILGANG_SCOPE:#{null}}
-    unleashUrl: ${UNLEASH_API_URL:#{null}}
 
