@@ -2,7 +2,6 @@ name: Test, build, push and deploy
 on: push
 env:
   IMAGE_TAG: ${{ github.sha }}
-  IMAGE: ghcr.io/${{ github.repository }}/pto-admin
   PRINT_PAYLOAD: true
 permissions:
   packages: write
@@ -30,6 +29,10 @@ jobs:
     name: Test, build and push
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -57,18 +60,14 @@ jobs:
 
       - name: Build maven artifacts
         run: mvn -f ./api/pom.xml -B package
-      - name: Login to Docker
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
         with:
-          context: .
-          push: true
-          tags: ${{ env.IMAGE }}:${{ env.IMAGE_TAG }}
+          team: pto
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
     name: Deploy application to dev
@@ -78,13 +77,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Deploy application
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
           RESOURCE: nais-dev.yaml
-          VAR: version=${{ env.IMAGE_TAG }}
+          VAR: image=${{ needs.test-build-and-push.outputs.image }}
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
@@ -96,18 +97,20 @@ jobs:
   deploy-prod:
     name: Deploy application to prod
     if: github.ref == 'refs/heads/main'
-    needs: deploy-dev
+    needs: [test-build-and-push, deploy-dev]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Deploy application
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
           RESOURCE: nais-prod.yaml
-          VAR: version=${{ env.IMAGE_TAG }}
+          VAR: image=${{ needs.test-build-and-push.outputs.image }}
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
