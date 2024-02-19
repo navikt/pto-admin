@@ -6,6 +6,7 @@ env:
 permissions:
   packages: write
   contents: write
+  id-token: write
 jobs:
   test:
     name: Run tests
