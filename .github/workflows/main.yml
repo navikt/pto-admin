@@ -74,14 +74,15 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: test-build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Deploy application
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
           RESOURCE: nais-dev.yaml
           VAR: image=${{ needs.test-build-and-push.outputs.image }}
@@ -99,14 +100,15 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: [test-build-and-push, deploy-dev]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Deploy application
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
           RESOURCE: nais-prod.yaml
           VAR: image=${{ needs.test-build-and-push.outputs.image }}

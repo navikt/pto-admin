@@ -12,10 +12,10 @@ jobs:
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
     permissions:
       id-token: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,14 +56,15 @@ jobs:
     name: Deploy application to dev
     needs: test-build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Deploy application
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
           RESOURCE: nais-dev.yaml
           VAR: image=${{ needs.test-build-and-push.outputs.image }}
