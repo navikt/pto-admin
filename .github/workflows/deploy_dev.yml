@@ -7,14 +7,15 @@ env:
   PRINT_PAYLOAD: true
 permissions:
   packages: write
-  id-token: write
   
 jobs:
   test-build-and-push:
     name: Test, build and push
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+      image: ${{ steps.docker-build-push.outputs.image }}    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
