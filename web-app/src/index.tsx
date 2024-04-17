@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app';
-import * as dayjs from 'dayjs';
-import 'dayjs/locale/nb';
 
-dayjs.locale('nb');
+async function enableMocking() {
+	if (process.env.NODE_ENV !== 'development') {
+		return
+	}
 
-if (process.env.REACT_APP_DEV) {
-	require('./mock');
+	const { worker } = await import('./mock/index')
+
+	// `worker.start()` returns a Promise that resolves
+	// once the Service Worker is up and ready to intercept requests.
+	return worker.start()
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+enableMocking().then(() => {
+	ReactDOM.render(<App />, document.getElementById('root'))
+})

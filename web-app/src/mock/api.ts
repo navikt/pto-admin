@@ -1,6 +1,8 @@
-import { RequestHandler, rest } from 'msw';
+import { RequestHandler, http, HttpResponse, delay } from 'msw';
 import { UtrulletEnhet } from '../api';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
+import { HttpStatusCode } from 'axios';
+import { DEFAULT_DELAY_MILLISECONDS } from './index';
 
 const utrulledeEnheter: UtrulletEnhet[] = [
 	{
@@ -68,117 +70,153 @@ const topicPartitionOffsets: TopicPartitionOffset[] = [
 ];
 
 export const handlers: RequestHandler[] = [
-	rest.get('/api/auth/me', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.get('/api/auth/me', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(
+			{
 				navn: 'Test Testersen'
-			})
+			}
 		);
 	}),
 
-	rest.get('/api/ident/fnr', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.post('/api/v2/ident/hent-fnr', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				fnr: '12345678900'
-			})
+			}
 		);
 	}),
-	rest.get('/api/ident/aktorId', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.post('/api/v2/ident/hent-aktorid', async () => {
+ 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				aktorId: '1111222344555'
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/enhet', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.get('/api/tilgang/enhet', async () => {
+ 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: true
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/skriv', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.post('/api/v2/tilgang/hent-skriv', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: true
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/les', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.post('/api/v2/tilgang/hent-les', async () => {
+ 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: true
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/kode6', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.get('/api/tilgang/kode6', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: true
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/kode7', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.get('/api/tilgang/kode7', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: false
-			})
+			}
 		);
 	}),
-	rest.get('/api/tilgang/skjermet', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.json({
+	http.get('/api/tilgang/skjermet', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
 				harTilgang: false
-			})
+			}
 		);
 	}),
-
-	rest.post('/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200));
+	http.post('/api/admin/veilarbvedtaksstotte/utrulling/*', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
 	}),
-	rest.delete('/api/admin/veilarbvedtaksstotte/utrulling/*', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200));
+	http.delete('/api/admin/veilarbvedtaksstotte/utrulling/*', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(200);
 	}),
-	rest.get('/api/admin/veilarbvedtaksstotte/utrulling', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json(utrulledeEnheter));
+	http.get('/api/admin/veilarbvedtaksstotte/utrulling', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(utrulledeEnheter);
 	}),
-	rest.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
+	http.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
-	rest.post('/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
+	http.post('/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
-	rest.post('/api/kafka-admin/read-topic', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json(kafkaRecords));
+	http.post('/api/kafka-admin/read-topic', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(kafkaRecords);
 	}),
-	rest.post('/api/kafka-admin/get-consumer-offsets', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json(topicPartitionOffsets));
+	http.post('/api/kafka-admin/get-consumer-offsets', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(topicPartitionOffsets);
 	}),
-	rest.post('/api/kafka-admin/get-last-record-offset', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.json(lastRecordOffsetResponse));
+	http.post('/api/kafka-admin/get-last-record-offset', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(lastRecordOffsetResponse);
 	}),
-	rest.post('/api/kafka-admin/set-consumer-offset', (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200));
+	http.post('/api/kafka-admin/set-consumer-offset', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
 	}),
-	rest.get('/api/admin/veilarbportefolje/opensearch/getAliases', (req, res, ctx) => {
-		return res(
-			ctx.delay(500),
-			ctx.status(200),
-			ctx.body(
-				'{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}}'
-			)
-		);
+	http.get('/api/admin/veilarbportefolje/opensearch/getAliases', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json('{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}');
 	}),
-	rest.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, (req, res, ctx) => {
-		return res(ctx.delay(500), ctx.status(200), ctx.json(window.crypto.randomUUID()));
-	})
+	http.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.put(`/api/admin/veilarbportefolje/indeks/bruker`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
+	}),
+	http.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
+	}),
+	http.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(123456789);
+	}),
+	http.post(`/api/admin/veilarbportefolje/indeks/AlleBrukereNyIndex`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(987654321);
+	}),
+	http.post(`/api/admin/veilarbportefolje/opensearch/createindex`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(192837465);
+	}),
+	http.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
+	}),
+	http.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(HttpStatusCode.Ok);
+	}),
+	http.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(192837465);
+	}),
 ];
