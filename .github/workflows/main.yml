@@ -89,7 +89,7 @@ jobs:
           VAR: image=${{ needs.test-build-and-push.outputs.image }}
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release to dev
           target_commitish: main
@@ -116,7 +116,7 @@ jobs:
           VAR: image=${{ needs.test-build-and-push.outputs.image }}
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release to prod
           target_commitish: main
