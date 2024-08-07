@@ -20,8 +20,6 @@ export const AvsluttOppfolging = () => {
         }
     }
 
-    console.log({ isLoading })
-
     return <div className="view kafka-admin">
         <form onSubmit={
             handleSubmit
@@ -32,6 +30,7 @@ export const AvsluttOppfolging = () => {
             <label htmlFor="begrunnelse">Begrunnelse for avsluttning av oppfølging:</label>
             <input id="begrunnelse" type="text" name="begrunnelse" disabled={isLoading}/>
             <input type="submit" disabled={isLoading} />
+            { error || '' }
         </form>
     </div>
 }
