@@ -32,6 +32,11 @@ const utrulledeEnheter: UtrulletEnhet[] = [
 	}
 ];
 
+const antallAvsluttet = {
+	antallAvsluttet: 500,
+	antallKunneIkkeAvsluttes: 2
+}
+
 const kafkaRecords: KafkaRecord[] = [];
 
 for (let i = 0; i < 25; i++) {
@@ -178,6 +183,10 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarboppfolging/avsluttBrukere`, async () => {
+		await delay(10000);
+		return HttpResponse.json(antallAvsluttet);
 	}),
 	http.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
