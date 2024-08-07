@@ -5,7 +5,7 @@ import { UtrullingVedtaksstotte } from '../view/utrulling-vedtaksstotte/utrullin
 import { KafkaAdmin } from '../view/kafka-admin/kafka-admin';
 import { RepubliseringKafka } from '../view/republisering-kafka/republisering-kafka';
 import { Veilarbportefolje } from '../view/veilarbportefolje/veilarbportefolje';
-import {AvsluttOppfLging} from "../view/avsluttOppfølging/AvsluttOppfølging";
+import {AvsluttOppfolging} from "../view/avsluttOppfølging/AvsluttOppfolging";
 
 export function ViewController() {
 	const { view } = useViewStore();
@@ -22,7 +22,7 @@ export function ViewController() {
 		case ViewType.VEILARBPORTEFOLJE:
 			return <Veilarbportefolje />
 		case ViewType.AVSLUTT_BRUKERE:
-			return <AvsluttOppfLging />
+			return <AvsluttOppfolging />
 		default:
 			return <Hovedside />;
 	}
