@@ -46,7 +46,7 @@ spec:
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
       value: https://veilarboppfolging.dev.intern.nav.no
     - name: VEILARBARENA_ADMIN_API_URL
-      value: https://veilarbarena.dev.intern.nav.no
+      value: https://veilarbarena.intern.dev.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: https://veilarbdialog-q1.nais.preprod.local
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
