@@ -14,9 +14,9 @@ import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
 import { Normaltekst } from 'nav-frontend-typografi';
-import AlertStripe from 'nav-frontend-alertstriper';
 import { Flatknapp } from 'nav-frontend-knapper';
 import BekreftModal from '../../component/bekreft-modal';
+import { Alert } from '@navikt/ds-react';
 import { Input } from 'nav-frontend-skjema';
 
 import './veilarbportefolje.less'
@@ -119,9 +119,9 @@ function AdminKnapp(props: AdminKnappProps) {
                 <Normaltekst className="blokk-xxs">
                     {props.beskrivelse}
                 </Normaltekst>
-                {jobId && <AlertStripe type="suksess" form="inline">
-                    Jobb startet med jobId: {jobId}
-                </AlertStripe>}
+                {jobId && 
+                <Alert size='small' variant='success' inline>Jobb startet med jobId: {jobId}</Alert>
+                }
                 <Flatknapp className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
                     {props.tittel}
                 </Flatknapp>
@@ -177,9 +177,7 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
                     {props.beskrivelse}
                 </Normaltekst>
                 <Input label={inputType} value={id} onChange={e => setid(e.target.value)}/>
-                {respons && <AlertStripe type="suksess" form="inline">
-                    Respons: {respons}
-                </AlertStripe>}
+                {respons && <Alert size="small" variant="success" inline>Respons: {respons}</Alert>}
                 <Flatknapp className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
                     {props.tittel}
                 </Flatknapp>

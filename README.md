@@ -1,6 +1,6 @@
 # PTO Admin
 
-Web app for administrasjon av PTO sine apper
+Web app for administrasjon av POAO sine apper
 
 ## Kode generert av GitHub Copilot
 
