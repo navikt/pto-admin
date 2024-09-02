@@ -58,7 +58,7 @@ class ApplicationConfig {
         val veilarbportefoljeTokenProvider: () -> String = {
             tokenClient.createMachineToMachineToken(
                 String.format(
-                    "api://%s-fss.pto.veilarbportefolje/.default",
+                    "api://%s-gcp.obo.veilarbportefolje/.default",
                     if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
                 )
             )
