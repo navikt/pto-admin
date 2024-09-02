@@ -54,7 +54,7 @@ spec:
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: https://veilarbdialog.nais.adeo.no
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
-      value: https://veilarbportefolje.intern.nav.no
+      value: https://veilarbportefolje-gcp.intern.nav.no
     - name: POAO_TILGANG_URL
       value: https://poao-tilgang.intern.nav.no
     - name: POAO_TILGANG_SCOPE
