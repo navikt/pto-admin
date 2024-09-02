@@ -12,10 +12,10 @@ import {
 	republiserVedtak14aFattetDvh
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
-import './republisering-kafka.less';
 import { AxiosPromise } from 'axios';
-import AlertStripe from 'nav-frontend-alertstriper';
 import BekreftModal from '../../component/bekreft-modal';
+import { Alert } from '@navikt/ds-react';
+import './republisering-kafka.less';
 
 export function RepubliseringKafka() {
 	return (
@@ -88,9 +88,7 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 					onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
 				/>
 				{jobId && (
-					<AlertStripe type="suksess" form="inline">
-						Jobb startet med jobId: {jobId}
-					</AlertStripe>
+					<Alert size="small" variant="success" inline>Jobb startet med jobId: {jobId}</Alert>
 				)}
 				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
 			</Card>
@@ -123,9 +121,7 @@ function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKort
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
 				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
 				{jobId && (
-					<AlertStripe type="suksess" form="inline">
-						Jobb startet med jobId: {jobId}
-					</AlertStripe>
+					<Alert size="small" variant='success' inline>Jobb startet med jobId: {jobId}</Alert>
 				)}
 				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
 			</Card>
