@@ -43,7 +43,7 @@ class GatewayConfig {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else {
-                        log.info("Bruker nais STS token")
+                        log.info("Bruker nais STS token mot {}", exchange.request.path.toString())
                         systemUserTokenProvider.systemUserToken
                     }
                 exchange.request.mutate()
