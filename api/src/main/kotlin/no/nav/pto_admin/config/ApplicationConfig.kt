@@ -8,12 +8,11 @@ import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
 import no.nav.common.client.pdl.PdlClientImpl
 import no.nav.common.sts.NaisSystemUserTokenProvider
 import no.nav.common.sts.SystemUserTokenProvider
-import no.nav.common.utils.Credentials
-import no.nav.common.utils.EnvironmentUtils
-import no.nav.common.utils.NaisUtils
-import no.nav.common.utils.UrlUtils
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
+import no.nav.common.utils.Credentials
+import no.nav.common.utils.NaisUtils
 import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
 import no.nav.poao_tilgang.client.PoaoTilgangClient
 import no.nav.poao_tilgang.client.PoaoTilgangHttpClient
@@ -33,16 +32,17 @@ class ApplicationConfig {
    }
 
     @Bean
-    fun aktorOppslagClient(systemUserTokenProvider: SystemUserTokenProvider): AktorOppslagClient {
-        val pdlUrl =
-            if (EnvironmentUtils.isProduction().orElseThrow()) UrlUtils.createProdInternalIngressUrl("pdl-api")
-            else UrlUtils.createDevInternalIngressUrl("pdl-api")
-        val pdlClient = PdlClientImpl(
-            pdlUrl,
-            systemUserTokenProvider::getSystemUserToken,
-            systemUserTokenProvider::getSystemUserToken,
+    fun aktorOppslagClient(
+        properties: EnvironmentProperties,
+        tokenClient: AzureAdMachineToMachineTokenClient,
+        aadOboToken: AzureAdOnBehalfOfTokenClient,
+        authContextHolder: AuthContextHolder
+    ): AktorOppslagClient {
+        val pdlClient = PdlClientImpl(properties.pdlApiUrl,
+            { aadOboToken.exchangeOnBehalfOfToken(properties.pdlApiScope, authContextHolder.requireIdTokenString());},
+            { tokenClient.createMachineToMachineToken(properties.pdlApiScope) },
+            null
         )
-
         return CachedAktorOppslagClient(PdlAktorOppslagClient(pdlClient))
     }
 
@@ -54,21 +54,22 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient): AzureSystemTokenProvider {
+    fun azureAdOnBehalfOfTokenClient(): AzureAdOnBehalfOfTokenClient {
+        return AzureAdTokenClientBuilder.builder()
+            .withNaisDefaults()
+            .buildOnBehalfOfTokenClient()
+    }
+
+    @Bean
+    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient, properties: EnvironmentProperties): AzureSystemTokenProvider {
         val veilarbportefoljeTokenProvider: () -> String = {
             tokenClient.createMachineToMachineToken(
-                String.format(
-                    "api://%s-gcp.obo.veilarbportefolje/.default",
-                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                )
+                properties.veilarbportefoljeScope
             )
         }
         val veilarbvedtaksstotteTokenProvider: () -> String = {
             tokenClient.createMachineToMachineToken(
-                String.format(
-                    "api://%s-fss.pto.veilarbvedtaksstotte/.default",
-                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                )
+                properties.veilarbvedtaksstotteScope
             )
         }
 

@@ -8,5 +8,9 @@ data class EnvironmentProperties (
     var allowedAdminUsers: String = "",
     var onPremKafkaBrokersUrl: String = "",
 	var poaoTilgangUrl: String = "",
-	var poaoTilgangScope: String = ""
+	var poaoTilgangScope: String = "",
+    var pdlApiUrl: String = "",
+    var pdlApiScope: String = "",
+    var veilarbportefoljeScope: String = "",
+    var veilarbvedtaksstotteScope: String = "",
 )

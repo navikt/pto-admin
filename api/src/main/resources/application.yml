@@ -72,4 +72,6 @@ app:
     onPremKafkaBrokersUrl: ${KAFKA_BROKERS_URL}
     poaoTilgangUrl: ${POAO_TILGANG_URL:#{null}}
     poaoTilgangScope: ${POAO_TILGANG_SCOPE:#{null}}
+    pdlApiUrl: ${PDL_API_URL:#{null}}
+    pdlApiScope: ${PDL_API_SCOPE:#{null}}
 
