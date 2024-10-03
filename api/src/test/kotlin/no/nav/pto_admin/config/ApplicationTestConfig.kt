@@ -3,7 +3,6 @@ package no.nav.pto_admin.config
 import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.BrukerIdenter
 import no.nav.common.health.HealthCheckResult
-import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
@@ -46,16 +45,6 @@ class ApplicationTestConfig {
                 TODO("Not yet implemented")
             }
         }
-    }
-
-    @Bean
-    fun serviceUserCredentials(): Credentials {
-        return Credentials("username", "password")
-    }
-
-    @Bean
-    fun systemUserTokenProvider(): SystemUserTokenProvider {
-        return SystemUserTokenProvider { "SYSTEM_USER_TOKEN" }
     }
 
     @Bean

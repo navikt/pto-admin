@@ -2,7 +2,6 @@ package no.nav.pto_admin.config
 
 import no.nav.common.rest.client.RestUtils
 import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
-import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.IdUtils
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
@@ -22,9 +21,6 @@ import reactor.core.publisher.Mono
 class GatewayConfig {
 
     @Autowired
-    lateinit var systemUserTokenProvider: SystemUserTokenProvider
-
-    @Autowired
     lateinit var azureSystemTokenProvider: AzureSystemTokenProvider
 
     @Bean
@@ -42,9 +38,18 @@ class GatewayConfig {
                     } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
+                    } else if (exchange.request.path.toString().contains("veilarboppfolging")) {
+                        log.info("Bruker veilarboppfolging azureAd token")
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBOPPFOLGING)
+                    } else if (exchange.request.path.toString().contains("veilarbarena")) {
+                        log.info("Bruker veilarbarena azureAd token")
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBARENA)
+                    } else if (exchange.request.path.toString().contains("veilarbdialog")) {
+                        log.info("Bruker veilarbdialog azureAd token")
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBDIALOG)
                     } else {
-                        log.info("Bruker nais STS token")
-                        systemUserTokenProvider.systemUserToken
+                        log.info("Forsøker å gå til et sted hvor vi ikke bytter tokentype, url: {}", exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
+                        ""
                     }
                 exchange.request.mutate()
                     .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))

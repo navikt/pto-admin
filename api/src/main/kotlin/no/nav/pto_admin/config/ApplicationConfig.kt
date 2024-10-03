@@ -6,13 +6,9 @@ import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
 import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
 import no.nav.common.client.pdl.PdlClientImpl
-import no.nav.common.sts.NaisSystemUserTokenProvider
-import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
-import no.nav.common.utils.Credentials
-import no.nav.common.utils.NaisUtils
 import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
 import no.nav.poao_tilgang.client.PoaoTilgangClient
 import no.nav.poao_tilgang.client.PoaoTilgangHttpClient
@@ -73,25 +69,38 @@ class ApplicationConfig {
             )
         }
 
+        val veilarboppfolgingTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                properties.veilarboppfolgingScope
+            )
+        }
+
+        val veilarbarenaTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                properties.veilarbarenaScope
+            )
+        }
+
+        val veilarbdialogTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                properties.veilarbdialogScope
+            )
+        }
+
         val systemTokenSuppliers: Map<SystembrukereAzure, () -> String> =
-            mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
-                SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider)
+            mapOf(
+                SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
+                SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
+                SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
+                SystembrukereAzure.VEILARBARENA to veilarbarenaTokenProvider,
+                SystembrukereAzure.VEILARBDIALOG to veilarbdialogTokenProvider
+            )
         return AzureSystemTokenProvider(systemTokenSuppliers)
     }
 
     @Bean
     fun authContextHolder(): AuthContextHolder {
         return AuthContextHolderThreadLocal.instance()
-    }
-
-    @Bean
-    fun serviceUserCredentials(): Credentials {
-        return NaisUtils.getCredentials("service_user")
-    }
-
-    @Bean
-    fun systemUserTokenProvider(properties: EnvironmentProperties, serviceUserCredentials: Credentials): SystemUserTokenProvider {
-        return NaisSystemUserTokenProvider(properties.stsDiscoveryUrl, serviceUserCredentials.username, serviceUserCredentials.password)
     }
 
 	@Bean
