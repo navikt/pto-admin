@@ -1,7 +1,7 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: pto-admin
+  name: poao-admin
   namespace: poao
   labels:
     team: poao
@@ -10,7 +10,7 @@ spec:
   port: 8080
   webproxy: true
   ingresses:
-    - https://pto-admin.intern.dev.nav.no
+    - https://poao-admin.intern.dev.nav.no
   prometheus:
     enabled: true
     path: /internal/prometheus
