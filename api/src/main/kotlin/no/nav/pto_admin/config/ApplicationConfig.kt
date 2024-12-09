@@ -66,7 +66,7 @@ class ApplicationConfig {
         val veilarbvedtaksstotteTokenProvider: () -> String = {
             tokenClient.createMachineToMachineToken(
                 String.format(
-                    "api://%s-fss.pto.veilarbvedtaksstotte/.default",
+                    "api://%s-gcp.obo.veilarbvedtaksstotte/.default",
                     if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
                 )
             )
