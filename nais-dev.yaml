@@ -44,7 +44,7 @@ spec:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
       value: https://veilarbvedtaksstotte.intern.dev.nav.no
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://veilarboppfolging.dev.intern.nav.no
+      value: https://veilarboppfolging.intern.dev.nav.no
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.intern.dev.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
