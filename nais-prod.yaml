@@ -44,7 +44,7 @@ spec:
       rules:
         - application: veilarboppfolging
           namespace: poao
-          cluster: dev-gcp
+          cluster: prod-gcp
   vault:
     enabled: true
     paths:
