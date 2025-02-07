@@ -39,6 +39,12 @@ spec:
       claims:
         groups:
           - id: 6844decc-33c2-421f-b8e9-d1015f497174
+  accessPolicy:
+    outbound:
+      rules:
+        - application: veilarboppfolging
+          namespace: poao
+          cluster: dev-gcp
   vault:
     enabled: true
     paths:
