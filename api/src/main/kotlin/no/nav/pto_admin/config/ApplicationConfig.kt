@@ -71,18 +71,18 @@ class ApplicationConfig {
                 )
             )
         }
-//        val veilarboppfolgingTokenProvider: () -> String = {
-//            tokenClient.createMachineToMachineToken(
-//                String.format(
-//                    "api://%s-gcp.poao.veilarboppfolging/.default",
-//                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-//                )
-//            )
-//        }
+        val veilarboppfolgingTokenProvider: () -> String = {
+            tokenClient.createMachineToMachineToken(
+                String.format(
+                    "api://%s-gcp.poao.veilarboppfolging/.default",
+                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+                )
+            )
+        }
 
         val systemTokenSuppliers: Map<SystembrukereAzure, () -> String> =
             mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
-//                SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
+                SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
                 SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider)
         return AzureSystemTokenProvider(systemTokenSuppliers)
     }
