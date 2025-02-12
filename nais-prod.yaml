@@ -39,6 +39,12 @@ spec:
       claims:
         groups:
           - id: 6844decc-33c2-421f-b8e9-d1015f497174
+  accessPolicy:
+    outbound:
+      rules:
+        - application: veilarboppfolging
+          namespace: poao
+          cluster: prod-gcp
   vault:
     enabled: true
     paths:
@@ -48,7 +54,7 @@ spec:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
       value: https://veilarbvedtaksstotte.intern.nav.no
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://veilarboppfolging.intern.nav.no
+      value: https://veilarboppfolging-gcp.intern.nav.no
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.intern.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL

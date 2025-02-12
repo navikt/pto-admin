@@ -42,6 +42,9 @@ class GatewayConfig {
                     } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
+                    } else if (exchange.request.path.toString().contains("veilarboppfolging")) {
+                        log.info("Bruker veilarboppfolging azureAd token")
+                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBOPPFOLGING)
                     } else {
                         log.info("Bruker nais STS token")
                         systemUserTokenProvider.systemUserToken
