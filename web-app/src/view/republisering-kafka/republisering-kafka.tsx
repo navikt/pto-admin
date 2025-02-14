@@ -6,6 +6,7 @@ import { Input } from 'nav-frontend-skjema';
 import {
 	JobId,
 	republiserEndringPaaDialog,
+	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserOppfolgingsperiodeForBruker,
 	republiserSiste14aVedtak,
@@ -40,6 +41,12 @@ export function RepubliseringKafka() {
 				tittel="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)"
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser endring på spesifikk oppfølgingsbruker i veilarbarena"
+				beskrivelse="Republiser endring på spesifikk oppfølgingsbruker i veilarbarena"
+				inputLabel="Fødselsnummer"
+				request={republiserEndringPaaOppfolgingsbruker}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser oppfølgingsperiode for bruker"
@@ -88,7 +95,9 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 					onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
 				/>
 				{jobId && (
-					<Alert size="small" variant="success" inline>Jobb startet med jobId: {jobId}</Alert>
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
 				)}
 				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
 			</Card>
@@ -121,7 +130,9 @@ function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKort
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
 				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
 				{jobId && (
-					<Alert size="small" variant='success' inline>Jobb startet med jobId: {jobId}</Alert>
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
 				)}
 				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
 			</Card>
