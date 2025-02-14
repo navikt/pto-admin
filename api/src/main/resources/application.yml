@@ -42,6 +42,7 @@ spring:
     gateway:
       default-filters:
         - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
+        - RewritePath=(/api/v2/admin)(/[a-z\d]+)(.*), $\2$\1$\3
         - RemoveRequestHeader=Cookie
       routes:
         - id: veilarbvedtaksstotte
@@ -56,6 +57,7 @@ spring:
           uri: ${VEILARBARENA_ADMIN_API_URL}
           predicates:
             - Path=/api/admin/veilarbarena/**
+            - Path=/api/v2/admin/veilarbarena/**
         - id: veilarbdialog
           uri: ${VEILARBDIALOG_ADMIN_API_URL}
           predicates:

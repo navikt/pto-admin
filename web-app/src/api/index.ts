@@ -100,7 +100,7 @@ export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbruker(fnr: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnr });
+	return axiosInstance.post(`/api/v2/admin/veilarbarena/republiser/endring-pa-bruker`, { fnr });
 }
 
 export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
