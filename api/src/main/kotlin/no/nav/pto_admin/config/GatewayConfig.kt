@@ -46,7 +46,7 @@ class GatewayConfig {
                         log.info("Bruker veilarboppfolging azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBOPPFOLGING)
                     } else {
-                        log.info("Bruker nais STS token")
+                        log.info("Bruker nais STS token (${exchange.request.path})")
                         systemUserTokenProvider.systemUserToken
                     }
                 exchange.request.mutate()
