@@ -69,11 +69,6 @@ class GatewayConfig {
                         }.build()
                     else exchangeWithAuth
 
-                log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
-                log.info("Proxy number of auth headers: ${exchange.request.headers.get(HttpHeaders.AUTHORIZATION)?.size}, " +
-                        "token length ${bearerToken.length}, " +
-                        "header length(s) ${exchange.request.headers.get(HttpHeaders.AUTHORIZATION)?.map { it.length } ?.joinToString(",")}")
-
                 return chain.filter(exchangeWithCallId)
             }
         }
