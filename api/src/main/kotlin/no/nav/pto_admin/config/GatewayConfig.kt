@@ -34,19 +34,20 @@ class GatewayConfig {
             val log: Logger = LoggerFactory.getLogger(GlobalFilter::class.java)
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
-				log.info("kommer inn med url: ${exchange.request.path}")
+				val urlString = exchange.request.path.toString()
+                log.info("kommer inn med url: ${urlString}")
                 val bearerToken: String =
-                    if (exchange.request.path.toString().contains("veilarbportefolje")) {
+                    if (urlString.contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
-                    } else if (exchange.request.path.toString().contains("veilarbvedtaksstotte")) {
+                    } else if (urlString.contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
-                    } else if (exchange.request.path.toString().contains("veilarboppfolging")) {
+                    } else if (urlString.contains("veilarboppfolging")) {
                         log.info("Bruker veilarboppfolging azureAd token")
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBOPPFOLGING)
                     } else {
-                        log.info("Bruker nais STS token (${exchange.request.path})")
+                        log.info("Bruker nais STS token")
                         systemUserTokenProvider.systemUserToken
                     }
                 exchange.request.mutate()
