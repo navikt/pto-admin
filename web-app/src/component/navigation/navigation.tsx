@@ -1,9 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { Select } from 'nav-frontend-skjema';
 import { ViewType, useViewStore } from '../../store/view-store';
 import './navigation.less';
 import { useAppStore } from '../../store/app-store';
-import { Ingress } from 'nav-frontend-typografi';
+import { BodyShort, Select } from '@navikt/ds-react';
 
 export function Navigation() {
 	const { loggedInUser } = useAppStore();
@@ -17,7 +16,7 @@ export function Navigation() {
 		<header className="navigation">
 			<div className="navigation__innhold">
 				<h1>PTO Admin</h1>
-				<Select className="navigation__visning-velger" value={view} onChange={handleOnChange}>
+				<Select label="PTO Admin" className="navigation__visning-velger" value={view} onChange={handleOnChange}>
 					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
 					<option value={ViewType.UTRULLING_VEDTAKSSTOTTE}>Utrulling vedtaksstøtte</option>
 					<option value={ViewType.REPUBLISERING_KAFKA}>Republisering Kafka</option>
@@ -26,7 +25,7 @@ export function Navigation() {
 					<option value={ViewType.AVSLUTT_BRUKERE}>Avslutt oppfølging for mange brukere</option>
 				</Select>
 			</div>
-			<Ingress>{loggedInUser?.navn || ''}</Ingress>
+			<BodyShort>{loggedInUser?.navn || ''}</BodyShort>
 		</header>
 	);
 }

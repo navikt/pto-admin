@@ -1,8 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Flatknapp } from 'nav-frontend-knapper';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { Input } from 'nav-frontend-skjema';
 import {
 	JobId,
 	republiserEndringPaaDialog,
@@ -14,7 +11,7 @@ import {
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { AxiosPromise } from 'axios';
 import BekreftModal from '../../component/bekreft-modal';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 
 export function RepubliseringKafka() {
@@ -82,15 +79,17 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 		<>
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
 				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
-				<Input
+				<TextField
 					label={inputLabel}
 					value={input}
 					onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
 				/>
 				{jobId && (
-					<Alert size="small" variant="success" inline>Jobb startet med jobId: {jobId}</Alert>
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
 				)}
-				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
+				<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
 			</Card>
 
 			<BekreftModal
@@ -121,9 +120,11 @@ function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKort
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
 				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
 				{jobId && (
-					<Alert size="small" variant='success' inline>Jobb startet med jobId: {jobId}</Alert>
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
 				)}
-				<Flatknapp onClick={() => setOpen(true)}>Utfør republisering</Flatknapp>
+				<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
 			</Card>
 
 			<BekreftModal

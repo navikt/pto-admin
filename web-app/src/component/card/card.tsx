@@ -1,7 +1,7 @@
 import React from 'react';
 import cls from 'classnames';
-import { Innholdstittel } from 'nav-frontend-typografi';
 import './card.less';
+import { BodyShort } from '@navikt/ds-react';
 
 interface CardProps {
 	title?: string;
@@ -13,7 +13,7 @@ interface CardProps {
 export function Card(props: CardProps) {
 	return (
 		<div className={cls('card', props.className)}>
-			{props.title && <Innholdstittel className="card__title">{props.title}</Innholdstittel>}
+			{props.title && <BodyShort className="card__title">{props.title}</BodyShort>}
 			<div className={props.innholdClassName}>{props.children}</div>
 		</div>
 	);
