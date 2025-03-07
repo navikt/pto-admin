@@ -32,6 +32,9 @@ spec:
       cpu: 250m
       memory: 512Mi
   azure:
+    sidecar:
+      enabled: true
+      autoLogin: true
     application:
       enabled: true
       tenant: nav.no
