@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useAppStore } from '../../store/app-store';
 import { me } from '../../api';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { erITestMiljo } from '../../utils';
 import './login-check.less';
+import { Button, Loader } from '@navikt/ds-react';
 
 interface LoginCheckProps {
 	children?: any;
@@ -34,7 +33,7 @@ export function LoginCheck(props: LoginCheckProps) {
 	if (isPending) {
 		return (
 			<div className="login-check">
-				<NavFrontendSpinner type="L" />
+				<Loader size="2xlarge" />
 			</div>
 		);
 	}
@@ -42,7 +41,7 @@ export function LoginCheck(props: LoginCheckProps) {
 	if (!isAuthenticated) {
 		return (
 			<div className="login-check">
-				<Hovedknapp onClick={() => (window.location.href = logInnUrl)}>Logg inn</Hovedknapp>
+				<Button onClick={() => (window.location.href = logInnUrl)}>Logg inn</Button>
 			</div>
 		);
 	}
