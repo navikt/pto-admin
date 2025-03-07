@@ -8,5 +8,7 @@ data class EnvironmentProperties (
     var allowedAdminUsers: String = "",
     var onPremKafkaBrokersUrl: String = "",
 	var poaoTilgangUrl: String = "",
-	var poaoTilgangScope: String = ""
+	var poaoTilgangScope: String = "",
+    var naisAadDiscoveryUrl: String = "",
+    var naisAadClientId: String = ""
 )
