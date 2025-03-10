@@ -25,3 +25,6 @@ yarn-error.log*
 
 .idea/
 *.iml
+
+api/.gradle/
+!gradle/wrapper/gradle-wrapper.jar
