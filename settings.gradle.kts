@@ -5,3 +5,5 @@
  */
 
 rootProject.name = "pto-admin"
+
+include("api")

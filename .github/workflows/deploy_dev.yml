@@ -25,7 +25,12 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
-          cache: 'maven'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.13"
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -46,8 +51,8 @@ jobs:
       - name: Move frontend assets to public folder
         run: mv ./web-app/build ./api/src/main/resources/public
 
-      - name: Build maven artifacts
-        run: mvn -f ./api/pom.xml -B package
+      - name: Build gradle
+        run: ./gradlew -p api build
 
       - name: Build and push Docker image
         uses: nais/docker-build-push@v0
