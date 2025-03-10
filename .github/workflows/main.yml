@@ -27,7 +27,7 @@ jobs:
           gradle-version: "8.13"
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
-      - name: Run maven tests
+      - name: Run gradle verify
         run: ./gradlew -p api verify
 
   test-build-and-push:
