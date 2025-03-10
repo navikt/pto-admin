@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
@@ -29,7 +29,7 @@ class TilgangOppslagControllerTest {
     @Autowired
     private lateinit var webClient: WebTestClient
 
-    @MockBean
+    @MockitoBean
     private lateinit var tilgangOppslagService: TilgangOppslagService
 
     @Test

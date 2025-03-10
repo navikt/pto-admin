@@ -15,6 +15,8 @@ import org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 import org.springframework.web.server.ServerWebExchange
 import reactor.core.publisher.Mono
 
@@ -45,7 +47,9 @@ class GatewayConfig {
                         azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
                     } else if (urlString.contains("veilarboppfolging")) {
                         log.info("Bruker veilarboppfolging azureAd token")
-                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBOPPFOLGING)
+                        val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
+                        if (token == null) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+                        azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBOPPFOLGING, token)
                     } else {
                         log.info("Bruker nais STS token")
                         systemUserTokenProvider.systemUserToken
