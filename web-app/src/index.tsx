@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './app';
+import { createRoot } from 'react-dom/client';
 
 async function enableMocking() {
 	if (process.env.NODE_ENV !== 'development') {
@@ -15,5 +15,8 @@ async function enableMocking() {
 }
 
 enableMocking().then(() => {
-	ReactDOM.render(<App />, document.getElementById('root'))
+	const rootElement = createRoot(document.getElementById('root')!);
+	rootElement.render(
+		<App />,
+	);
 })
