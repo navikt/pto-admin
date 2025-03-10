@@ -11,7 +11,7 @@ import {
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { AxiosPromise } from 'axios';
 import BekreftModal from '../../component/bekreft-modal';
-import { Alert, Button, TextField } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 
 export function RepubliseringKafka() {
@@ -78,7 +78,7 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 	return (
 		<>
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
-				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
+				<BodyShort className="blokk-xxs">{beskrivelse}</BodyShort>
 				<TextField
 					label={inputLabel}
 					value={input}
@@ -118,7 +118,7 @@ function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKort
 	return (
 		<>
 			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
-				<Normaltekst className="blokk-xxs">{beskrivelse}</Normaltekst>
+				<BodyShort className="blokk-xxs">{beskrivelse}</BodyShort>
 				{jobId && (
 					<Alert size="small" variant="success" inline>
 						Jobb startet med jobId: {jobId}
