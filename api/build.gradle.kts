@@ -73,6 +73,6 @@ tasks.register<Copy>("moveFrontendAssets") {
     into(file("api/src/main/resources/public"))
 }
 
-tasks.named("build") {
+tasks.named("processResources") {
     dependsOn("moveFrontendAssets")
 }
