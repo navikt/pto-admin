@@ -54,17 +54,26 @@ class GatewayConfig {
                         log.info("Bruker nais STS token")
                         systemUserTokenProvider.systemUserToken
                     }
-                exchange.request.mutate()
-                    .header(HttpHeaders.AUTHORIZATION, RestUtils.createBearerToken(bearerToken))
-                    .build()
 
-				if (exchange.request.headers[NAV_CALL_ID_HEADER_NAME].isNullOrEmpty()) {
-					exchange.request.mutate().header(NAV_CALL_ID_HEADER_NAME, IdUtils.generateId()).build()
-				}
+                val exchangeWithAuth = exchange.mutate()
+                    .request { request ->
+                        request.headers { headers ->
+                            headers.set(
+                                HttpHeaders.AUTHORIZATION,
+                                RestUtils.createBearerToken(bearerToken))
+                        }
+                    }.build()
 
-                log.info("Proxyer request til " + exchange.attributes[GATEWAY_REQUEST_URL_ATTR])
+                val exchangeWithCallId = if (exchangeWithAuth.request.headers[NAV_CALL_ID_HEADER_NAME].isNullOrEmpty())
+                    exchangeWithAuth.mutate()
+                        .request { request ->
+                            request.headers { headers ->
+                                headers.set(NAV_CALL_ID_HEADER_NAME, IdUtils.generateId())
+                            }
+                        }.build()
+                    else exchangeWithAuth
 
-                return chain.filter(exchange)
+                return chain.filter(exchangeWithCallId)
             }
         }
     }
