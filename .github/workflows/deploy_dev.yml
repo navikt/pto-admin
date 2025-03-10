@@ -31,6 +31,7 @@ jobs:
         with:
           gradle-version: "8.13"
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/gradle' }}
 
       - name: Setup node
         uses: actions/setup-node@v4
