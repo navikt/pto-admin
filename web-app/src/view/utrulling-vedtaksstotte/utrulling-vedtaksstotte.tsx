@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Input } from 'nav-frontend-skjema';
-import { Flatknapp } from 'nav-frontend-knapper';
 import { Card } from '../../component/card/card';
 import './utrulling-vedtaksstotte.less';
-import { Ingress, Normaltekst } from 'nav-frontend-typografi';
 import { fjernUtrulling, hentAlleUtrullinger, rullerUtEnhet, UtrulletEnhet } from '../../api';
 import { errorToast, infoToast, successToast } from '../../utils/toast-utils';
 import { formatDateTime } from '../../utils/date-utils';
+import { BodyLong, BodyShort, Button, TextField } from '@navikt/ds-react';
 
 export function UtrullingVedtaksstotte() {
 	return (
@@ -39,11 +37,9 @@ function RullUtTilEnhetCard() {
 
 	return (
 		<Card title="Rull ut til enhet" className="small-card" innholdClassName="card__content">
-			<Normaltekst className="blokk-xxs">
-				Enheter som blir lagt til her vil få tilgang til vedtaksstøtte
-			</Normaltekst>
-			<Input label="Enhet ID" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
-			<Flatknapp onClick={handleRullUtTilEnhet}>Rull ut</Flatknapp>
+			<BodyShort className="blokk-xxs">Enheter som blir lagt til her vil få tilgang til vedtaksstøtte</BodyShort>
+			<TextField label="Enhet ID" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
+			<Button onClick={handleRullUtTilEnhet}>Rull ut</Button>
 		</Card>
 	);
 }
@@ -67,11 +63,9 @@ function FjernUtrullingCard() {
 
 	return (
 		<Card title="Fjern utrulling fra enhet" className="small-card" innholdClassName="card__content">
-			<Normaltekst className="blokk-xxs">
-				Enheter som blir fjernet vil miste tilgang til vedtaksstøtte
-			</Normaltekst>
-			<Input label="Enhet ID" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
-			<Flatknapp onClick={handleFjernUtrulling}>Fjern utrulling</Flatknapp>
+			<BodyShort className="blokk-xxs">Enheter som blir fjernet vil miste tilgang til vedtaksstøtte</BodyShort>
+			<TextField label="Enhet ID" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
+			<Button onClick={handleFjernUtrulling}>Fjern utrulling</Button>
 		</Card>
 	);
 }
@@ -95,14 +89,14 @@ function AlleUtrulledeEnheterCard() {
 
 	return (
 		<Card title="Alle utrullede enheter" className="large-card" innholdClassName="card__content">
-			<Flatknapp onClick={handleHentAlleUtrulledeEnheter}>Hent utrullede enheter</Flatknapp>
+			<Button onClick={handleHentAlleUtrulledeEnheter}>Hent utrullede enheter</Button>
 			<div className="utrulling-vedtaksstotte__utrullinger">
 				{utrullinger.map((u, idx) => {
 					return (
 						<div key={idx} className="utrulling-vedtaksstotte__utrulling">
-							<Ingress>{u.navn}</Ingress>
-							<Normaltekst>{u.enhetId}</Normaltekst>
-							<Normaltekst>{formatDateTime(u.createdAt)}</Normaltekst>
+							<BodyShort>{u.navn}</BodyShort>
+							<BodyLong>{u.enhetId}</BodyLong>
+							<BodyLong>{formatDateTime(u.createdAt)}</BodyLong>
 						</div>
 					);
 				})}

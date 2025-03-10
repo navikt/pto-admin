@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
 import './hovedside.less';
-import { Input, Select } from 'nav-frontend-skjema';
-import { Flatknapp } from 'nav-frontend-knapper';
 import {
 	aktorIdTilFnr,
 	fnrTilAktorId,
@@ -13,7 +11,7 @@ import {
 	sjekkHarTilgangTilKode6,
 	sjekkHarTilgangTilKode7
 } from '../../api';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort, Button, Select, TextField } from '@navikt/ds-react';
 
 export function Hovedside() {
 	return (
@@ -41,9 +39,9 @@ function FnrTilAktorIdCard() {
 
 	return (
 		<Card title="Fødselsnummer → AktørId" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
-			<Input label="AktørId" disabled={true} value={aktorId} />
-			<Flatknapp onClick={handleOnFinnAktorId}>Finn Aktørid</Flatknapp>
+			<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
+			<TextField label="AktørId" disabled={true} value={aktorId} />
+			<Button onClick={handleOnFinnAktorId}>Finn Aktørid</Button>
 		</Card>
 	);
 }
@@ -61,9 +59,9 @@ function AktorIdTilFnrCard() {
 
 	return (
 		<Card title="AktørId → Fødselsnummer" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="AktørId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
-			<Input label="Fødselsnummer" disabled={true} value={fnr} />
-			<Flatknapp onClick={handleOnFinnFnr}>Finn fødselsnummer</Flatknapp>
+			<TextField label="AktørId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
+			<TextField label="Fødselsnummer" disabled={true} value={fnr} />
+			<Button onClick={handleOnFinnFnr}>Finn fødselsnummer</Button>
 		</Card>
 	);
 }
@@ -82,15 +80,15 @@ function HarTilgangTilEnhetCard() {
 
 	return (
 		<Card title="Tilgang til enhet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
-			<Input label="Enhet Id" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
-			<Normaltekst className="hovedside__har-tilgang-label">
+			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Enhet Id" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
+			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
 				<strong className="hovedside__har-tilgang-svar">
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
-			</Normaltekst>
-			<Flatknapp onClick={handleOnSjekkTilgangTilEnhet}>Sjekk tilgang</Flatknapp>
+			</BodyShort>
+			<Button onClick={handleOnSjekkTilgangTilEnhet}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -109,15 +107,15 @@ function HarSkrivetilgangCard() {
 
 	return (
 		<Card title="Skrivetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
-			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
-			<Normaltekst className="hovedside__har-tilgang-label">
+			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
+			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
 				<strong className="hovedside__har-tilgang-svar">
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
-			</Normaltekst>
-			<Flatknapp onClick={handleOnSjekkHarSkrivetilgang}>Sjekk tilgang</Flatknapp>
+			</BodyShort>
+			<Button onClick={handleOnSjekkHarSkrivetilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -136,15 +134,15 @@ function HarLesetilgangCard() {
 
 	return (
 		<Card title="Lesetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
-			<Input label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
-			<Normaltekst className="hovedside__har-tilgang-label">
+			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
+			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
 				<strong className="hovedside__har-tilgang-svar">
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
-			</Normaltekst>
-			<Flatknapp onClick={handleOnSjekkHarLesetilgang}>Sjekk tilgang</Flatknapp>
+			</BodyShort>
+			<Button onClick={handleOnSjekkHarLesetilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -192,19 +190,19 @@ function HarTilgangTilKodeOgSkjermetCard() {
 
 	return (
 		<Card title="Kode 6/7 og skjermet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<Input label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
 			<Select label="Tilgang" onChange={e => setTilgang(e.target.value as Tilgang)}>
 				<option value={Tilgang.KODE_6}>Kode 6</option>
 				<option value={Tilgang.KODE_7}>Kode 7</option>
 				<option value={Tilgang.SKJERMET}>Skjermet</option>
 			</Select>
-			<Normaltekst className="hovedside__har-tilgang-label">
+			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
 				<strong className="hovedside__har-tilgang-svar">
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
-			</Normaltekst>
-			<Flatknapp onClick={handleOnSjekkHarTilgang}>Sjekk tilgang</Flatknapp>
+			</BodyShort>
+			<Button onClick={handleOnSjekkHarTilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }

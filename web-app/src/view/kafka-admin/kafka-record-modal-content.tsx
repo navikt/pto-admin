@@ -2,10 +2,9 @@ import React from 'react';
 import { KafkaRecord } from '../../api/kafka-admin';
 import './kafka-record-modal-content.less';
 import { isJson, NO_OP } from '../../utils';
-import { Input, Label, Textarea } from 'nav-frontend-skjema';
 import { toTimestamp } from '../../utils/date-utils';
 import ReactJson from 'react-json-view';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { BodyShort, Label, Textarea, TextField } from '@navikt/ds-react';
 
 export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 	if (props.record == null) {
@@ -19,9 +18,9 @@ export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 	return (
 		<div className="kafka-record-modal-content">
 			<div className="blokk-m">
-				<Input label="Offset" value={offset} readOnly={true} />
-				<Input label="Key" value={key || 'NO_KEY'} readOnly={true} />
-				<Input label="Timestamp" value={toTimestamp(timestamp)} readOnly={true} />
+				<TextField label="Offset" value={offset} readOnly={true} />
+				<TextField label="Key" value={key || 'NO_KEY'} readOnly={true} />
+				<TextField label="Timestamp" value={toTimestamp(timestamp)} readOnly={true} />
 
 				<Label htmlFor="label">Headers</Label>
 				{headers.length > 0 ? (
@@ -35,9 +34,9 @@ export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 						})}
 					</ul>
 				) : (
-					<Normaltekst>
+					<BodyShort>
 						<em>No headers</em>
-					</Normaltekst>
+					</BodyShort>
 				)}
 			</div>
 
