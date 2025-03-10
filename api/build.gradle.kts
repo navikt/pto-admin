@@ -52,7 +52,7 @@ dependencies {
 }
 
 group = "no.nav.pto-admin"
-version = "3.4.1"
+version = "1.0.0"
 description = "pto-admin"
 java.sourceCompatibility = JavaVersion.VERSION_23
 
