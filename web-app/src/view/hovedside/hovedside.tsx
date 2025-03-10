@@ -11,7 +11,7 @@ import {
 	sjekkHarTilgangTilKode6,
 	sjekkHarTilgangTilKode7
 } from '../../api';
-import { Button, Select, TextField } from '@navikt/ds-react';
+import { BodyShort, Button, Select, TextField } from '@navikt/ds-react';
 
 export function Hovedside() {
 	return (
@@ -61,7 +61,7 @@ function AktorIdTilFnrCard() {
 		<Card title="AktørId → Fødselsnummer" className="small-card" innholdClassName="hovedside__card-innhold">
 			<TextField label="AktørId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
 			<TextField label="Fødselsnummer" disabled={true} value={fnr} />
-			<Flatknapp onClick={handleOnFinnFnr}>Finn fødselsnummer</Flatknapp>
+			<Button onClick={handleOnFinnFnr}>Finn fødselsnummer</Button>
 		</Card>
 	);
 }
@@ -88,7 +88,7 @@ function HarTilgangTilEnhetCard() {
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
 			</BodyShort>
-			<Flatknapp onClick={handleOnSjekkTilgangTilEnhet}>Sjekk tilgang</Flatknapp>
+			<Button onClick={handleOnSjekkTilgangTilEnhet}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -115,7 +115,7 @@ function HarSkrivetilgangCard() {
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
 			</BodyShort>
-			<Flatknapp onClick={handleOnSjekkHarSkrivetilgang}>Sjekk tilgang</Flatknapp>
+			<Button onClick={handleOnSjekkHarSkrivetilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -142,7 +142,7 @@ function HarLesetilgangCard() {
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
 			</BodyShort>
-			<Flatknapp onClick={handleOnSjekkHarLesetilgang}>Sjekk tilgang</Flatknapp>
+			<Button onClick={handleOnSjekkHarLesetilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
@@ -202,7 +202,7 @@ function HarTilgangTilKodeOgSkjermetCard() {
 					{harTilgang == null ? '' : harTilgang.toString()}
 				</strong>
 			</BodyShort>
-			<Flatknapp onClick={handleOnSjekkHarTilgang}>Sjekk tilgang</Flatknapp>
+			<Button onClick={handleOnSjekkHarTilgang}>Sjekk tilgang</Button>
 		</Card>
 	);
 }
