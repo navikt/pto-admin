@@ -48,9 +48,6 @@ jobs:
       - name: Build frontend assets
         run: npm run build --prefix web-app
 
-      - name: Move frontend assets to public folder
-        run: mv ./web-app/build ./api/src/main/resources/public
-
       - name: Build gradle
         run: ./gradlew -p api build
 

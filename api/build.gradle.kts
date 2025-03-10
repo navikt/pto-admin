@@ -69,3 +69,12 @@ tasks.withType<JavaCompile>() {
 tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
 }
+
+tasks.register<Copy>("moveFrontendAssets") {
+    from(file("web-app/build"))
+    into(file("api/src/main/resources/public"))
+}
+
+tasks.named("build") {
+    dependsOn("moveFrontendAssets")
+}
