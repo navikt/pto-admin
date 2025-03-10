@@ -5,8 +5,19 @@
  */
 
 plugins {
-    `java-library`
-    `maven-publish`
+    kotlin("jvm") version "2.0.20"
+    kotlin("plugin.spring") version "2.1.20-RC2"
+    id("org.springframework.boot") version "3.4.3"
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
 }
 
 repositories {
@@ -42,6 +53,7 @@ dependencies {
     api(libs.no.nav.common.auth)
     api(libs.no.nav.common.health)
     api(libs.no.nav.common.kafka)
+    api(libs.no.nav.common.sts)
     api(libs.com.squareup.okhttp3.okhttp)
     api(libs.org.springframework.boot.spring.boot.configuration.processor)
     testImplementation(libs.org.springframework.security.spring.security.test)
@@ -54,21 +66,7 @@ dependencies {
 group = "no.nav.pto-admin"
 version = "1.0.0"
 description = "pto-admin"
-java.sourceCompatibility = JavaVersion.VERSION_23
-
-publishing {
-    publications.create<MavenPublication>("maven") {
-        from(components["java"])
-    }
-}
-
-tasks.withType<JavaCompile>() {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType<Javadoc>() {
-    options.encoding = "UTF-8"
-}
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 tasks.register<Copy>("moveFrontendAssets") {
     from(file("web-app/build"))
