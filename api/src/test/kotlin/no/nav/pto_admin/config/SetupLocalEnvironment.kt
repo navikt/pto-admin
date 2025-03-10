@@ -12,7 +12,7 @@ object SetupLocalEnvironment {
 
     fun setup() {
         setupNaisProperties()
-        startOAuth2MockServer()
+//        startOAuth2MockServer()
         startTargetProxyApps()
     }
 

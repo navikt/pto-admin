@@ -5,6 +5,7 @@ import no.nav.common.client.aktoroppslag.BrukerIdenter
 import no.nav.common.health.HealthCheckResult
 import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
+import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
 import no.nav.poao_tilgang.client.PoaoTilgangClient
@@ -61,6 +62,11 @@ class ApplicationTestConfig {
     @Bean
     fun azureAdMachineToMachineTokenClient(): AzureAdMachineToMachineTokenClient {
         return mock(AzureAdMachineToMachineTokenClient::class.java)
+    }
+
+    @Bean
+    fun azureAdOnBehalfOfTokenClient(): AzureAdOnBehalfOfTokenClient {
+        return mock(AzureAdOnBehalfOfTokenClient::class.java)
     }
 
     @Bean

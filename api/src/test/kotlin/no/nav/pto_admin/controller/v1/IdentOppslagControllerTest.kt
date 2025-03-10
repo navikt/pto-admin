@@ -4,14 +4,14 @@ import no.nav.common.types.identer.AktorId
 import no.nav.common.types.identer.Fnr
 import no.nav.pto_admin.config.ApplicationTestConfig
 import no.nav.pto_admin.config.SetupLocalEnvironment
+import no.nav.pto_admin.controller.v2.TilgangOppslagV2Controller
 import no.nav.pto_admin.service.IdentOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 
 @ContextConfiguration(classes = [ApplicationTestConfig::class])
@@ -27,11 +27,16 @@ class IdentOppslagControllerTest {
     val fnr = Fnr("123")
     val aktorId = AktorId("321")
 
-    @Autowired
-    private lateinit var webClient: WebTestClient
-
-    @MockBean
+    @MockitoBean
     private lateinit var identOppslagService: IdentOppslagService
+
+    private val webClient: WebTestClient by lazy {
+        WebTestClient.bindToController(
+            IdentOppslagController(
+                identOppslagService
+            )
+        ).build()
+    }
 
     @Test
     fun fnrTilAktorId__returnerer_forventet_respons() {
@@ -56,6 +61,6 @@ class IdentOppslagControllerTest {
     }
 
     fun loggedInWebClient(): WebTestClient {
-        return webClient.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+        return webClient
     }
 }

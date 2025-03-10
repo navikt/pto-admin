@@ -48,7 +48,7 @@ class GatewayConfig {
                     } else if (urlString.contains("veilarboppfolging")) {
                         log.info("Bruker veilarboppfolging azureAd token")
                         val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
-                        if (token == null) throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
+                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBOPPFOLGING, token)
                     } else {
                         log.info("Bruker nais STS token")

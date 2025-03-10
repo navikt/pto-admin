@@ -8,11 +8,9 @@ import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.TilgangOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 
@@ -26,10 +24,15 @@ class TilgangOppslagControllerTest {
         SetupLocalEnvironment.setup()
     }
 
-    @Autowired
-    private lateinit var webClient: WebTestClient
+    private val webClient: WebTestClient by lazy {
+        WebTestClient.bindToController(
+            TilgangOppslagController(
+                tilgangOppslagService
+            )
+        ).build()
+    }
 
-    @MockBean
+    @MockitoBean
     private lateinit var tilgangOppslagService: TilgangOppslagService
 
     @Test
@@ -190,6 +193,6 @@ class TilgangOppslagControllerTest {
     }
 
     fun loggedInWebClient(): WebTestClient {
-        return webClient.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+        return webClient
     }
 }

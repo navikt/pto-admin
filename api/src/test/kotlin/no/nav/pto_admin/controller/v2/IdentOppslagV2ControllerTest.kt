@@ -7,11 +7,9 @@ import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.IdentOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters
 
@@ -28,10 +26,15 @@ class IdentOppslagV2ControllerTest {
     val fnr = Fnr("123")
     val aktorId = AktorId("321")
 
-    @Autowired
-    private lateinit var webClient: WebTestClient
+    private val webClient: WebTestClient by lazy {
+        WebTestClient.bindToController(
+            IdentOppslagV2Controller(
+                identOppslagService
+            )
+        ).build()
+    }
 
-    @MockBean
+    @MockitoBean
     private lateinit var identOppslagService: IdentOppslagService
 
     @Test
@@ -63,6 +66,6 @@ class IdentOppslagV2ControllerTest {
     }
 
     fun loggedInWebClient(): WebTestClient {
-        return webClient.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+        return webClient
     }
 }
