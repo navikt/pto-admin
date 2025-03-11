@@ -38,7 +38,6 @@ no-nav-common-log = { module = "no.nav.common:log", version.ref = "no-nav-common
 no-nav-common-token-client = { module = "no.nav.common:token-client", version.ref = "no-nav-common" }
 no-nav-common-types = { module = "no.nav.common:types", version.ref = "no-nav-common" }
 no-nav-common-util = { module = "no.nav.common:util", version.ref = "no-nav-common" }
-no-nav-common-sts = { module = "no.nav.common:sts", version.ref = "no-nav-common" }
 no-nav-poao-tilgang-client = { module = "no.nav.poao-tilgang:client", version.ref = "no-nav-poao-tilgang-client" }
 no-nav-security-mock-oauth2-server = { module = "no.nav.security:mock-oauth2-server", version.ref = "no-nav-security-mock-oauth2-server" }
 org-jetbrains-kotlin-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "org-jetbrains-kotlin-kotlin-reflect" }

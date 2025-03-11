@@ -2,7 +2,6 @@ package no.nav.pto_admin.config
 
 import no.nav.common.rest.client.RestUtils
 import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
-import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.IdUtils
 import no.nav.pto_admin.utils.AzureSystemTokenProvider
 import no.nav.pto_admin.utils.SystembrukereAzure
@@ -11,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
-import org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -22,9 +20,6 @@ import reactor.core.publisher.Mono
 
 @Configuration
 class GatewayConfig {
-
-    @Autowired
-    lateinit var systemUserTokenProvider: SystemUserTokenProvider
 
     @Autowired
     lateinit var azureSystemTokenProvider: AzureSystemTokenProvider
@@ -51,8 +46,7 @@ class GatewayConfig {
                         if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBOPPFOLGING, token)
                     } else {
-                        log.info("Bruker nais STS token")
-                        systemUserTokenProvider.systemUserToken
+                        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ukjent proxy url ${urlString}")
                     }
 
                 val exchangeWithAuth = exchange.mutate()

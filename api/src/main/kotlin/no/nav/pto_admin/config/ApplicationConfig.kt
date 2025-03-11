@@ -6,8 +6,6 @@ import no.nav.common.client.aktoroppslag.AktorOppslagClient
 import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
 import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
 import no.nav.common.client.pdl.PdlClientImpl
-import no.nav.common.sts.NaisSystemUserTokenProvider
-import no.nav.common.sts.SystemUserTokenProvider
 import no.nav.common.utils.Credentials
 import no.nav.common.utils.EnvironmentUtils
 import no.nav.common.utils.NaisUtils
@@ -29,14 +27,14 @@ import org.springframework.context.annotation.Configuration
 class ApplicationConfig {
 
     @Bean
-    fun aktorOppslagClient(systemUserTokenProvider: SystemUserTokenProvider): AktorOppslagClient {
+    fun aktorOppslagClient(azureAdMachineToMachineTokenClient: AzureAdMachineToMachineTokenClient): AktorOppslagClient {
         val pdlUrl =
             if (EnvironmentUtils.isProduction().orElseThrow()) UrlUtils.createProdInternalIngressUrl("pdl-api")
             else UrlUtils.createDevInternalIngressUrl("pdl-api")
         val pdlClient = PdlClientImpl(
             pdlUrl,
-            systemUserTokenProvider::getSystemUserToken,
-            systemUserTokenProvider::getSystemUserToken,
+            { azureAdMachineToMachineTokenClient.createMachineToMachineToken("api://pdl/.default") },
+            "B123"
         )
 
         return CachedAktorOppslagClient(PdlAktorOppslagClient(pdlClient))
@@ -96,11 +94,6 @@ class ApplicationConfig {
     @Bean
     fun serviceUserCredentials(): Credentials {
         return NaisUtils.getCredentials("service_user")
-    }
-
-    @Bean
-    fun systemUserTokenProvider(properties: EnvironmentProperties, serviceUserCredentials: Credentials): SystemUserTokenProvider {
-        return NaisSystemUserTokenProvider(properties.stsDiscoveryUrl, serviceUserCredentials.username, serviceUserCredentials.password)
     }
 
 	@Bean

@@ -53,7 +53,6 @@ dependencies {
     api(libs.no.nav.common.auth)
     api(libs.no.nav.common.health)
     api(libs.no.nav.common.kafka)
-    api(libs.no.nav.common.sts)
     api(libs.com.squareup.okhttp3.okhttp)
     api(libs.org.springframework.boot.spring.boot.configuration.processor)
     testImplementation(libs.org.springframework.security.spring.security.test)
