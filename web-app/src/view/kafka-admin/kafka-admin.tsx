@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { errorToast, successToast, warningToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
-import { Flatknapp } from 'nav-frontend-knapper';
 import {
 	getConsumerOffsets,
 	GetConsumerOffsetsRequest,
@@ -14,12 +13,10 @@ import {
 	SetConsumerOffsetRequest,
 	TopicPartitionOffset
 } from '../../api/kafka-admin';
-import { Input, Select } from 'nav-frontend-skjema';
-import { Normaltekst } from 'nav-frontend-typografi';
 import constate from 'constate';
-import Modal from 'nav-frontend-modal';
 import './kafka-admin.less';
 import { KafkaRecordModalContent } from './kafka-record-modal-content';
+import { BodyShort, Button, Select, TextField, Modal } from '@navikt/ds-react';
 
 const [CredentialsStoreProvider, useCredentialsStore] = constate(() => {
 	const [username, setUsername] = useState('');
@@ -30,8 +27,10 @@ const [CredentialsStoreProvider, useCredentialsStore] = constate(() => {
 export function KafkaAdmin() {
 	return (
 		<div className="view kafka-admin">
-			<p> Bruk heller: <a href="https://pto-kafka-manager.intern.dev.nav.no">pto-kafka-manager dev url</a>
-			eller <a href="https://pto-kafka-manager.intern.nav.no">pto-kafka-manager prod url</a>
+			<p>
+				{' '}
+				Bruk heller: <a href="https://pto-kafka-manager.intern.dev.nav.no">pto-kafka-manager dev url</a>
+				eller <a href="https://pto-kafka-manager.intern.nav.no">pto-kafka-manager prod url</a>
 			</p>
 			<CredentialsStoreProvider>
 				<div>
@@ -53,13 +52,13 @@ function CredentialsCard() {
 
 	return (
 		<Card title="Credentials" innholdClassName="card__content">
-			<Normaltekst className="blokk-s">
+			<BodyShort className="blokk-s">
 				Alle funksjoner på denne siden krever at credentials fra en systembruker er utfylt
-			</Normaltekst>
+			</BodyShort>
 
-			<Input label="Username" value={username} onChange={e => setUsername(e.target.value)} />
+			<TextField label="Username" value={username} onChange={e => setUsername(e.target.value)} />
 			{/* Set "one-time-code" for å prøve å forhindre at browseren lagrer passordet */}
-			<Input
+			<TextField
 				label="Password"
 				type="password"
 				autoComplete="one-time-code"
@@ -98,14 +97,14 @@ function ConsumerOffsetsCard() {
 
 	return (
 		<Card title="Get consumer offsets" innholdClassName="card__content">
-			<Normaltekst className="blokk-s">
+			<BodyShort className="blokk-s">
 				Henter siste commitet offset for alle partisjoner tilhørende en consumer gruppe for en gitt topic
-			</Normaltekst>
+			</BodyShort>
 
-			<Input label="Consumer group id" value={groupId} onChange={e => setGroupId(e.target.value)} />
-			<Input label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
+			<TextField label="Consumer group id" value={groupId} onChange={e => setGroupId(e.target.value)} />
+			<TextField label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
 
-			<Flatknapp onClick={handleHentConsumerOffsets}>Fetch</Flatknapp>
+			<Button onClick={handleHentConsumerOffsets}>Fetch</Button>
 
 			<ul>
 				{topicPartitionOffsets.map((tpo, idx) => {
@@ -144,24 +143,24 @@ function LastRecordOffsetCard() {
 
 	return (
 		<Card title="Last record offset" innholdClassName="card__content">
-			<Normaltekst className="blokk-s">
+			<BodyShort className="blokk-s">
 				Henter offset til siste record(melding på kafka) som ligger på en topic+partisjon
-			</Normaltekst>
+			</BodyShort>
 
-			<Input label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
-			<Input
+			<TextField label="Topic name" value={topicName} onChange={e => setTopicName(e.target.value)} />
+			<TextField
 				label="Topic partition (first partition starts at 0)"
 				type="number"
 				value={topicPartition}
 				onChange={e => setTopicPartition(e.target.value)}
 			/>
 
-			<Flatknapp onClick={handleHentLastRecordOffset}>Fetch</Flatknapp>
+			<Button onClick={handleHentLastRecordOffset}>Fetch</Button>
 
 			{lastRecordOffset != null ? (
-				<Normaltekst style={{ marginTop: '2rem' }}>
+				<BodyShort style={{ marginTop: '2rem' }}>
 					Offset til siste record: <strong>{lastRecordOffset}</strong>
-				</Normaltekst>
+				</BodyShort>
 			) : null}
 		</Card>
 	);
@@ -191,24 +190,29 @@ function SetConsumerOffsetCard() {
 
 	return (
 		<Card title="Set consumer offset" className="mini-card" innholdClassName="card__content">
-			<Normaltekst className="blokk-s">
+			<BodyShort className="blokk-s">
 				Setter offset til en consumer for en topic+partisjon. Det er viktig å vite at selv om offsetet blir
 				endret, så vil ikke consumere plukke opp endringen i offset før de er startet på nytt. Hvis en consumer
 				committer et nytt offset før den har blitt startet på nytt og fått hentet inn endringen, så vil den
 				overskrive offsetet fra pto-admin.
-			</Normaltekst>
+			</BodyShort>
 
-			<Input label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
-			<Input
+			<TextField label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
+			<TextField
 				label="Topic partition (first partition starts at 0)"
 				type="number"
 				value={topicPartitionField}
 				onChange={e => setTopicPartitionField(e.target.value)}
 			/>
-			<Input label="Consumer group id" value={groupIdField} onChange={e => setGroupIdField(e.target.value)} />
-			<Input label="Offset" type="number" value={offsetField} onChange={e => setOffsetField(e.target.value)} />
+			<TextField label="Consumer group id" value={groupIdField} onChange={e => setGroupIdField(e.target.value)} />
+			<TextField
+				label="Offset"
+				type="number"
+				value={offsetField}
+				onChange={e => setOffsetField(e.target.value)}
+			/>
 
-			<Flatknapp onClick={handleSetConsumerOffset}>Set offset</Flatknapp>
+			<Button onClick={handleSetConsumerOffset}>Set offset</Button>
 		</Card>
 	);
 }
@@ -284,12 +288,12 @@ function ReadFromTopicCard() {
 			className="very-large-card center-horizontal"
 			innholdClassName="card__content"
 		>
-			<Normaltekst className="blokk-s">
+			<BodyShort className="blokk-s">
 				Leser meldinger fra en topic+partisjon. Trykk på en av meldingene for å se mer detaljert informasjon
-			</Normaltekst>
+			</BodyShort>
 
-			<Input label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
-			<Input
+			<TextField label="Topic name" value={topicNameField} onChange={e => setTopicNameField(e.target.value)} />
+			<TextField
 				label="Topic partition (first partition starts at 0)"
 				type="number"
 				value={topicPartitionField}
@@ -307,7 +311,7 @@ function ReadFromTopicCard() {
 			</Select>
 
 			{fetchFromField === FetchFrom.OFFSET ? (
-				<Input
+				<TextField
 					label="From offset"
 					type="number"
 					value={fromOffsetField}
@@ -315,14 +319,14 @@ function ReadFromTopicCard() {
 				/>
 			) : null}
 
-			<Input
+			<TextField
 				label="Max records (max=100)"
 				type="number"
 				value={maxRecordsField}
 				onChange={e => setMaxRecordsField(e.target.value)}
 			/>
 
-			<Flatknapp onClick={handleReadFromTopic}>Fetch</Flatknapp>
+			<Button onClick={handleReadFromTopic}>Fetch</Button>
 
 			{recordsFromTopic.length > 0 ? (
 				<table className="tabell tabell--stripet">
@@ -353,10 +357,13 @@ function ReadFromTopicCard() {
 				</table>
 			) : null}
 			<Modal
-				isOpen={clickedRecord != null}
-				onRequestClose={() => setClickedRecord(null)}
-				closeButton={true}
-				contentLabel="View kafka record"
+				open={clickedRecord != null}
+				closeOnBackdropClick
+				header={{
+					heading: 'Kafka record',
+					closeButton: true
+				}}
+				onClose={() => setClickedRecord(null)}
 			>
 				<KafkaRecordModalContent record={clickedRecord} />
 			</Modal>

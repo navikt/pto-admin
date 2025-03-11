@@ -1,5 +1,6 @@
 import { batchAvsluttOppfolging } from '../../api';
-import {useState} from "react";
+import React, { useState } from 'react';
+
 export const AvsluttOppfolging = () => {
 
     const [isLoading, setIsLoading] = useState(false)

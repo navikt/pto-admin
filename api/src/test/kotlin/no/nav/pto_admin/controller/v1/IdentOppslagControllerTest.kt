@@ -4,11 +4,9 @@ import no.nav.common.types.identer.AktorId
 import no.nav.common.types.identer.Fnr
 import no.nav.pto_admin.config.ApplicationTestConfig
 import no.nav.pto_admin.config.SetupLocalEnvironment
-import no.nav.pto_admin.controller.v2.TilgangOppslagV2Controller
 import no.nav.pto_admin.service.IdentOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean

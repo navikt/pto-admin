@@ -25,3 +25,8 @@ yarn-error.log*
 
 .idea/
 *.iml
+
+/web-app/.npmrc
+
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar

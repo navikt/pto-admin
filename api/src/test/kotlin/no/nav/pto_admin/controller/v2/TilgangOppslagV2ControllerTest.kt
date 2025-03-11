@@ -3,11 +3,9 @@ package no.nav.pto_admin.controller.v2
 import no.nav.common.types.identer.NavIdent
 import no.nav.common.types.identer.NorskIdent
 import no.nav.pto_admin.config.ApplicationTestConfig
-import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.TilgangOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -31,7 +29,6 @@ class TilgangOppslagV2ControllerTest {
             )
         ).build()
     }
-
 
     @Test
     fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
