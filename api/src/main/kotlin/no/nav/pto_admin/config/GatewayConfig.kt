@@ -73,6 +73,8 @@ class GatewayConfig {
                         }.build()
                     else exchangeWithAuth
 
+                log.info("videresender req med callId ${exchangeWithCallId.request.headers[NAV_CALL_ID_HEADER_NAME]}")
+
                 return chain.filter(exchangeWithCallId)
             }
         }
