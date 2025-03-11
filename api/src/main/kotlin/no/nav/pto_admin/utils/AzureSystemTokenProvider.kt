@@ -17,6 +17,7 @@ class AzureSystemTokenProvider(private val systemTokenProviders: Map<Systembruke
             log.info("obo exchange ok - $system")
             return token
         } catch (e: Exception) {
+            log.error("Feilet å gjøre obo exchage - $system", e)
             throw RuntimeException("Feil ved henting av system token", e)
         }
     }
