@@ -91,11 +91,6 @@ class ApplicationConfig {
         return AuthContextHolderThreadLocal.instance()
     }
 
-    @Bean
-    fun serviceUserCredentials(): Credentials {
-        return NaisUtils.getCredentials("service_user")
-    }
-
 	@Bean
 	fun poaoTilgangClient(
 		properties: EnvironmentProperties,
