@@ -2,7 +2,7 @@ import axios, { AxiosPromise } from 'axios';
 
 export const axiosInstance = axios.create({
 	withCredentials: true,
-	headers: {'Nav-Consumer-Id': 'pto-admin'}
+	headers: {'Nav-Consumer-Id': 'poao-admin'}
 });
 
 interface AktorIdResponse {

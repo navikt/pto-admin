@@ -1,16 +1,16 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: pto-admin
-  namespace: pto
+  name: poao-admin
+  namespace: poao
   labels:
-    team: pto
+    team: poao
 spec:
   image: {{image}}
   port: 8080
   webproxy: true
   ingresses:
-    - https://pto-admin.intern.nav.no
+    - https://poao-admin.intern.nav.no
   prometheus:
     enabled: true
     path: /internal/prometheus

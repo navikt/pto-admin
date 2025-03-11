@@ -1,4 +1,4 @@
-# PTO Admin
+# POAO Admin
 
 Web app for administrasjon av POAO sine apper
 

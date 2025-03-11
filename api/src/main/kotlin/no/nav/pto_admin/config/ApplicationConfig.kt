@@ -28,10 +28,6 @@ import org.springframework.context.annotation.Configuration
 @EnableConfigurationProperties(EnvironmentProperties::class)
 class ApplicationConfig {
 
-   companion object {
-       const val APPLICATION_NAME = "pto-admin"
-   }
-
     @Bean
     fun aktorOppslagClient(systemUserTokenProvider: SystemUserTokenProvider): AktorOppslagClient {
         val pdlUrl =
