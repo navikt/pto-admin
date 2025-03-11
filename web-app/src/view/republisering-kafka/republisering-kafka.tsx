@@ -3,6 +3,7 @@ import { Card } from '../../component/card/card';
 import {
 	JobId,
 	republiserEndringPaaDialog,
+	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserOppfolgingsperiodeForBruker,
 	republiserSiste14aVedtak,
@@ -37,6 +38,12 @@ export function RepubliseringKafka() {
 				tittel="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)"
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser endring på spesifikk oppfølgingsbruker i veilarbarena"
+				beskrivelse="Republiser endring på spesifikk oppfølgingsbruker i veilarbarena"
+				inputLabel="Fødselsnummer"
+				request={republiserEndringPaaOppfolgingsbruker}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser oppfølgingsperiode for bruker"
