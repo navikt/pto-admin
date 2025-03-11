@@ -10,7 +10,6 @@ spec:
   port: 8080
   webproxy: true
   ingresses:
-    - https://pto-admin.dev.intern.nav.no # This is deprecated
     - https://pto-admin.intern.dev.nav.no
   prometheus:
     enabled: true
