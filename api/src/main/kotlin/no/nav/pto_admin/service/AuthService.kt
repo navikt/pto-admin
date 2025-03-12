@@ -10,7 +10,11 @@ class AuthService(
 ) {
 
     fun hentInnloggetBrukerNavn(): String {
-        return getLoggedInUserToken().getClaim("NAVident").toString()
+        val navIdent = getLoggedInUserToken().getStringClaim("NAVident")
+        if (navIdent == null) {
+            throw RuntimeException("NAVident claim was null")
+        }
+        return navIdent
     }
 
 	fun hentInnloggetBrukerAzureId(): String {
@@ -18,6 +22,6 @@ class AuthService(
 	}
 
     private fun getLoggedInUserToken(): JWTClaimsSet {
-        return authContextHolder.idTokenClaims.get()
+        return authContextHolder.idTokenClaims.orElseThrow { RuntimeException("ID token claims not found") }
     }
 }
