@@ -60,6 +60,7 @@ dependencies {
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
     testImplementation(libs.com.squareup.okhttp3.mockwebserver)
+    testRuntimeOnly(libs.org.junit.platform.junit.platform.launcher)
 }
 
 group = "no.nav.pto-admin"

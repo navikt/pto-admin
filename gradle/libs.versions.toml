@@ -23,6 +23,7 @@ org-springframework-boot-spring-boot-starter-test = "3.4.3"
 org-springframework-boot-spring-boot-starter-webflux = "3.4.3"
 org-springframework-cloud-spring-cloud-starter-gateway = "4.2.0"
 org-springframework-security-spring-security-test = "6.4.2"
+org-junit-platform-junit-platform-launcher = "1.10.0"
 
 [libraries]
 com-fasterxml-jackson-module-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "com-fasterxml-jackson-module-jackson-module-kotlin" }
@@ -43,6 +44,7 @@ no-nav-security-mock-oauth2-server = { module = "no.nav.security:mock-oauth2-ser
 org-jetbrains-kotlin-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "org-jetbrains-kotlin-kotlin-reflect" }
 org-jetbrains-kotlin-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "org-jetbrains-kotlin-kotlin-stdlib-jdk8" }
 org-mockito-kotlin-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "org-mockito-kotlin-mockito-kotlin" }
+org-junit-platform-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "org-junit-platform-junit-platform-launcher" }
 org-springframework-boot-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "org-springframework-boot-spring-boot-configuration-processor" }
 org-springframework-boot-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "org-springframework-boot-spring-boot-starter-actuator" }
 org-springframework-boot-spring-boot-starter-cache = { module = "org.springframework.boot:spring-boot-starter-cache", version.ref = "org-springframework-boot-spring-boot-starter-cache" }
