@@ -36,8 +36,6 @@ dependencies {
     implementation(libs.org.springframework.boot.spring.boot.starter.cache)
     implementation(libs.org.springframework.boot.spring.boot.starter.actuator)
     implementation(libs.org.springframework.boot.spring.boot.starter.logging)
-
-    implementation(libs.org.springframework.boot.spring.boot.starter.oauth2.client)
     implementation(libs.org.springframework.cloud.spring.cloud.starter.gateway)
     implementation(libs.no.nav.poao.tilgang.client)
     implementation(libs.org.jetbrains.kotlin.kotlin.reflect)
@@ -55,6 +53,8 @@ dependencies {
     implementation(libs.no.nav.common.kafka)
     implementation(libs.com.squareup.okhttp3.okhttp)
     implementation(libs.org.springframework.boot.spring.boot.configuration.processor)
+
+    testImplementation(libs.org.springframework.boot.spring.boot.starter.oauth2.client)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security)
     testImplementation(libs.org.springframework.security.spring.security.test)
     testImplementation(libs.no.nav.security.mock.oauth2.server)
