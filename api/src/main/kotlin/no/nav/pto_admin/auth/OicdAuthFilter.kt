@@ -10,12 +10,6 @@ import no.nav.common.auth.utils.TokenUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.ReactiveSecurityContextHolder
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextImpl
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
@@ -61,7 +55,7 @@ class OicdAuthFilter(
                     }
 
                     val authContext = AuthContext(userRole, jwtToken)
-                    
+
                     return chain.filter(exchange)
                         .contextWrite { it.put("authContext", authContext) }
 
