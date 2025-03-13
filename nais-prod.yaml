@@ -47,7 +47,18 @@ spec:
       rules:
         - application: veilarboppfolging
           namespace: poao
-          cluster: prod-gcp
+        - application: veilarbarena
+          namespace: pto
+          cluster: prod-fss
+        - application: veilarbdialog
+          namespace: dab
+        - application: poao-tilgang
+          namespace: poao
+        - application: veilarbportefolje
+          namespace: obo
+        - application: veilarbvedtaksstotte
+          namespace: poao
+
   vault:
     enabled: true
     paths:
@@ -55,16 +66,16 @@ spec:
         mountPath: /var/run/secrets/nais.io/service_user
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
-      value: https://veilarbvedtaksstotte.intern.nav.no
+      value: http://veilarbvedtaksstotte.obo
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://veilarboppfolging-gcp.intern.nav.no
+      value: http://veilarboppfolging.poao
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.intern.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
-      value: https://veilarbdialog.nais.adeo.no
+      value: http://veilarbdialog.dab
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
-      value: https://veilarbportefolje.intern.nav.no
+      value: http://veilarbportefolje.obo
     - name: POAO_TILGANG_URL
-      value: https://poao-tilgang.intern.nav.no
+      value: https://poao-tilgang.poao
     - name: POAO_TILGANG_SCOPE
       value: api://prod-gcp.poao.poao-tilgang/.default
