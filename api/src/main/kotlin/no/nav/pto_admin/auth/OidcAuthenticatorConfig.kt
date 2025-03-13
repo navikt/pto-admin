@@ -2,6 +2,7 @@ package no.nav.pto_admin.auth
 
 import no.nav.common.auth.oidc.filter.UserRoleResolver
 import org.springframework.http.server.reactive.ServerHttpRequest
+import java.net.http.HttpHeaders
 
 fun interface TokenFinder {
     fun findToken(request: ServerHttpRequest): String?
@@ -19,6 +20,6 @@ data class OidcAuthenticatorConfig(
 
     // Retrieves the id token from incoming requests (optional)
     var idTokenFinder: TokenFinder = TokenFinder { request ->
-        request.headers.get("Authrorization")?.single()?.removePrefix("Bearer ")
+        request.headers.get("Authorization")?.single()?.removePrefix("Bearer ")
     }
 )
