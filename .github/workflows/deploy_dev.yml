@@ -80,3 +80,20 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais-dev.yaml
           VAR: image=${{ needs.test-build-and-push.outputs.image }}
+
+  deploy-prod:
+    name: Deploy application to prod
+    needs: test-build-and-push
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy application
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: nais-prod.yaml
+          VAR: image=${{ needs.test-build-and-push.outputs.image }}
