@@ -25,20 +25,6 @@ import org.springframework.context.annotation.Configuration
 class ApplicationConfig {
 
     @Bean
-    fun aktorOppslagClient(azureAdMachineToMachineTokenClient: AzureAdMachineToMachineTokenClient): AktorOppslagClient {
-        val pdlUrl =
-            if (EnvironmentUtils.isProduction().orElseThrow()) UrlUtils.createProdInternalIngressUrl("pdl-api")
-            else UrlUtils.createDevInternalIngressUrl("pdl-api")
-        val pdlClient = PdlClientImpl(
-            pdlUrl,
-            { azureAdMachineToMachineTokenClient.createMachineToMachineToken("api://pdl/.default") },
-            "B123"
-        )
-
-        return CachedAktorOppslagClient(PdlAktorOppslagClient(pdlClient))
-    }
-
-    @Bean
     fun azureAdMachineToMachineTokenClient(): AzureAdMachineToMachineTokenClient {
         return AzureAdTokenClientBuilder.builder()
             .withNaisDefaults()
