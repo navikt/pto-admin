@@ -26,7 +26,7 @@ class FilterConfig: WebFluxConfigurer {
     fun customFilter(properties: EnvironmentProperties): WebFilter {
         val naisAzureAdConfig = naisAzureAdConfig(properties)
         val config = OidcAuthenticator.fromConfigs(naisAzureAdConfig)
-        val excludePathPattern = PathPatternParser().parse("/internal/*")
+        val excludePathPattern = PathPatternParser().parse("/internal/**")
         val authenticationFilter = OicdAuthFilter(config, excludePathPattern)
         return authenticationFilter
     }
