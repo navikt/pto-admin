@@ -74,3 +74,7 @@ spec:
       value: https://poao-tilgang.poao
     - name: POAO_TILGANG_SCOPE
       value: api://prod-gcp.poao.poao-tilgang/.default
+    - name: PDLPIP_SCOPE
+      value: api://prod-fss.pdl.pdl-pip-api/.default
+    - name: PDLPIP_URL
+      value: https://pdl-pip-api.prod-fss-pub.nais.io

@@ -2,15 +2,10 @@ package no.nav.pto_admin.config
 
 import no.nav.common.auth.context.AuthContextHolder
 import no.nav.common.auth.context.AuthContextHolderThreadLocal
-import no.nav.common.client.aktoroppslag.AktorOppslagClient
-import no.nav.common.client.aktoroppslag.CachedAktorOppslagClient
-import no.nav.common.client.aktoroppslag.PdlAktorOppslagClient
-import no.nav.common.client.pdl.PdlClientImpl
 import no.nav.common.token_client.builder.AzureAdTokenClientBuilder
 import no.nav.common.token_client.client.AzureAdMachineToMachineTokenClient
 import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
 import no.nav.common.utils.EnvironmentUtils
-import no.nav.common.utils.UrlUtils
 import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
 import no.nav.poao_tilgang.client.PoaoTilgangClient
 import no.nav.poao_tilgang.client.PoaoTilgangHttpClient

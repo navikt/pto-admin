@@ -58,3 +58,5 @@ app:
     poaoTilgangScope: ${POAO_TILGANG_SCOPE:#{null}}
     naisAadDiscoveryUrl: ${AZURE_APP_WELL_KNOWN_URL}
     naisAadClientId: ${AZURE_APP_CLIENT_ID}
+    pdlpipUrl: ${PDLPIP_URL}
+    pdlpipScope: ${PDLPIP_SCOPE}
