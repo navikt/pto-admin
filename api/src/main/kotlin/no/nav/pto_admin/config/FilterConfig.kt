@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.config.WebFluxConfigurer
 import org.springframework.web.server.WebFilter
+import org.springframework.web.util.pattern.PathPatternParser
 
 
 @Configuration
@@ -25,7 +26,8 @@ class FilterConfig: WebFluxConfigurer {
     fun customFilter(properties: EnvironmentProperties): WebFilter {
         val naisAzureAdConfig = naisAzureAdConfig(properties)
         val config = OidcAuthenticator.fromConfigs(naisAzureAdConfig)
-        val authenticationFilter = OicdAuthFilter(config)
+        val excludePathPattern = PathPatternParser().parse("/internal/*")
+        val authenticationFilter = OicdAuthFilter(config, excludePathPattern)
         return authenticationFilter
     }
 }

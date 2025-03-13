@@ -15,15 +15,22 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
+import org.springframework.web.util.pattern.PathPattern
 import reactor.core.publisher.Mono
 import java.text.ParseException
 
-class OicdAuthFilter(private val oidcAuthenticators: List<OidcAuthenticator>): WebFilter {
+class OicdAuthFilter(
+    private val oidcAuthenticators: List<OidcAuthenticator>,
+    private val excludePathPattern: PathPattern,
+): WebFilter {
 
     override fun filter(
         exchange: ServerWebExchange,
         chain: WebFilterChain
     ): Mono<Void> {
+        if (excludePathPattern.matches(exchange.request.path.pathWithinApplication())) {
+            return Mono.empty()
+        }
 
         val request = exchange.request
         val response = exchange.response
