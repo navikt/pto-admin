@@ -29,7 +29,7 @@ class OicdAuthFilter(
         chain: WebFilterChain
     ): Mono<Void> {
         if (excludePathPattern.matches(exchange.request.path.pathWithinApplication())) {
-            return Mono.empty()
+            return chain.filter(exchange)
         }
 
         val request = exchange.request
@@ -57,7 +57,7 @@ class OicdAuthFilter(
                     val authContext = AuthContext(userRole, jwtToken)
 
                     AuthContextHolderThreadLocal.instance()
-                        .withContext(authContext, UnsafeRunnable { chain.filter(exchange) })
+                        .withContext(authContext, UnsafeRunnable { chain.filter(exchange).subscribe() })
 
                     return Mono.empty()
                 } catch (exception: ParseException) {
