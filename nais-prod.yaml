@@ -42,6 +42,7 @@ spec:
       claims:
         groups:
           - id: 6844decc-33c2-421f-b8e9-d1015f497174
+          - id: 4cef0954-8ed7-498b-ac14-41e197eb4050
   accessPolicy:
     outbound:
       rules:
