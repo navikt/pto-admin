@@ -5,19 +5,25 @@ import com.nimbusds.jose.proc.BadJOSEException
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.openid.connect.sdk.validators.BadJWTExceptions
 import no.nav.common.auth.context.AuthContext
-import no.nav.common.auth.context.AuthContextHolderThreadLocal
 import no.nav.common.auth.oidc.UserRoleNullException
 import no.nav.common.auth.utils.TokenUtils
-import no.nav.common.utils.fn.UnsafeRunnable
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextImpl
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import org.springframework.web.util.pattern.PathPattern
+
 import reactor.core.publisher.Mono
 import java.text.ParseException
+
 
 class OicdAuthFilter(
     private val oidcAuthenticators: List<OidcAuthenticator>,
@@ -55,11 +61,10 @@ class OicdAuthFilter(
                     }
 
                     val authContext = AuthContext(userRole, jwtToken)
+                    
+                    return chain.filter(exchange)
+                        .contextWrite { it.put("authContext", authContext) }
 
-                    AuthContextHolderThreadLocal.instance()
-                        .withContext(authContext, UnsafeRunnable { chain.filter(exchange).subscribe() })
-
-                    return Mono.empty()
                 } catch (exception: ParseException) {
                     if (exception === BadJWTExceptions.EXPIRED_EXCEPTION) {
                         logger.info("Token validation failed", exception)

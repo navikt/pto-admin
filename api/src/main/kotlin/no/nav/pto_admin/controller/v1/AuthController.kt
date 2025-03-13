@@ -11,8 +11,9 @@ import reactor.core.publisher.Mono
 class AuthController(val authService: AuthService) {
 
     @GetMapping("/me")
-    fun me(): User {
-        return User(navn = authService.hentInnloggetBrukerNavn())
+    fun me(): Mono<User> {
+        return authService.hentInnloggetBrukerNavn()
+            .map { User(navn = it) }
     }
 
     data class User(val navn: String)
