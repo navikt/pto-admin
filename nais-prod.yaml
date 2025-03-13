@@ -59,11 +59,6 @@ spec:
         - application: veilarbvedtaksstotte
           namespace: poao
 
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /serviceuser/data/prod/srvpto-admin
-        mountPath: /var/run/secrets/nais.io/service_user
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
       value: http://veilarbvedtaksstotte.obo
