@@ -17,6 +17,7 @@ import org.springframework.web.util.pattern.PathPattern
 
 import reactor.core.publisher.Mono
 import java.text.ParseException
+import kotlin.math.log
 
 
 class OicdAuthFilter(
@@ -44,6 +45,7 @@ class OicdAuthFilter(
 
                     // Skip this authenticator if the audience is not matching
                     if (!TokenUtils.hasMatchingAudience(jwtToken, authenticator.config.clientIds)) {
+                        logger.warn("Token audience does not match ${authenticator.config.clientIds} - ${jwtToken.jwtClaimsSet.audience}")
                         continue
                     }
 
@@ -80,9 +82,12 @@ class OicdAuthFilter(
                 } catch (e: UserRoleNullException) {
                     logger.error("User roll is null")
                 }
+            } else {
+                logger.warn("No token found in request")
             }
         }
 
+        logger.warn("Fallback to unauthorized")
         response.statusCode = HttpStatus.UNAUTHORIZED
         return Mono.empty()
     }
