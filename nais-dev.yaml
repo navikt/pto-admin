@@ -58,6 +58,9 @@ spec:
           namespace: obo
         - application: veilarbvedtaksstotte
           namespace: poao
+        - application: pdl-pip-api
+          namespace: pdl
+          cluster: dev-fss
 
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
