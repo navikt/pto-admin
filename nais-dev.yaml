@@ -44,6 +44,8 @@ spec:
       allowAllUsers: true
   accessPolicy:
     outbound:
+      external:
+        - host: pdl-api.dev-fss-pub.nais.io
       rules:
         - application: veilarboppfolging
           namespace: poao
