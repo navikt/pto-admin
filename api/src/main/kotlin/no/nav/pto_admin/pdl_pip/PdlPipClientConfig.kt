@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class PdlPipClientConfig(
-	@Value("\${pdlpip.url}") val pdlpipUrl: String,
-	@Value("\${pdlpip.scope}") val pdlpipScope: String,
+	@Value("\${app.env.pdlpipUrl}") val pdlpipUrl: String,
+	@Value("\${app.env.pdlpipScope}") val pdlpipScope: String,
 ) {
 
 	@Bean
