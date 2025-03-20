@@ -74,7 +74,7 @@ spec:
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
       value: http://veilarbportefolje.obo
     - name: POAO_TILGANG_URL
-      value: https://poao-tilgang.poao
+      value: http://poao-tilgang.poao
     - name: POAO_TILGANG_SCOPE
       value: api://dev-gcp.poao.poao-tilgang/.default
     - name: PDLPIP_SCOPE
