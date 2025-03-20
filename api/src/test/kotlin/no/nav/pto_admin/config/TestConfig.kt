@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Import
 
 @Configuration
 @Import(value = [
-    WebSecurityConfig::class,
     GatewayConfig::class,
     PingController::class,
     IdentOppslagController::class,
@@ -24,6 +23,8 @@ import org.springframework.context.annotation.Import
     TilgangOppslagV2Controller::class,
     TilgangOppslagService::class,
     AuthController::class,
-	AuthService::class
+	AuthService::class,
+    FilterTestConfig::class,
+    TestAuthContextFilter::class
 ])
 class TestConfig
