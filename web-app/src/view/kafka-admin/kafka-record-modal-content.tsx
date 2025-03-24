@@ -3,8 +3,8 @@ import { KafkaRecord } from '../../api/kafka-admin';
 import './kafka-record-modal-content.less';
 import { isJson, NO_OP } from '../../utils';
 import { toTimestamp } from '../../utils/date-utils';
-import ReactJson from 'react-json-view';
 import { BodyShort, Label, Textarea, TextField } from '@navikt/ds-react';
+import ReactJson from '@microlink/react-json-view';
 
 export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 	if (props.record == null) {
@@ -44,7 +44,7 @@ export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 			{isRecordValueJson ? (
 				<ReactJson name={false} src={JSON.parse(safeValue)} />
 			) : (
-				<Textarea tellerTekst={() => null} value={safeValue} readOnly={true} onChange={NO_OP} />
+				<Textarea value={safeValue} readOnly={true} onChange={NO_OP} />
 			)}
 		</div>
 	);
