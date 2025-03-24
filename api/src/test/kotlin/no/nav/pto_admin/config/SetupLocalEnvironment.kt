@@ -12,12 +12,12 @@ object SetupLocalEnvironment {
 
     fun setup() {
         setupNaisProperties()
-        startOAuth2MockServer()
+//        startOAuth2MockServer()
         startTargetProxyApps()
     }
 
     fun setupNaisProperties() {
-        System.setProperty(EnvironmentUtils.NAIS_APP_NAME_PROPERTY_NAME, "pto-admin")
+        System.setProperty(EnvironmentUtils.NAIS_APP_NAME_PROPERTY_NAME, "poao-admin")
         System.setProperty(EnvironmentUtils.NAIS_CLUSTER_NAME_PROPERTY_NAME, EnvironmentUtils.DEV_CLUSTERS.firstOrNull())
     }
 
@@ -35,7 +35,7 @@ object SetupLocalEnvironment {
 
         server.start()
 
-        System.setProperty("AZURE_APP_CLIENT_ID", "pto-admin")
+        System.setProperty("AZURE_APP_CLIENT_ID", "poao-admin")
         System.setProperty("AZURE_OPENID_CONFIG_ISSUER", server.issuerUrl(issuerId).toString())
         System.setProperty("AZURE_OPENID_CONFIG_JWKS_URI", server.jwksUrl(issuerId).toString())
     }

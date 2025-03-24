@@ -1,17 +1,16 @@
 kind: Application
 apiVersion: nais.io/v1alpha1
 metadata:
-  name: pto-admin
-  namespace: pto
+  name: poao-admin
+  namespace: poao
   labels:
-    team: pto
+    team: poao
 spec:
   image: {{image}}
   port: 8080
   webproxy: true
   ingresses:
-    - https://pto-admin.dev.intern.nav.no # This is deprecated
-    - https://pto-admin.intern.dev.nav.no
+    - https://poao-admin.intern.dev.nav.no
   prometheus:
     enabled: true
     path: /internal/prometheus
@@ -32,36 +31,55 @@ spec:
     requests:
       cpu: 250m
       memory: 512Mi
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   azure:
+    sidecar:
+      enabled: true
+      autoLogin: true
     application:
       enabled: true
       allowAllUsers: true
   accessPolicy:
     outbound:
+      external:
+        - host: pdl-api.dev-fss-pub.nais.io
       rules:
         - application: veilarboppfolging
           namespace: poao
-          cluster: dev-gcp
+        - application: veilarbarena
+          namespace: pto
+          cluster: dev-fss
+        - application: veilarbdialog
+          namespace: dab
+        - application: poao-tilgang
+          namespace: poao
+        - application: veilarbportefolje
+          namespace: obo
+        - application: veilarbvedtaksstotte
+          namespace: poao
+        - application: pdl-pip-api
+          namespace: pdl
+          cluster: dev-fss
 
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /serviceuser/data/dev/srvpto-admin
-        mountPath: /var/run/secrets/nais.io/service_user
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
-      value: https://veilarbvedtaksstotte.intern.dev.nav.no
+      value: http://veilarbvedtaksstotte.obo
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
-      value: https://veilarboppfolging.intern.dev.nav.no
+      value: http://veilarboppfolging.poao
     - name: VEILARBARENA_ADMIN_API_URL
       value: https://veilarbarena.intern.dev.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
-      value: https://veilarbdialog-q1.nais.preprod.local
+      value: http://veilarbdialog.dab
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
-      value: https://veilarbportefolje.intern.dev.nav.no
+      value: http://veilarbportefolje.obo
     - name: POAO_TILGANG_URL
-      value: https://poao-tilgang.intern.dev.nav.no
+      value: http://poao-tilgang.poao
     - name: POAO_TILGANG_SCOPE
       value: api://dev-gcp.poao.poao-tilgang/.default
-  envFrom:
-    - configmap: pto-config
+    - name: PDLPIP_SCOPE
+      value: api://dev-fss.pdl.pdl-pip-api/.default
+    - name: PDLPIP_URL
+      value: https://pdl-pip-api.dev-fss-pub.nais.io

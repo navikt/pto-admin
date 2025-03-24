@@ -3,13 +3,10 @@ package no.nav.pto_admin.controller.v2
 import no.nav.common.types.identer.NavIdent
 import no.nav.common.types.identer.NorskIdent
 import no.nav.pto_admin.config.ApplicationTestConfig
-import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.TilgangOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
@@ -22,15 +19,16 @@ import reactor.core.publisher.Mono
 )
 class TilgangOppslagV2ControllerTest {
 
-    init {
-        SetupLocalEnvironment.setup()
-    }
-
-    @Autowired
-    private lateinit var webClient: WebTestClient
-
     @MockitoBean
     private lateinit var tilgangOppslagService: TilgangOppslagService
+
+    private val webClient: WebTestClient by lazy {
+        WebTestClient.bindToController(
+            TilgangOppslagV2Controller(
+                tilgangOppslagService
+            )
+        ).build()
+    }
 
     @Test
     fun harSkrivetilgang__skal_returnere_har_tilgang_false() {
@@ -133,6 +131,6 @@ class TilgangOppslagV2ControllerTest {
     }
 
     fun loggedInWebClient(): WebTestClient {
-        return webClient.mutateWith(SecurityMockServerConfigurers.mockOidcLogin())
+        return webClient
     }
 }

@@ -13,7 +13,7 @@ class AuthController(val authService: AuthService) {
     @GetMapping("/me")
     fun me(): Mono<User> {
         return authService.hentInnloggetBrukerNavn()
-            .map { User(it ?: "Ukjent") }
+            .map { User(navn = it) }
     }
 
     data class User(val navn: String)

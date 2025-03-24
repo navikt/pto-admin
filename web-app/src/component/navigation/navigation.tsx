@@ -15,7 +15,7 @@ export function Navigation() {
 	return (
 		<header className="navigation">
 			<div className="navigation__innhold">
-				<h1>PTO Admin</h1>
+				<h1>POAO Admin</h1>
 				<Select label="PTO Admin" className="navigation__visning-velger" value={view} onChange={handleOnChange}>
 					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
 					<option value={ViewType.UTRULLING_VEDTAKSSTOTTE}>Utrulling vedtaksstøtte</option>
