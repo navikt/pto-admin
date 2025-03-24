@@ -33,17 +33,18 @@ class GatewayConfig {
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
 				val urlString = exchange.request.path.toString()
                 log.info("kommer inn med url: ${urlString}")
+                val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
+                if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
                 val bearerToken: String =
                     if (urlString.contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")
-                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBPORTEFOLJE)
+                        azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBPORTEFOLJE, token)
                     } else if (urlString.contains("veilarbvedtaksstotte")) {
                         log.info("Bruker veilarbvedtaksstotte azureAd token")
-                        azureSystemTokenProvider.getSystemToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE)
+                        azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE, token)
                     } else if (urlString.contains("veilarboppfolging")) {
                         log.info("Bruker veilarboppfolging azureAd token")
-                        val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
-                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
+                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBOPPFOLGING, token)
                     } else {
                         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ukjent proxy url ${urlString}")
