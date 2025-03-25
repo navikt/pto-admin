@@ -111,6 +111,10 @@ export function batchAvsluttOppfolging(payload: { aktorIds: string[], begrunnels
 	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttBrukere`, payload);
 }
 
+export function avsluttOppfolgingsperiode(payload: { aktorId: string, begrunnelse: string, oppfolgingsperiodeUuid: string }): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
+}
+
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);

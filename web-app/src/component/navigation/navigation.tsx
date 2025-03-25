@@ -22,7 +22,7 @@ export function Navigation() {
 					<option value={ViewType.REPUBLISERING_KAFKA}>Republisering Kafka</option>
 					<option value={ViewType.KAFKA_ADMIN}>Kafka Admin</option>
 					<option value={ViewType.VEILARBPORTEFOLJE}>Veilarbportefolje</option>
-					<option value={ViewType.AVSLUTT_BRUKERE}>Avslutt oppfølging for mange brukere</option>
+					<option value={ViewType.AVSLUTT_BRUKERE}>Avslutt oppfølging</option>
 				</Select>
 			</div>
 			<BodyShort>{loggedInUser?.navn || ''}</BodyShort>
