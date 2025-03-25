@@ -35,20 +35,22 @@ class ApplicationConfig {
 
     @Bean
     fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient, oboClient: AzureAdOnBehalfOfTokenClient): AzureSystemTokenProvider {
-        val veilarbportefoljeTokenProvider: (token: String) -> String = {
-            tokenClient.createMachineToMachineToken(
+        val veilarbportefoljeTokenProvider: (token: String) -> String = { token ->
+            oboClient.exchangeOnBehalfOfToken(
                 String.format(
                     "api://%s-gcp.obo.veilarbportefolje/.default",
                     if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                )
+                ),
+                token
             )
         }
-        val veilarbvedtaksstotteTokenProvider: (token: String) -> String = {
-            tokenClient.createMachineToMachineToken(
+        val veilarbvedtaksstotteTokenProvider: (token: String) -> String = { token ->
+            oboClient.exchangeOnBehalfOfToken(
                 String.format(
                     "api://%s-gcp.obo.veilarbvedtaksstotte/.default",
                     if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                )
+                ),
+                token
             )
         }
         val veilarboppfolgingTokenProvider: (token: String) -> String = { token ->
