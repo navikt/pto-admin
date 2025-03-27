@@ -63,7 +63,7 @@ spec:
         - application: veilarbportefolje
           namespace: obo
         - application: veilarbvedtaksstotte
-          namespace: poao
+          namespace: obo
         - application: pdl-pip-api
           namespace: pdl
           cluster: prod-fss
