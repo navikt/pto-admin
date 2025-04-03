@@ -1,4 +1,4 @@
-import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api';
+import {avsluttBrukereUtenFnr, avsluttOppfolgingsperiode, batchAvsluttOppfolging} from '../../api';
 import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
 import { Button, TextField } from '@navikt/ds-react';
@@ -8,6 +8,7 @@ export function AvsluttOppfolging() {
 		<div style={{ display: 'flex' }}>
 			<AvsluttOppfolgingForMangeBrukereCard />
 			<AvsluttOppfolgingsperiode />
+			<AvsluttBrukereUtenFnr />
 		</div>
 	);
 }
@@ -95,3 +96,46 @@ function AvsluttOppfolgingsperiode() {
 		</Card>
 	);
 }
+
+function AvsluttBrukereUtenFnr() {
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [antall, setAntall] = useState('');
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+
+		const antallStr = formData.get('antall') as string;
+		const antallNum = parseInt(antallStr, 10);
+
+		if (isNaN(antallNum) || antallNum <= 0) {
+			setError('Antall må være et positivt tall');
+			return;
+		}
+
+		try {
+			setError(undefined);
+			await avsluttBrukereUtenFnr({ antall: antallNum });
+		} catch (e: any) {
+			setError(e?.toString());
+		}
+	}
+
+	return (
+		<Card title="Avslutt brukere uten fnr" className="small-card" innholdClassName="hovedside__card-innhold">
+			<form onSubmit={handleSubmit}>
+				<TextField
+					label="Antall"
+					name="antall"
+					value={antall}
+					onChange={e => setAntall(e.target.value.replace(/\D/, ''))} // Hindrer ikke-numeriske tegn
+				/>
+
+				{error && <div className="error-message">{error}</div>}
+
+				<Button type="submit">Avslutt brukere</Button>
+			</form>
+		</Card>
+	);
+}
+
