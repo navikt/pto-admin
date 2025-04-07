@@ -38,7 +38,7 @@
     "@types/react-modal": "3.16.3",
     "axios": "1.8.4",
     "classnames": "2.5.1",
-    "constate": "3.3.2",
+    "constate": "3.3.3",
     "dayjs": "1.11.13",
     "less": "^4.2.2",
     "prop-types": "15.8.1",
