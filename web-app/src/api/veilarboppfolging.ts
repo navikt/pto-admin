@@ -36,6 +36,6 @@ interface OppfolgingsPeriode {
 }
 
 export function hentOppfolgingsperioder(payload: { fnr: string }): Promise<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/graphql`, graphqlBody)
+	return axiosInstance.post(`/api/veilarboppfolging/graphql`, graphqlBody)
 		.then(response => response.data);
 }
