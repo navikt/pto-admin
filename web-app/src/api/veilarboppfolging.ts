@@ -2,15 +2,15 @@ import { AxiosPromise } from 'axios';
 import { axiosInstance, JobId } from './index';
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {aktorId});
+	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {aktorId});
 }
 
 export function batchAvsluttOppfolging(payload: { aktorIds: string[], begrunnelse: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttBrukere`, payload);
+	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttBrukere`, payload);
 }
 
 export function avsluttOppfolgingsperiode(payload: { aktorId: string, begrunnelse: string, oppfolgingsperiodeUuid: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
+	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
 }
 
 
