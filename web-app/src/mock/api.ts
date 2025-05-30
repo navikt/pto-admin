@@ -3,6 +3,7 @@ import { UtrulletEnhet } from '../api';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 import { HttpStatusCode } from 'axios';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
+import { Dialog } from '../api/veilarbdialog';
 
 const utrulledeEnheter: UtrulletEnhet[] = [
 	{
@@ -227,5 +228,55 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(192837465);
+	}),
+	http.post(`/api/admin/veilarboppfolging/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				oppfolgingsPerioder: [
+					{
+						startTidspunkt: '2024-01-01',
+						sluttTidspunkt: null,
+						id: '123'
+					},
+					{
+						startTidspunkt: '2021-01-01',
+						sluttTidspunkt: '2021-01-01',
+						id: '121'
+					}
+				]
+			}
+		});
+	}),
+	http.post(`/api/admin/veilarbdialog/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				dialoger: [
+					{
+						opprettetDato: '2021-01-01',
+						ferdigBehandlet: true,
+						lest: true,
+						venterPaSvar: true,
+						historisk: false,
+						id: '121',
+						sisteDato: '2021-01-01',
+						erLestAvBruker: true,
+						oppfolgingsperiode: '123'
+					},
+					{
+						opprettetDato: '2025-01-01',
+						ferdigBehandlet: true,
+						lest: true,
+						venterPaSvar: true,
+						historisk: false,
+						id: '123',
+						sisteDato: '2021-01-01',
+						erLestAvBruker: true,
+						oppfolgingsperiode: '123'
+					}	
+				] satisfies Dialog[]
+			}
+		});
 	}),
 ];

@@ -149,7 +149,7 @@ const BrukerDataCard = () => {
 		<Card className="small-card" innholdClassName="hovedside__card-innhold">
 			<Heading size="medium">Brukerdata</Heading>
 			<form onSubmit={fetchBrukerData}>
-				<TextField label={"Fnr"} />
+				<TextField name='fnr' label={"Fnr"} />
 				<Button>Hent</Button>
 			</form>
 			
