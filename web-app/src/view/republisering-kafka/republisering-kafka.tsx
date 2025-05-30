@@ -4,7 +4,6 @@ import {
 	JobId,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
-	republiserOppfolgingsperiodeForBruker,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh
 } from '../../api';
@@ -13,6 +12,7 @@ import { AxiosPromise } from 'axios';
 import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
+import { republiserOppfolgingsperiodeForBruker } from '../../api/veilarboppfolging';
 
 export function RepubliseringKafka() {
 	return (

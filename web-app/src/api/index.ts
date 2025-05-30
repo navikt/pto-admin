@@ -101,20 +101,6 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
 
-// Republisering veilarboppfolging
-
-export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {aktorId});
-}
-
-export function batchAvsluttOppfolging(payload: { aktorIds: string[], begrunnelse: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttBrukere`, payload);
-}
-
-export function avsluttOppfolgingsperiode(payload: { aktorId: string, begrunnelse: string, oppfolgingsperiodeUuid: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
-}
-
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);
