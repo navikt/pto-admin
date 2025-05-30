@@ -1,13 +1,19 @@
-import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api';
 import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Button, TextField } from '@navikt/ds-react';
+import { Button, Heading, Loader, Textarea, TextField } from '@navikt/ds-react';
+import {
+	avsluttOppfolgingsperiode,
+	batchAvsluttOppfolging,
+	hentOppfolgingsperioder
+} from '../../api/veilarboppfolging';
+import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 
 export function AvsluttOppfolging() {
 	return (
 		<div style={{ display: 'flex' }}>
 			<AvsluttOppfolgingForMangeBrukereCard />
 			<AvsluttOppfolgingsperiode />
+			<BrukerDataCard />
 		</div>
 	);
 }
@@ -35,17 +41,15 @@ function AvsluttOppfolgingForMangeBrukereCard() {
 	}
 
 	return (
-		<div className="view kafka-admin">
+		<Card className="view kafka-admin" innholdClassName="hovedside__card-innhold" >
 			<form onSubmit={handleSubmit} className="large-card card__content space-y-4">
-				<h1>Avslutt oppfølging for mange brukere</h1>
-				<label htmlFor="brukere">Liste over brukere som skal avsluttes:</label>
-				<textarea id="brukere" name="aktorIds" disabled={isLoading} />
-				<label htmlFor="begrunnelse">Begrunnelse for avsluttning av oppfølging:</label>
-				<input id="begrunnelse" type="text" name="begrunnelse" disabled={isLoading} />
-				<input type="submit" disabled={isLoading} />
+				<Heading size="medium">Avslutt oppfølging for mange brukere</Heading>
+				<Textarea label={'Liste over brukere som skal avsluttes:'} id="brukere" name="aktorIds" disabled={isLoading} />
+				<TextField label={'Begrunnelse for avsluttning av oppfølging:'} id="begrunnelse" type="text" name="begrunnelse" disabled={isLoading} />
+				<Button type="submit" disabled={isLoading} >Avslutt</Button>
 				{error || ''}
 			</form>
-		</div>
+		</Card>
 	);
 }
 
@@ -72,7 +76,8 @@ function AvsluttOppfolgingsperiode() {
 	}
 
 	return (
-		<Card title="Avslutt Oppfølgingsperiode" className="small-card" innholdClassName="hovedside__card-innhold">
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+			<Heading size="medium">Avslutt Oppfølgingsperiode</Heading>
 			<form onSubmit={handleSubmit}>
 				<TextField label="AktørId" name="aktorId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
 				<TextField
@@ -92,6 +97,93 @@ function AvsluttOppfolgingsperiode() {
 
 				<Button type="submit">Avslutt oppfølgingsperiode</Button>
 			</form>
+		</Card>
+	);
+}
+
+interface PeriodeMedDialoger {
+	id: string;
+	startTidspunkt: string;
+	sluttTidspunkt: string;
+	dialoger: Dialog[];
+}
+
+const BrukerDataCard = () => {
+	// const [dialoger, setDialoger] = useState(null)
+	const [oppfolgingsperioder, setOppfolgingsperioder] = useState<PeriodeMedDialoger[] | null>(null)
+	// const [aktiviteter, setAktiviteter] = useState(null)
+	const [error, setError] = useState<string | undefined>(undefined)
+	const [isLoading, setIsLoading] = useState(false)
+
+	const fetchBrukerData = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const fnr = formData.get('fnr') as string;
+		if (!fnr) {
+			setError('Fnr er påkrevd');
+			return;
+		}
+		setIsLoading(true)
+		Promise.all([
+			hentDialoger({ fnr }),
+			hentOppfolgingsperioder({ fnr })
+		]).then(([dialogerResponse, oppfolgingsperioderResponse]) => {
+			const dialoger = dialogerResponse?.data?.dialoger || [];
+			const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || [])
+				.map(periode => {
+					return {
+						...periode,
+						dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id)
+					}
+				})
+			setOppfolgingsperioder(perioder)
+		})
+			.catch(e => { })
+			.finally(() => {
+				setIsLoading(false)
+			})
+
+	}
+
+	return (
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+			<Heading size="medium">Brukerdata</Heading>
+			<form onSubmit={fetchBrukerData}>
+				<TextField label={"Fnr"} />
+				<Button>Hent</Button>
+			</form>
+			
+			<p>Her kan du vise brukerdata.</p>
+			{ isLoading && <Loader size="small" /> }
+			{ error && <div className="error-message">{error}</div> }
+			{ oppfolgingsperioder && oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
+				<div key={periode.id} className="mt-4">
+					<div className="font-bold">Oppfølgingsperiode</div>
+					<div className="ml-4">
+						<div>Start: {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
+						<div>Slutt: {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
+						
+						<div className="mt-2 font-bold">Dialoger ({periode.dialoger.length})</div>
+						{periode.dialoger.map(dialog => (
+							<div key={dialog.id} className="ml-4 mt-1">
+								<div>DialogId: {dialog.id}</div>
+								<details>
+									<summary>Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}</summary>
+									<div className="ml-4">
+										<div>Venter på svar fra: {dialog.venterPaSvar}</div>
+										<div>Ferdig behandlet: {dialog.ferdigBehandlet}</div>
+										<div>Lest: {dialog.lest}</div>
+										<div>Opprettet dato: {dialog.opprettetDato}</div>
+										<div>Siste dato: {dialog.sisteDato}</div>
+										<div>Historisk: {dialog.historisk ? 'Ja' : 'Nei'}</div>
+										<div>Lest: {dialog.lest ? 'Ja' : 'Nei'}</div>
+									</div>
+								</details>
+							</div>
+						))}
+					</div>
+				</div>
+			))}
 		</Card>
 	);
 }
