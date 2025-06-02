@@ -158,7 +158,7 @@ const BrukerDataCard = () => {
 			{ error && <div className="error-message">{error}</div> }
 			{ oppfolgingsperioder && oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
 				<div key={periode.id} className="mt-4">
-					<div className="font-bold">Oppfølgingsperiode</div>
+					<div className="font-bold">Oppfølgingsperiode: { periode.id }</div>
 					<div className="ml-4">
 						<div>Start: {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
 						<div>Slutt: {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
