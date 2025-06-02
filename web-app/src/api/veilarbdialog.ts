@@ -14,8 +14,8 @@ export interface Dialog {
 }
 
 const hentDialogerQuery = `
-query hentDialoger {
-  dialoger {
+query hentDialoger($fnr: String!) {
+  dialoger(fnr: $fnr) {
 	id: String
     sisteDato: Date
     opprettetDato: Date
