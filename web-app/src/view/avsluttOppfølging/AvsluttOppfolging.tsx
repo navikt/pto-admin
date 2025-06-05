@@ -13,7 +13,7 @@ import { Button, Textarea, TextField } from '@navikt/ds-react';
 export function AvsluttOppfolging() {
 	return (
 		<div className="flex flex-1 justify-around">
-			<div className="flex flex-wrap space-x-8 p-4">
+			<div className="flex gap-8 flex-wrap space-x-8 p-4">
 				<AvsluttOppfolgingForMangeBrukereCard />
 				<AvsluttOppfolgingsperiode />
 				<BrukerDataCard />
