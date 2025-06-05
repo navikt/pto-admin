@@ -8,47 +8,67 @@ import {
 	hentOppfolgingsperioder
 } from '../../api/veilarboppfolging';
 import { Dialog, hentDialoger } from '../../api/veilarbdialog';
+import { Button, Textarea, TextField } from '@navikt/ds-react';
 
 export function AvsluttOppfolging() {
 	return (
-		<div className="flex flex-col space-y-4 space-x-4 p-4">
-			<AvsluttOppfolgingForMangeBrukereCard />
-			<AvsluttOppfolgingsperiode />
-			<BrukerDataCard />
+		<div className="flex flex-1 justify-around">
+			<div className="flex flex-wrap space-x-8 p-4">
+				<AvsluttOppfolgingForMangeBrukereCard />
+				<AvsluttOppfolgingsperiode />
+				<BrukerDataCard />
+			</div>
 		</div>
 	);
 }
 
 function AvsluttOppfolgingForMangeBrukereCard() {
+	const [aktorIds, setAktorIds] = useState('');
+	const [begrunnelse, setBegrunnelse] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(undefined);
 
 	async function handleSubmit(e: any) {
 		e.preventDefault();
-		const { aktorIds: aktorIdStrings, begrunnelse } = Object.fromEntries(new FormData(e.target)) as unknown as {
-			aktorIds: string;
-			begrunnelse: string;
-		};
-		const aktorIds = aktorIdStrings.split(',').map(aktorId => aktorId.trim());
+		const aktorIdList = aktorIds.split(',').map(id => id.trim());
 		try {
 			setError(undefined);
 			setIsLoading(true);
-			await batchAvsluttOppfolging({ aktorIds, begrunnelse });
+			await batchAvsluttOppfolging({ aktorIds: aktorIdList, begrunnelse });
 		} catch (e: any) {
-			setError(e?.toString);
+			setError(e?.toString());
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	return (
-		<Card className="">
-			<form onSubmit={handleSubmit} className="large-card card__content space-y-4">
-				<Heading size="medium">Avslutt oppfølging for mange brukere</Heading>
-				<Textarea label={'Liste over brukere som skal avsluttes:'} id="brukere" name="aktorIds" disabled={isLoading} />
-				<TextField label={'Begrunnelse for avsluttning av oppfølging:'} id="begrunnelse" type="text" name="begrunnelse" disabled={isLoading} />
-				<Button type="submit" disabled={isLoading} >Avslutt</Button>
-				{error || ''}
+		<Card
+			className="small-card"
+			innholdClassName="hovedside__card-innhold"
+		>
+			<Heading size="medium">Avslutt oppfølging for mange brukere</Heading>
+			<form onSubmit={handleSubmit} className="space-y-4">
+				<Textarea
+					label="AktørId-liste (kommaseparert)"
+					name="aktorIds"
+					value={aktorIds}
+					onChange={e => setAktorIds(e.target.value)}
+					disabled={isLoading}
+				/>
+				<TextField
+					label="Begrunnelse"
+					name="begrunnelse"
+					value={begrunnelse}
+					onChange={e => setBegrunnelse(e.target.value)}
+					disabled={isLoading}
+				/>
+
+				{error && <div className="error-message">{error}</div>}
+
+				<Button type="submit" disabled={isLoading}>
+					Avslutt oppfølging
+				</Button>
 			</form>
 		</Card>
 	);
@@ -147,7 +167,7 @@ const BrukerDataCard = () => {
 	}
 
 	return (
-		<Card className="small-card" innholdClassName=" flex flex-col space-y-4">
+		<Card className="large-card" innholdClassName=" flex flex-col space-y-4">
 			<Heading size="medium">Brukerdata</Heading>
 			<form className="space-y-4" onSubmit={fetchBrukerData}>
 				<TextField name="fnr" label={'Fnr'} />
