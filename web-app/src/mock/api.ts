@@ -229,7 +229,7 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(192837465);
 	}),
-	http.post(`/api/admin/veilarboppfolging/graphql`, async () => {
+	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
 			data: {
@@ -248,7 +248,7 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
-	http.post(`/api/admin/veilarbdialog/graphql`, async () => {
+	http.post(`/api/veilarbdialog/veilarbdialog/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
 			data: {

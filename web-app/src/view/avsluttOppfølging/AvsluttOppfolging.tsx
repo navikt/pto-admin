@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {} from '@navikt/aksel-icons/'
 import { Card } from '../../component/card/card';
 import { Button, Heading, Loader, Textarea, TextField } from '@navikt/ds-react';
 import {
@@ -10,7 +11,7 @@ import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 
 export function AvsluttOppfolging() {
 	return (
-		<div style={{ display: 'flex' }}>
+		<div className="flex flex-col space-y-4 space-x-4 p-4">
 			<AvsluttOppfolgingForMangeBrukereCard />
 			<AvsluttOppfolgingsperiode />
 			<BrukerDataCard />
@@ -41,7 +42,7 @@ function AvsluttOppfolgingForMangeBrukereCard() {
 	}
 
 	return (
-		<Card className="view kafka-admin" innholdClassName="hovedside__card-innhold" >
+		<Card className="">
 			<form onSubmit={handleSubmit} className="large-card card__content space-y-4">
 				<Heading size="medium">Avslutt oppfølging for mange brukere</Heading>
 				<Textarea label={'Liste over brukere som skal avsluttes:'} id="brukere" name="aktorIds" disabled={isLoading} />
@@ -78,7 +79,7 @@ function AvsluttOppfolgingsperiode() {
 	return (
 		<Card className="small-card" innholdClassName="hovedside__card-innhold">
 			<Heading size="medium">Avslutt Oppfølgingsperiode</Heading>
-			<form onSubmit={handleSubmit}>
+			<form className="space-y-4" onSubmit={handleSubmit}>
 				<TextField label="AktørId" name="aktorId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
 				<TextField
 					label="Begrunnelse"
@@ -146,9 +147,9 @@ const BrukerDataCard = () => {
 	}
 
 	return (
-		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+		<Card className="small-card" innholdClassName=" flex flex-col space-y-4">
 			<Heading size="medium">Brukerdata</Heading>
-			<form onSubmit={fetchBrukerData}>
+			<form className="space-y-4" onSubmit={fetchBrukerData}>
 				<TextField name="fnr" label={'Fnr'} />
 				<Button>Hent</Button>
 			</form>
