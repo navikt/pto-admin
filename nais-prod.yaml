@@ -58,6 +58,8 @@ spec:
           cluster: prod-fss
         - application: veilarbdialog
           namespace: dab
+        - application: veilarbaktivitet
+          namespace: dab
         - application: poao-tilgang
           namespace: poao
         - application: veilarbportefolje
