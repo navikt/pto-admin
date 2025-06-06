@@ -75,6 +75,8 @@ spec:
       value: https://veilarbarena.intern.dev.nav.no
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: http://veilarbdialog.dab
+    - name: VEILARBAKTIVITET_ADMIN_API_URL
+      value: http://veilarbaktivitet.dab
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
       value: http://veilarbportefolje.obo
     - name: POAO_TILGANG_URL
