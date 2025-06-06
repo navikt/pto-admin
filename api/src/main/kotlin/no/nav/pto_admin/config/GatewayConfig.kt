@@ -50,6 +50,10 @@ class GatewayConfig {
                         log.info("Bruker veilarbdialog azureAd token")
                         if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBDIALOG, token)
+                    } else if (urlString.contains("veilarbaktivitet")) {
+                        log.info("Bruker veilarbaktivitet azureAd token")
+                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
+                        azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBAKTIVITET, token)
                     } else {
                         throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ukjent proxy url ${urlString}")
                     }

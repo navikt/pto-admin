@@ -57,7 +57,6 @@ spring:
 app:
   env:
     allowedAdminUsers: ${ALLOWED_ADMIN_USERS}
-    onPremKafkaBrokersUrl: ${KAFKA_BROKERS_URL}
     poaoTilgangUrl: ${POAO_TILGANG_URL:#{null}}
     poaoTilgangScope: ${POAO_TILGANG_SCOPE:#{null}}
     naisAadDiscoveryUrl: ${AZURE_APP_WELL_KNOWN_URL}

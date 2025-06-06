@@ -279,4 +279,53 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
+	http.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				perioder: [
+					{
+						id: '123',
+						aktiviteter: [
+							{
+								id: '123321123',
+								funksjonellId: '4e123456-7890-1234-5678-901234567890',
+								versjon: 1,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							},
+							{
+								id: '125321312',
+								funksjonellId: '4e123456-7890-1234-5678-901234567891',
+								versjon: 3,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							}
+						]
+					},
+					{
+						id: '124',
+						aktiviteter: [
+							{
+								id: '124321312',
+								funksjonellId: '4e123456-7890-1234-5678-901234567892',
+								versjon: 1,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							}
+						]
+					}
+				]
+			}
+		});
+	}),
 ];

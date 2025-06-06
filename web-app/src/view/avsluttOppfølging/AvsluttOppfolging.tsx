@@ -9,6 +9,7 @@ import {
 } from '../../api/veilarboppfolging';
 import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 import { Button, Textarea, TextField } from '@navikt/ds-react';
+import { hentAktiviteter } from '../../api/veilarbaktivitet';
 
 export function AvsluttOppfolging() {
 	return (
@@ -127,6 +128,7 @@ interface PeriodeMedDialoger {
 	startTidspunkt: string;
 	sluttTidspunkt: string;
 	dialoger: Dialog[];
+	aktiviteter: Aktivitet[];
 }
 
 const BrukerDataCard = () => {
@@ -147,14 +149,17 @@ const BrukerDataCard = () => {
 		setIsLoading(true)
 		Promise.all([
 			hentDialoger({ fnr }),
-			hentOppfolgingsperioder({ fnr })
-		]).then(([dialogerResponse, oppfolgingsperioderResponse]) => {
+			hentOppfolgingsperioder({ fnr }),
+			hentAktiviteter({ fnr })
+		]).then(([dialogerResponse, oppfolgingsperioderResponse, aktiviteterResponse]) => {
+			const perioderMedAktiviteter = aktiviteterResponse?.data?.perioder || [];
 			const dialoger = dialogerResponse?.data?.dialoger || [];
 			const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || [])
 				.map(periode => {
 					return {
 						...periode,
-						dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id)
+						dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id),
+						aktiviteter: perioderMedAktiviteter.find(periodeMedAktiviteter => periodeMedAktiviteter.id === periode.id)?.aktiviteter || []
 					}
 				})
 			setOppfolgingsperioder(perioder)
@@ -186,7 +191,7 @@ const BrukerDataCard = () => {
 						
 						<div className="mt-2 font-bold">Dialoger ({periode.dialoger.length})</div>
 						{periode.dialoger.map(dialog => (
-							<div key={dialog.id} className="ml-4 mt-1">
+							<div key={dialog.id} className="ml-4 mt-1 border p-1 border-gray-300 bg-gray-50 rounded-md">
 								<div>DialogId: {dialog.id}</div>
 								<details>
 									<summary>Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}</summary>
@@ -202,6 +207,27 @@ const BrukerDataCard = () => {
 								</details>
 							</div>
 						))}
+						<div className="mt-2 space-y-2">
+							<div className="font-bold">Aktiviteter ({periode.aktiviteter.length})</div>
+						{
+							periode.aktiviteter.map(aktivitet => (
+								<div key={aktivitet.id} className="ml-4 border p-1 border-gray-300 bg-gray-50 rounded-md">
+									<div>AktivitetId: {aktivitet.id}</div>
+									<div>FunksjonellId: {aktivitet.funksjonellId}</div>
+									<details>
+										<summary>Versjon: {aktivitet.versjon}</summary>	
+										<div className="ml-4">
+											<div>Endret dato: {aktivitet.endretDato}</div>
+											<div>Opprettet dato: {aktivitet.opprettetDato}</div>
+											<div>Status: {aktivitet.status}</div>
+											<div>Historisk: {aktivitet.historisk ? 'Ja' : 'Nei'}</div>
+											<div>Type: {aktivitet.type}</div>
+										</div>
+									</details>
+								</div>
+							))
+						}
+						</div>
 					</div>
 				</div>
 			))}
