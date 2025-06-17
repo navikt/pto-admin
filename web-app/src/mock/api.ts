@@ -229,6 +229,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(192837465);
 	}),
+	http.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(6666333345);
+	}),
 	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
