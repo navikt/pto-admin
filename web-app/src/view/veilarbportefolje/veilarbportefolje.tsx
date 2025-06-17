@@ -9,7 +9,8 @@ import {
 	indekserAktoer,
 	indekserFnr,
 	JobId,
-	pdlLastInnData
+	pdlLastInnData,
+	hentEnsligForsorgerData
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -77,6 +78,11 @@ export function Veilarbportefolje() {
 				tittel="Hent PDL data"
 				beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
 				request={pdlLastInnData}
+			/>
+			<AdminKnapp
+				tittel="Hent data om overgangsstønad"
+				beskrivelse="Hent data om overgangsstønad for alle oppfølgingsbrukere."
+				request={hentEnsligForsorgerData}
 			/>
 		</div>
 	);
