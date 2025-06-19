@@ -122,5 +122,6 @@ export function pdlLastInnData(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
 }
 export function hentEnsligForsorgerData(): AxiosPromise<JobId> {
+	console.log("Startet: hentEnsligForsorgerData");
 	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`);
 }
