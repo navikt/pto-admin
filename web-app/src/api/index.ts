@@ -17,12 +17,6 @@ interface TilgangResponse {
 	harTilgang: boolean;
 }
 
-export interface UtrulletEnhet {
-	enhetId: string;
-	navn: string;
-	createdAt: string;
-}
-
 export interface User {
 	navn: string;
 }
@@ -67,18 +61,8 @@ export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<Til
 	return axiosInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
 }
 
-// Utrulling vedtaksstøtte
-
-export function rullerUtEnhet(enhetId: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
-}
-
-export function fjernUtrulling(enhetId: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.delete(`/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
-}
-
-export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
-	return axiosInstance.get(`/api/admin/veilarbvedtaksstotte/utrulling`);
+export function slett14avedtak(journalpostId: string, fnr: string, ansvarligVeileder: string, slettVedtakBestillingId: string) {
+	return axiosInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, ({journalpostId, fnr, ansvarligVeileder, slettVedtakBestillingId}));
 }
 
 // Republisering vedtaksstøtte
