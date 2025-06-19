@@ -121,3 +121,6 @@ export function getAliases(): AxiosPromise<string> {
 export function pdlLastInnData(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
 }
+export function hentEnsligForsorgerData(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`);
+}
