@@ -16,16 +16,16 @@ export interface Dialog {
 const hentDialogerQuery = `
 query hentDialoger($fnr: String!) {
   dialoger(fnr: $fnr) {
-	id: String
-    sisteDato: Date
-    opprettetDato: Date
-    historisk: Boolean
-    lest: Boolean
-    venterPaSvar: Boolean
-    ferdigBehandlet: Boolean
-    lestAvBrukerTidspunkt: Date
-    erLestAvBruker: Boolean
-    oppfolgingsperiode: String
+	id
+    sisteDato
+    opprettetDato
+    historisk
+    lest
+    venterPaSvar
+    ferdigBehandlet
+    lestAvBrukerTidspunkt
+    erLestAvBruker
+    oppfolgingsperiode
   }
 }
 `;
