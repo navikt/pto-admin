@@ -237,12 +237,12 @@ export const handlers: RequestHandler[] = [
 					{
 						startTidspunkt: '2024-01-01',
 						sluttTidspunkt: null,
-						id: '123'
+						id: '550e8400-e29b-41d4-a716-446655440000'
 					},
 					{
 						startTidspunkt: '2021-01-01',
 						sluttTidspunkt: '2021-01-01',
-						id: '121'
+						id: '550e8400-e29b-41d4-a716-446655440001'
 					}
 				]
 			}
@@ -262,7 +262,7 @@ export const handlers: RequestHandler[] = [
 						id: '121',
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
-						oppfolgingsperiode: '123'
+						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440001'
 					},
 					{
 						opprettetDato: '2025-01-01',
@@ -273,7 +273,7 @@ export const handlers: RequestHandler[] = [
 						id: '123',
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
-						oppfolgingsperiode: '123'
+						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440000'
 					}	
 				] satisfies Dialog[]
 			}
@@ -285,7 +285,7 @@ export const handlers: RequestHandler[] = [
 			data: {
 				perioder: [
 					{
-						id: '123',
+						id: '550e8400-e29b-41d4-a716-446655440000',
 						aktiviteter: [
 							{
 								id: '123321123',
@@ -310,7 +310,7 @@ export const handlers: RequestHandler[] = [
 						]
 					},
 					{
-						id: '124',
+						id: '550e8400-e29b-41d4-a716-446655440001',
 						aktiviteter: [
 							{
 								id: '124321312',

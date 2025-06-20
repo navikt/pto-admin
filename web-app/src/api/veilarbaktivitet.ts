@@ -6,7 +6,7 @@ interface PeriodeMedAktiviteter {
 	aktiviteter: Aktivitet[],
 }
 
-interface Aktivitet {
+export interface Aktivitet {
 	id: string,
 	funksjonellId: string,
 	versjon: number,
