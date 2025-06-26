@@ -17,12 +17,6 @@ interface TilgangResponse {
 	harTilgang: boolean;
 }
 
-export interface UtrulletEnhet {
-	enhetId: string;
-	navn: string;
-	createdAt: string;
-}
-
 export interface User {
 	navn: string;
 }
@@ -67,18 +61,8 @@ export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): AxiosPromise<Til
 	return axiosInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
 }
 
-// Utrulling vedtaksstøtte
-
-export function rullerUtEnhet(enhetId: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
-}
-
-export function fjernUtrulling(enhetId: string): AxiosPromise<TilgangResponse> {
-	return axiosInstance.delete(`/api/admin/veilarbvedtaksstotte/utrulling/${enhetId}`);
-}
-
-export function hentAlleUtrullinger(): AxiosPromise<UtrulletEnhet[]> {
-	return axiosInstance.get(`/api/admin/veilarbvedtaksstotte/utrulling`);
+export function slett14avedtak(journalpostId: string, fnr: string, ansvarligVeileder: string, slettVedtakBestillingId: string) {
+	return axiosInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, ({journalpostId, fnr, ansvarligVeileder, slettVedtakBestillingId}));
 }
 
 // Republisering vedtaksstøtte
@@ -99,20 +83,6 @@ export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 
 export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
-}
-
-// Republisering veilarboppfolging
-
-export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {aktorId});
-}
-
-export function batchAvsluttOppfolging(payload: { aktorIds: string[], begrunnelse: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttBrukere`, payload);
-}
-
-export function avsluttOppfolgingsperiode(payload: { aktorId: string, begrunnelse: string, oppfolgingsperiodeUuid: string }): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
 }
 
 // Veilarbportefolje admin-funksjoner
@@ -150,4 +120,8 @@ export function getAliases(): AxiosPromise<string> {
 
 export function pdlLastInnData(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
+}
+export function hentEnsligForsorgerData(): AxiosPromise<JobId> {
+	console.log("Startet: hentEnsligForsorgerData");
+	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`);
 }

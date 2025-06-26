@@ -1,36 +1,9 @@
 import { RequestHandler, http, HttpResponse, delay } from 'msw';
-import { UtrulletEnhet } from '../api';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 import { HttpStatusCode } from 'axios';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
+import { Dialog } from '../api/veilarbdialog';
 
-const utrulledeEnheter: UtrulletEnhet[] = [
-	{
-		enhetId: '1234',
-		navn: 'NAV Test1',
-		createdAt: '2021-03-25T07:45:24.787Z'
-	},
-	{
-		enhetId: '5678',
-		navn: 'NAV Test2',
-		createdAt: '2020-09-15T08:12:24.787Z'
-	},
-	{
-		enhetId: '4444',
-		navn: 'NAV Test3',
-		createdAt: '2021-02-21T09:23:24.787Z'
-	},
-	{
-		enhetId: '1111',
-		navn: 'NAV Test4',
-		createdAt: '2021-03-25T07:28:24.787Z'
-	},
-	{
-		enhetId: '7777',
-		navn: 'NAV Test5',
-		createdAt: '2021-03-20T10:37:24.787Z'
-	}
-];
 
 const antallAvsluttet = {
 	antallAvsluttet: 500,
@@ -140,17 +113,9 @@ export const handlers: RequestHandler[] = [
 			}
 		);
 	}),
-	http.post('/api/admin/veilarbvedtaksstotte/utrulling/*', async () => {
+	http.put('/api/admin/veilarbvedtaksstotte/slett-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(HttpStatusCode.Ok);
-	}),
-	http.delete('/api/admin/veilarbvedtaksstotte/utrulling/*', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
-	}),
-	http.get('/api/admin/veilarbvedtaksstotte/utrulling', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(utrulledeEnheter);
 	}),
 	http.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -227,5 +192,59 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(192837465);
+	}),
+	http.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(6666333345);
+	}),
+	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				oppfolgingsPerioder: [
+					{
+						startTidspunkt: '2024-01-01',
+						sluttTidspunkt: null,
+						id: '123'
+					},
+					{
+						startTidspunkt: '2021-01-01',
+						sluttTidspunkt: '2021-01-01',
+						id: '121'
+					}
+				]
+			}
+		});
+	}),
+	http.post(`/api/veilarbdialog/veilarbdialog/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				dialoger: [
+					{
+						opprettetDato: '2021-01-01',
+						ferdigBehandlet: true,
+						lest: true,
+						venterPaSvar: true,
+						historisk: false,
+						id: '121',
+						sisteDato: '2021-01-01',
+						erLestAvBruker: true,
+						oppfolgingsperiode: '123'
+					},
+					{
+						opprettetDato: '2025-01-01',
+						ferdigBehandlet: true,
+						lest: true,
+						venterPaSvar: true,
+						historisk: false,
+						id: '123',
+						sisteDato: '2021-01-01',
+						erLestAvBruker: true,
+						oppfolgingsperiode: '123'
+					}	
+				] satisfies Dialog[]
+			}
+		});
 	}),
 ];
