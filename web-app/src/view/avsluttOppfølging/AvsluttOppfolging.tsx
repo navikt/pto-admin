@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import {} from '@navikt/aksel-icons/'
 import { Card } from '../../component/card/card';
-import { Button, Heading, Loader, Textarea, TextField } from '@navikt/ds-react';
+import { Button, Heading, Textarea, TextField } from '@navikt/ds-react';
 import {
 	avsluttOppfolgingsperiode,
 	batchAvsluttOppfolging,
-	hentOppfolgingsperioder
 } from '../../api/veilarboppfolging';
-import { Dialog, hentDialoger } from '../../api/veilarbdialog';
-import { Button, Textarea, TextField } from '@navikt/ds-react';
+import { BrukerDataCard } from './BrukerDataCard';
 
 export function AvsluttOppfolging() {
 	return (
 		<div className="flex flex-1 justify-around">
-			<div className="flex flex-wrap space-x-8 p-4">
+			<div className="flex gap-8 flex-wrap space-x-8 p-4">
 				<AvsluttOppfolgingForMangeBrukereCard />
 				<AvsluttOppfolgingsperiode />
 				<BrukerDataCard />
@@ -122,89 +119,3 @@ function AvsluttOppfolgingsperiode() {
 	);
 }
 
-interface PeriodeMedDialoger {
-	id: string;
-	startTidspunkt: string;
-	sluttTidspunkt: string;
-	dialoger: Dialog[];
-}
-
-const BrukerDataCard = () => {
-	// const [dialoger, setDialoger] = useState(null)
-	const [oppfolgingsperioder, setOppfolgingsperioder] = useState<PeriodeMedDialoger[] | null>(null)
-	// const [aktiviteter, setAktiviteter] = useState(null)
-	const [error, setError] = useState<string | undefined>(undefined)
-	const [isLoading, setIsLoading] = useState(false)
-
-	const fetchBrukerData = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-		const fnr = formData.get('fnr') as string;
-		if (!fnr) {
-			setError('Fnr er påkrevd');
-			return;
-		}
-		setIsLoading(true)
-		Promise.all([
-			hentDialoger({ fnr }),
-			hentOppfolgingsperioder({ fnr })
-		]).then(([dialogerResponse, oppfolgingsperioderResponse]) => {
-			const dialoger = dialogerResponse?.data?.dialoger || [];
-			const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || [])
-				.map(periode => {
-					return {
-						...periode,
-						dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id)
-					}
-				})
-			setOppfolgingsperioder(perioder)
-		})
-			.catch(e => { })
-			.finally(() => {
-				setIsLoading(false)
-			})
-
-	}
-
-	return (
-		<Card className="large-card" innholdClassName=" flex flex-col space-y-4">
-			<Heading size="medium">Brukerdata</Heading>
-			<form className="space-y-4" onSubmit={fetchBrukerData}>
-				<TextField name="fnr" label={'Fnr'} />
-				<Button>Hent</Button>
-			</form>
-			
-			<p>Her kan du vise brukerdata.</p>
-			{ isLoading && <Loader size="small" /> }
-			{ error && <div className="error-message">{error}</div> }
-			{ oppfolgingsperioder && oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
-				<div key={periode.id} className="mt-4">
-					<div className="font-bold">Oppfølgingsperiode: { periode.id }</div>
-					<div className="ml-4">
-						<div>Start: {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
-						<div>Slutt: {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
-						
-						<div className="mt-2 font-bold">Dialoger ({periode.dialoger.length})</div>
-						{periode.dialoger.map(dialog => (
-							<div key={dialog.id} className="ml-4 mt-1">
-								<div>DialogId: {dialog.id}</div>
-								<details>
-									<summary>Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}</summary>
-									<div className="ml-4">
-										<div>Venter på svar fra: {dialog.venterPaSvar}</div>
-										<div>Ferdig behandlet: {dialog.ferdigBehandlet}</div>
-										<div>Lest: {dialog.lest}</div>
-										<div>Opprettet dato: {dialog.opprettetDato}</div>
-										<div>Siste dato: {dialog.sisteDato}</div>
-										<div>Historisk: {dialog.historisk ? 'Ja' : 'Nei'}</div>
-										<div>Lest: {dialog.lest ? 'Ja' : 'Nei'}</div>
-									</div>
-								</details>
-							</div>
-						))}
-					</div>
-				</div>
-			))}
-		</Card>
-	);
-}
