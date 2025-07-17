@@ -67,7 +67,7 @@ class ApplicationConfig {
         }
         val veilarbaktivitetTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.veilarbdialog/.default",
+                "api://%s-gcp.dab.veilarbaktivitet/.default",
                 if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
             ), token)
         }
