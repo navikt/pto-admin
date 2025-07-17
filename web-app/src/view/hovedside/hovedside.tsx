@@ -80,7 +80,7 @@ function HarTilgangTilEnhetCard() {
 
 	return (
 		<Card title="Tilgang til enhet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Nav Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
 			<TextField label="Enhet Id" value={enhetId} onChange={e => setEnhetId(e.target.value)} />
 			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -107,7 +107,7 @@ function HarSkrivetilgangCard() {
 
 	return (
 		<Card title="Skrivetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Nav Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
 			<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
 			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -134,7 +134,7 @@ function HarLesetilgangCard() {
 
 	return (
 		<Card title="Lesetilgang til bruker" className="small-card" innholdClassName="hovedside__card-innhold">
-			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Nav Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
 			<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} />
 			<BodyShort className="hovedside__har-tilgang-label">
 				Har tilgang:{' '}
@@ -190,7 +190,7 @@ function HarTilgangTilKodeOgSkjermetCard() {
 
 	return (
 		<Card title="Kode 6/7 og skjermet" className="small-card" innholdClassName="hovedside__card-innhold">
-			<TextField label="NAV Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
+			<TextField label="Nav Ident" value={navIdent} onChange={e => setNavIdent(e.target.value)} />
 			<Select label="Tilgang" onChange={e => setTilgang(e.target.value as Tilgang)}>
 				<option value={Tilgang.KODE_6}>Kode 6</option>
 				<option value={Tilgang.KODE_7}>Kode 7</option>
