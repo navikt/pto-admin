@@ -205,12 +205,12 @@ export const handlers: RequestHandler[] = [
 					{
 						startTidspunkt: '2024-01-01',
 						sluttTidspunkt: null,
-						id: '123'
+						id: '550e8400-e29b-41d4-a716-446655440000'
 					},
 					{
 						startTidspunkt: '2021-01-01',
 						sluttTidspunkt: '2021-01-01',
-						id: '121'
+						id: '550e8400-e29b-41d4-a716-446655440001'
 					}
 				]
 			}
@@ -230,7 +230,7 @@ export const handlers: RequestHandler[] = [
 						id: '121',
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
-						oppfolgingsperiode: '123'
+						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440001'
 					},
 					{
 						opprettetDato: '2025-01-01',
@@ -241,9 +241,58 @@ export const handlers: RequestHandler[] = [
 						id: '123',
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
-						oppfolgingsperiode: '123'
+						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440000'
 					}	
 				] satisfies Dialog[]
+			}
+		});
+	}),
+	http.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				perioder: [
+					{
+						id: '550e8400-e29b-41d4-a716-446655440000',
+						aktiviteter: [
+							{
+								id: '123321123',
+								funksjonellId: '4e123456-7890-1234-5678-901234567890',
+								versjon: 1,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							},
+							{
+								id: '125321312',
+								funksjonellId: '4e123456-7890-1234-5678-901234567891',
+								versjon: 3,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							}
+						]
+					},
+					{
+						id: '550e8400-e29b-41d4-a716-446655440001',
+						aktiviteter: [
+							{
+								id: '124321312',
+								funksjonellId: '4e123456-7890-1234-5678-901234567892',
+								versjon: 1,
+								endretDato: '2021-01-01T00:00:00.000Z',
+								opprettetDato: '2021-01-01T00:00:00.000Z',
+								status: 'GJENNOMFORES',
+								historisk: false,
+								type: 'SOKEAVTALE',
+							}
+						]
+					}
+				]
 			}
 		});
 	}),
