@@ -2,7 +2,7 @@ import React,{ useState } from "react"
 import { Dialog, hentDialoger } from "../../api/veilarbdialog"
 import { hentOppfolgingsperioder } from "../../api/veilarboppfolging"
 import { Aktivitet, hentAktiviteter } from "../../api/veilarbaktivitet"
-import { Button, TextField, Heading, Loader } from "@navikt/ds-react"
+import { Button, TextField, Heading, Loader, Accordion, ExpansionCard } from "@navikt/ds-react"
 import { Card } from "../../component/card/card"
 import { BooleanTag } from "../../component/BooleanTag"
 import { IdWithCopy } from "../../component/IdWithCopy"
@@ -73,22 +73,26 @@ export const BrukerDataCard = () => {
 						<div className="mt-2 font-bold">Dialoger ({periode.dialoger.length})</div>
 						{periode.dialoger.map(dialog => (
 							<div key={dialog.id} className="ml-4 mt-1 border p-1 border-gray-300 bg-gray-50 rounded-md">
-								<div>DialogId: {dialog.id}</div>
-								<details>
-									<summary>Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}</summary>
-									<div className="ml-4">
-										<div>Venter på svar fra: <BooleanTag value={dialog.venterPaSvar} /></div>
-										<div>Ferdig behandlet: <BooleanTag value={dialog.ferdigBehandlet} /></div>
-										<div>Lest: <BooleanTag value={dialog.lest} /></div>
-										<div>Er lest av bruker: <BooleanTag value={dialog.erLestAvBruker} /></div>
-										<div>Historisk: <BooleanTag value={dialog.historisk} /></div>
-										<div>Opprettet dato: {dialog.opprettetDato}</div>
-										<div>Siste dato: {dialog.sisteDato}</div>
-										{dialog.lestAvBrukerTidspunkt && (
-											<div>Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}</div>
-										)}
-									</div>
-								</details>
+								<IdWithCopy id={dialog.id} label="DialogId" />
+                                <ExpansionCard aria-label={`Dialog ${dialog.id}`} size="small">
+                                    <ExpansionCard.Header>
+                                    Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}
+                                    </ExpansionCard.Header>
+                                    <ExpansionCard.Content>
+                                        <div className="ml-4">
+                                            <div>Venter på svar fra: <BooleanTag value={dialog.venterPaSvar} /></div>
+                                            <div>Ferdig behandlet: <BooleanTag value={dialog.ferdigBehandlet} /></div>
+                                            <div>Lest: <BooleanTag value={dialog.lest} /></div>
+                                            <div>Er lest av bruker: <BooleanTag value={dialog.erLestAvBruker} /></div>
+                                            <div>Historisk: <BooleanTag value={dialog.historisk} /></div>
+                                            <div>Opprettet dato: {dialog.opprettetDato}</div>
+                                            <div>Siste dato: {dialog.sisteDato}</div>
+                                            {dialog.lestAvBrukerTidspunkt && (
+                                                <div>Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}</div>
+                                            )}
+                                        </div>
+                                    </ExpansionCard.Content>
+                                </ExpansionCard>
 							</div>
 						))}
 						<div className="mt-2 space-y-2">
