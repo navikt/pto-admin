@@ -29,15 +29,19 @@ export const Vedtaksstotte = () => {
             return;
         }
 
-        slett14avedtak(journalpostId, fnr, ansvarligVeileder, slettVedtakBestillingId)
-            .then(() => {
-                successToast(`Sletting av § 14 a-vedtak for person ${fnr} med journalpostId ${journalpostId} er utført.`);
-                setJournalpostId('');
-                setFnr('');
-                setSlettVedtakBestillingId('');
-            })
-            .catch(() => errorToast(`Klarte ikke å slette § 14 a-vedtak for person ${fnr} med journalpostId ${journalpostId}`));
-
+        if (window.confirm(
+            'Sikker på at du ønsker å slette § 14 a-vedtak for person ' + fnr + '?'
+        )) {
+            slett14avedtak(journalpostId, fnr, ansvarligVeileder, slettVedtakBestillingId)
+                .then(() => {
+                    successToast(`Sletting av § 14 a-vedtak for person ${fnr} med journalpostId ${journalpostId} er utført.`);
+                    setJournalpostId('');
+                    setFnr('');
+                    setAnsvarligVeileder('');
+                    setSlettVedtakBestillingId('');
+                })
+                .catch(() => errorToast(`Klarte ikke å slette § 14 a-vedtak for person ${fnr} med journalpostId ${journalpostId}`));
+        }
     }
 
     return (
