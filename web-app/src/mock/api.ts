@@ -209,7 +209,7 @@ export const handlers: RequestHandler[] = [
 					},
 					{
 						startTidspunkt: '2021-01-01',
-						sluttTidspunkt: '2021-01-01',
+						sluttTidspunkt: '2023-01-01',
 						id: '550e8400-e29b-41d4-a716-446655440001'
 					}
 				]
@@ -228,6 +228,17 @@ export const handlers: RequestHandler[] = [
 						venterPaSvar: true,
 						historisk: false,
 						id: '121',
+						sisteDato: '2021-01-01',
+						erLestAvBruker: true,
+						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440001'
+					},
+					{
+						opprettetDato: '2021-02-01',
+						ferdigBehandlet: true,
+						lest: true,
+						venterPaSvar: true,
+						historisk: false,
+						id: '124',
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
 						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440001'

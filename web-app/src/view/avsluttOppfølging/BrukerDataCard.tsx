@@ -2,10 +2,11 @@ import React,{ useState } from "react"
 import { Dialog, hentDialoger } from "../../api/veilarbdialog"
 import { hentOppfolgingsperioder } from "../../api/veilarboppfolging"
 import { Aktivitet, hentAktiviteter } from "../../api/veilarbaktivitet"
-import { Button, TextField, Heading, Loader, Accordion, ExpansionCard } from "@navikt/ds-react"
+import { Button, TextField, Heading, Loader, Accordion, ExpansionCard, Timeline, Label, Table } from '@navikt/ds-react';
 import { Card } from "../../component/card/card"
 import { BooleanTag } from "../../component/BooleanTag"
 import { IdWithCopy } from "../../component/IdWithCopy"
+import dayjs from 'dayjs';
 
 interface PeriodeMedDialoger {
 	id: string;
@@ -59,62 +60,105 @@ export const BrukerDataCard = () => {
 				<TextField name="fnr" label={'Fnr'} />
 				<Button>Hent</Button>
 			</form>
-			
-			<p>Her kan du vise brukerdata.</p>
+
 			{ isLoading && <Loader size="small" /> }
 			{ error && <div className="error-message">{error}</div> }
+			{ oppfolgingsperioder && oppfolgingsperioder.length > 0 &&
+				<Timeline>
+					<Timeline.Row label={'Oppfølgingsperioder'}>
+						{
+							oppfolgingsperioder?.map((oppfolgingsperiode) => (
+								<Timeline.Period
+									status={!oppfolgingsperiode.sluttTidspunkt ? 'success' : 'neutral'}
+									start={dayjs(oppfolgingsperiode.startTidspunkt).toDate()}
+									end={dayjs(oppfolgingsperiode.sluttTidspunkt ?? undefined).toDate()}
+									key={oppfolgingsperiode.id}
+								>
+									{ dayjs(oppfolgingsperiode.startTidspunkt).format('DD.MM.YYYY') } -
+									{ oppfolgingsperiode.sluttTidspunkt ? dayjs(oppfolgingsperiode.sluttTidspunkt).format('DD.MM.YYYY') : '->' }
+								</Timeline.Period>
+							))
+						}
+					</Timeline.Row>
+				</Timeline>
+			}
 			{ oppfolgingsperioder && oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
 				<div key={periode.id} className="mt-4">
-					<IdWithCopy id={periode.id} label="Oppfølgingsperiode" />
+					<Label size="medium">
+						Periode
+						<IdWithCopy id={periode.id} label="" />
+					</Label>
 					<div className="ml-4">
-						<div>Start: {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
-						<div>Slutt: {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
+						<div><span className="font-bold">Start:</span> {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
+						<div><span className="font-bold">Slutt:</span> {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
 						
-						<div className="mt-2 font-bold">Dialoger ({periode.dialoger.length})</div>
-						{periode.dialoger.map(dialog => (
-							<div key={dialog.id} className="ml-4 mt-1 border p-1 border-gray-300 bg-gray-50 rounded-md">
-								<IdWithCopy id={dialog.id} label="DialogId" />
-                                <ExpansionCard aria-label={`Dialog ${dialog.id}`} size="small">
-                                    <ExpansionCard.Header>
-                                    Opprettet: {new Date(dialog.opprettetDato).toLocaleString()}
-                                    </ExpansionCard.Header>
-                                    <ExpansionCard.Content>
-                                        <div className="ml-4">
-                                            <div>Venter på svar fra: <BooleanTag value={dialog.venterPaSvar} /></div>
-                                            <div>Ferdig behandlet: <BooleanTag value={dialog.ferdigBehandlet} /></div>
-                                            <div>Lest: <BooleanTag value={dialog.lest} /></div>
-                                            <div>Er lest av bruker: <BooleanTag value={dialog.erLestAvBruker} /></div>
-                                            <div>Historisk: <BooleanTag value={dialog.historisk} /></div>
-                                            <div>Opprettet dato: {dialog.opprettetDato}</div>
-                                            <div>Siste dato: {dialog.sisteDato}</div>
-                                            {dialog.lestAvBrukerTidspunkt && (
-                                                <div>Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}</div>
-                                            )}
-                                        </div>
-                                    </ExpansionCard.Content>
-                                </ExpansionCard>
-							</div>
-						))}
+						<div className="mt-4  font-bold">Dialoger ({periode.dialoger.length})</div>
+						<Table size="small">
+							<Table.Header>
+								<Table.Row>
+									<Table.HeaderCell />
+									<Table.HeaderCell>Id</Table.HeaderCell>
+									<Table.HeaderCell>Opprettet</Table.HeaderCell>
+								</Table.Row>
+							</Table.Header>
+							<Table.Body>
+								{periode.dialoger.map(dialog => (
+
+									<Table.ExpandableRow aria-label={`Dialog ${dialog.id}`} key={dialog.id} content={
+									<div className="ml-4">
+										<div>Venter på svar fra: <BooleanTag value={dialog.venterPaSvar} /></div>
+										<div>Ferdig behandlet: <BooleanTag value={dialog.ferdigBehandlet} /></div>
+										<div>Lest: <BooleanTag value={dialog.lest} /></div>
+										<div>Er lest av bruker: <BooleanTag value={dialog.erLestAvBruker} /></div>
+										<div>Historisk: <BooleanTag value={dialog.historisk} /></div>
+										<div>Opprettet dato: {dialog.opprettetDato}</div>
+										<div>Siste dato: {dialog.sisteDato}</div>
+										{dialog.lestAvBrukerTidspunkt && (
+											<div>Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}</div>
+										)}
+									</div>
+								}>
+									<Table.DataCell>
+										<IdWithCopy id={dialog.id} label="DialogId" />
+									</Table.DataCell>
+                                    <Table.DataCell>
+										{new Date(dialog.opprettetDato).toLocaleString()}
+                                    </Table.DataCell>
+                                </Table.ExpandableRow>
+								))}
+							</Table.Body>
+						</Table>
 						<div className="mt-2 space-y-2">
 							<div className="font-bold">Aktiviteter ({periode.aktiviteter.length})</div>
-						{
-							periode.aktiviteter.map(aktivitet => (
-								<div key={aktivitet.id} className="ml-4 border p-1 border-gray-300 bg-gray-50 rounded-md">
-									<IdWithCopy id={aktivitet.id} label="AktivitetId" />
-									<IdWithCopy id={aktivitet.funksjonellId} label="FunksjonellId" />
-									<details>
-										<summary>Versjon: {aktivitet.versjon}</summary>	
+						<Table size="small">
+							<Table.Header>
+								<Table.Row>
+									<Table.HeaderCell />
+									<Table.HeaderCell>Id</Table.HeaderCell>
+									<Table.HeaderCell>Versjon</Table.HeaderCell>
+									<Table.HeaderCell>Sist endret</Table.HeaderCell>
+								</Table.Row>
+							</Table.Header>
+							<Table.Body>
+								{ periode.aktiviteter.map(aktivitet =>
+									(<Table.ExpandableRow key={aktivitet.id} content={
 										<div className="ml-4">
+											<IdWithCopy id={aktivitet.funksjonellId} label="FunksjonellId" />
 											<div>Endret dato: {aktivitet.endretDato}</div>
 											<div>Opprettet dato: {aktivitet.opprettetDato}</div>
 											<div>Status: {aktivitet.status}</div>
 											<div>Historisk: <BooleanTag value={aktivitet.historisk} /></div>
 											<div>Type: {aktivitet.type}</div>
 										</div>
-									</details>
-								</div>
-							))
-						}
+									}>
+										<Table.DataCell><IdWithCopy id={aktivitet.id} label="AktivitetId" />
+										</Table.DataCell>
+										<Table.DataCell>{ aktivitet.versjon }</Table.DataCell>
+										<Table.DataCell>{ aktivitet.endretDato }</Table.DataCell>
+									</Table.ExpandableRow>))
+								}
+							</Table.Body>
+						</Table>
 						</div>
 					</div>
 				</div>

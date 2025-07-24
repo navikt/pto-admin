@@ -10,10 +10,12 @@ import { BrukerDataCard } from './BrukerDataCard';
 export function AvsluttOppfolging() {
 	return (
 		<div className="flex flex-1 justify-around">
-			<div className="flex gap-8 flex-wrap space-x-8 p-4">
-				<AvsluttOppfolgingForMangeBrukereCard />
-				<AvsluttOppfolgingsperiode />
-				<BrukerDataCard />
+			<div className="flex gap-4 flex-wrap p-4">
+				<div className="flex flex-col flex-wrap gap-4">
+					<AvsluttOppfolgingForMangeBrukereCard />
+					<AvsluttOppfolgingsperiode />
+				</div>
+					<BrukerDataCard />
 			</div>
 		</div>
 	);
