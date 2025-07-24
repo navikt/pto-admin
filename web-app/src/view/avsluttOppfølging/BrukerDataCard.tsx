@@ -83,14 +83,14 @@ export const BrukerDataCard = () => {
 				</Timeline>
 			}
 			{ oppfolgingsperioder && oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
-				<div key={periode.id} className="mt-4">
-					<Label size="medium">
-						Periode
+				<div key={periode.id} className="mt-4 bg-gray-100 p-1 border border-gray-200">
+					<div className="flex ml-2 items-center">
+						<span>Periode</span>
 						<IdWithCopy id={periode.id} label="" />
-					</Label>
-					<div className="ml-4">
-						<div><span className="font-bold">Start:</span> {new Date(periode.startTidspunkt).toLocaleDateString()}</div>
-						<div><span className="font-bold">Slutt:</span> {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toLocaleDateString() : 'Aktiv'}</div>
+					</div>
+					<div className=" bg-white m-1 border-gray-200 border p-1">
+						<div><span className="font-bold">Start:</span> {new Date(periode.startTidspunkt).toISOString()}</div>
+						<div><span className="font-bold">Slutt:</span> {periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toISOString() : 'Aktiv'}</div>
 						
 						<div className="mt-4  font-bold">Dialoger ({periode.dialoger.length})</div>
 						<Table size="small">
