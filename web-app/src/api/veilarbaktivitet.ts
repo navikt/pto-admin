@@ -17,6 +17,17 @@ export interface Aktivitet {
 	type: string,
 }
 
+export interface TiltaksAktivitet {
+	id: string
+	status: string
+	type: string
+	fraDato: string
+	tilDato: string
+	opprettetDato: string
+	avtalt: boolean
+	oppfolgingsperiodeId: string
+}
+
 const graphqlQuery = `
 query hentAktiviteter($fnr: String!) {
 	perioder(fnr: $fnr) {
@@ -32,10 +43,20 @@ query hentAktiviteter($fnr: String!) {
 			type
 		}
 	}
+	tiltaksaktiviteter(fnr: $fnr) {
+		id
+		status
+		type
+		fraDato
+		tilDato
+		opprettetDato
+		avtalt
+		oppfolgingsperiodeId
+	}
 }
 `
 
-export function hentAktiviteter(payload: { fnr: string }): Promise<{ data: { perioder: PeriodeMedAktiviteter[] } }> {
+export function hentAktiviteter(payload: { fnr: string }): Promise<{ data: { perioder: PeriodeMedAktiviteter[], tiltaksaktiviteter: TiltaksAktivitet[] } }> {
 	return axiosInstance.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
 		.then(response => response.data);
 }
