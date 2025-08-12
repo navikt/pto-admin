@@ -26,7 +26,9 @@ class IdentOppslagV2Controller(private val identOppslagService: IdentOppslagServ
 
     @PostMapping("/hent-identer")
     fun aktorIdTilFnr(@RequestBody request: HentIdenterRequest): List<Ident> {
-        return identOppslagService.hentAlleIdenter(request.eksternBrukerId)
+        val ident = if (request.eksternBrukerId.length == 11) Fnr.of(request.eksternBrukerId)
+        else AktorId.of(request.eksternBrukerId)
+        return identOppslagService.hentAlleIdenter(ident)
     }
 
     data class AktorIdResponse(val aktorId: AktorId)
@@ -37,5 +39,5 @@ class IdentOppslagV2Controller(private val identOppslagService: IdentOppslagServ
 
     data class AktorIdTilFnrRequest(val aktorId: AktorId)
 
-    data class HentIdenterRequest(val eksternBrukerId: EksternBrukerId)
+    data class HentIdenterRequest(val eksternBrukerId: String)
 }
