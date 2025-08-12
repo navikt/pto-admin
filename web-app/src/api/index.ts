@@ -13,6 +13,14 @@ interface FnrResponse {
 	fnr: string;
 }
 
+export interface Ident {
+	ident: string;
+	historisk: boolean;
+	gruppe: string;
+}
+
+type AlleIdenterResponse = Ident[]
+
 interface TilgangResponse {
 	harTilgang: boolean;
 }
@@ -35,6 +43,10 @@ export function fnrTilAktorId(fnr: string): AxiosPromise<AktorIdResponse> {
 
 export function aktorIdTilFnr(aktorId: string): AxiosPromise<FnrResponse> {
 	return axiosInstance.post(`/api/v2/ident/hent-fnr`, {aktorId});
+}
+
+export function hentIdenter(eksternBrukerId: string): AxiosPromise<AlleIdenterResponse> {
+	return axiosInstance.post(`/api/v2/ident/hent-identer`, { eksternBrukerId });
 }
 
 export function sjekkHarTilgangTilEnhet(navIdent: string, enhetId: string): AxiosPromise<TilgangResponse> {

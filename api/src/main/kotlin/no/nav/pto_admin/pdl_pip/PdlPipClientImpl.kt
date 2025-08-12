@@ -32,7 +32,7 @@ open class PdlPipClientImpl(
 			.build()
 
 		httpClient.newCall(request).execute().use { response ->
-			if (!response.isSuccessful) {
+			if (!response.isSuccessful && response.code != 404) {
 				throw RuntimeException("Klarte ikke å hente personinfo fra pdl-pip. Status: ${response.code}")
 			}
 			val body = response.body?.string() ?: throw RuntimeException("Body is missing")

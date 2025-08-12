@@ -4,6 +4,8 @@ import './hovedside.less';
 import {
 	aktorIdTilFnr,
 	fnrTilAktorId,
+	hentIdenter,
+	Ident,
 	sjekkHarLesetilgang,
 	sjekkHarSkrivetilgang,
 	sjekkHarTilgangTilEgenAnsatt,
@@ -22,6 +24,7 @@ export function Hovedside() {
 			<HarSkrivetilgangCard />
 			<HarLesetilgangCard />
 			<HarTilgangTilKodeOgSkjermetCard />
+			<HentIdenterCard />
 		</div>
 	);
 }
@@ -143,6 +146,41 @@ function HarLesetilgangCard() {
 				</strong>
 			</BodyShort>
 			<Button onClick={handleOnSjekkHarLesetilgang}>Sjekk tilgang</Button>
+		</Card>
+	);
+}
+
+function HentIdenterCard() {
+	const [alleIdenter, settAlleIdenter] = useState<null | Ident[]>([]);
+	const [eksternBrukerId, setEksternBrukerId] = useState('');
+
+	function handleOnHentAlleIdenter() {
+		settAlleIdenter(null);
+		hentIdenter(eksternBrukerId)
+			.then(res => settAlleIdenter(res.data))
+			.catch(e => alert('Klarte ikke å sjekke lesetilgang:\n' + e.toString()));
+	}
+
+	return (
+		<Card title="Alle identer til bruker (inkl historiske)" className="small-card" innholdClassName="hovedside__card-innhold">
+			<TextField label="Ekstern bruker id (aktorId / fnr / dnr / npid)" value={eksternBrukerId} onChange={e => setEksternBrukerId(e.target.value)} />
+			<BodyShort as="div" className="hovedside__har-tilgang-label">
+				<div className="flex flex-col">
+					<span className="font-bold mt-4">Identer:</span>
+					<ul>
+						{
+							alleIdenter?.map((ident) => {
+								return <li className="flex justify-between space-y-4" key={ident.ident}>
+									<span>{ ident.ident }</span>
+									<span><span className="font-bold">gruppe:</span> { ident.gruppe }</span>
+									<span><span className="font-bold">historisk:</span> {ident.historisk ? "true" : "false"}</span>
+								</li>
+							})
+						}
+					</ul>
+				</div>
+			</BodyShort>
+			<Button onClick={handleOnHentAlleIdenter}>Hent alle identer</Button>
 		</Card>
 	);
 }
