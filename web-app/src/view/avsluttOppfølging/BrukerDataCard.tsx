@@ -12,6 +12,7 @@ interface PeriodeMedDialoger {
 	id: string;
 	startTidspunkt: string;
 	sluttTidspunkt: string;
+	startetBegrunnelse: string | undefined;
 	dialoger: Dialog[];
 	aktiviteter: Aktivitet[];
 	tiltaksAktiviteter: TiltaksAktivitet[]
@@ -101,6 +102,10 @@ export const BrukerDataCard = () => {
 							<div>
 								<span className="font-bold">Slutt:</span>{' '}
 								{periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toISOString() : 'Aktiv'}
+							</div>
+							<div>
+								<span className="font-bold">Startet begrunnelse:</span>
+								{periode.startetBegrunnelse}
 							</div>
 
 							<div className="mt-4  font-bold">Dialoger ({periode.dialoger.length})</div>

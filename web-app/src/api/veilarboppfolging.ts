@@ -20,6 +20,7 @@ const graphqlQuery = `
 			startTidspunkt
 			sluttTidspunkt
 			id
+			startetBegrunnelse
 		}
 	}
 `
@@ -33,6 +34,7 @@ interface OppfolgingsPeriode {
 	startTidspunkt: string;
 	sluttTidspunkt: string;
 	id: string;
+	startetBegrunnelse: string | undefined;
 }
 
 export function hentOppfolgingsperioder(payload: { fnr: string }): Promise<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }> {
