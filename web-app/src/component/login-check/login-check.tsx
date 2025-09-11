@@ -10,8 +10,8 @@ interface LoginCheckProps {
 }
 
 const logInnUrl = erITestMiljo()
-	? 'https://app-q1.adeo.no/veilarblogin/api/start?url=https%3A%2F%2Fapp-q1.adeo.no/pto-admin'
-	: 'https://app.adeo.no/veilarblogin/api/start?url=https%3A%2F%2Fapp.adeo.no/pto-admin';
+	? 'https://poao-admin.intern.dev.nav.no'
+	: 'https://poao-admin.intern.nav.no';
 
 export function LoginCheck(props: LoginCheckProps) {
 	const { loggedInUser, setLoggedInUser } = useAppStore();
