@@ -137,3 +137,8 @@ export function hentEnsligForsorgerData(): AxiosPromise<JobId> {
 	console.log("Startet: hentEnsligForsorgerData");
 	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`);
 }
+
+export function hentAapBrukerData(): AxiosPromise<JobId> {
+	console.log("Startet: hentAapBrukerDat a");
+	return axiosInstance.post(`/api/admin/veilarbportefolje/hentAapBruker`);
+}

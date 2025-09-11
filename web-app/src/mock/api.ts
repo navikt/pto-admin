@@ -3,6 +3,7 @@ import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../
 import { HttpStatusCode } from 'axios';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
+import {hentAapBrukerData} from "../api";
 
 
 const antallAvsluttet = {
@@ -196,6 +197,10 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(6666333345);
+	}),
+	http.post(`/api/admin/veilarbportefolje/hentAapBrukerData`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json("");
 	}),
 	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
