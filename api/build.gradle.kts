@@ -7,7 +7,7 @@
 plugins {
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.spring") version "2.1.20-RC2"
-    id("org.springframework.boot") version "3.4.3"
+    id("org.springframework.boot") version "3.4.10"
 }
 
 java {
