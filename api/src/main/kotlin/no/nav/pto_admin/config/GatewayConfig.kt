@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.gateway.filter.GatewayFilterChain
 import org.springframework.cloud.gateway.filter.GlobalFilter
+import org.springframework.cloud.gateway.route.Route
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -32,9 +34,23 @@ class GatewayConfig {
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
 				val urlString = exchange.request.path.toString()
-                log.info("kommer inn med url: ${urlString}")
+                log.info("kommer inn med url: $urlString")
+
+
+                val route =  exchange.attributes[ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR]
+                val routeId = when (route) {
+                    route as? String -> route
+                    route as? Route -> {
+                        log.info("GATEWAY_ROUTE_ATTR gav Route objekt")
+                        (route as Route).id
+                    }
+                    else -> null
+                }
+
+                log.info("RouteId: $routeId")
+
                 val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
-                if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
+                    ?: throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")
                 val bearerToken: String =
                     if (urlString.contains("veilarbportefolje")) {
                         log.info("Bruker veilarbportefolje azureAd token")
@@ -44,18 +60,18 @@ class GatewayConfig {
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBVEDTAKSTOTTE, token)
                     } else if (urlString.contains("veilarboppfolging")) {
                         log.info("Bruker veilarboppfolging azureAd token")
-                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBOPPFOLGING, token)
                     } else if (urlString.contains("veilarbdialog")) {
                         log.info("Bruker veilarbdialog azureAd token")
-                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBDIALOG, token)
                     } else if (urlString.contains("veilarbaktivitet")) {
                         log.info("Bruker veilarbaktivitet azureAd token")
-                        if (token == null) throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved opslag av token")
                         azureSystemTokenProvider.getOboToken(SystembrukereAzure.VEILARBAKTIVITET, token)
+                    } else if (urlString.contains("ao-oppfolgingskontor")) {
+                        log.info("Bruker ao-oppfolgingskontor azureAd token")
+                        azureSystemTokenProvider.getOboToken(SystembrukereAzure.AO_OPPFOLGINGSKONTOR, token)
                     } else {
-                        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ukjent proxy url ${urlString}")
+                        throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Ukjent proxy url $urlString")
                     }
 
                 val exchangeWithAuth = exchange.mutate()
