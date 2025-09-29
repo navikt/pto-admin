@@ -71,6 +71,8 @@ spec:
         - application: pdl-pip-api
           namespace: pdl
           cluster: prod-fss
+        - application: ao-oppfolgingskontor
+          namespace: dab
 
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
