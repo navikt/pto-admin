@@ -46,13 +46,31 @@ const KontorTilhorigheter = ({ kontorTilhorigheter }: { kontorTilhorigheter: Kon
 	return (
 		<div className="grid mb-4 border-b p-4 grid-cols-3 gap-y-2">
 			<div>
-				<span className="font-bold">{arenaKontor.kontorId}</span> - {arenaKontor.kontorNavn}
+				{arenaKontor ? (
+					<span>
+						<span className="font-bold">{arenaKontor.kontorId}</span> - {arenaKontor.kontorNavn}
+					</span>
+				) : (
+					<span className="italic text-gray-700">Ingen arenakontor</span>
+				)}
 			</div>
 			<div>
-				<span className="font-bold">{arbeidsoppfolging.kontorId}</span> - {arbeidsoppfolging.kontorNavn}
+				{arbeidsoppfolging ? (
+					<span>
+						<span className="font-bold">{arbeidsoppfolging.kontorId}</span> - {arbeidsoppfolging.kontorNavn}
+					</span>
+				) : (
+					<span className="italic text-gray-700">Ingen ao-kontor</span>
+				)}
 			</div>
 			<div>
-				<span className="font-bold">{gtKontor.kontorId}</span> - {gtKontor.kontorNavn}
+				{gtKontor ? (
+					<span>
+						<span className="font-bold">{gtKontor.kontorId}</span> - {gtKontor.kontorNavn}
+					</span>
+				) : (
+					<span className="italic text-gray-700">Ingen gt-kontor</span>
+				)}
 			</div>
 		</div>
 	);

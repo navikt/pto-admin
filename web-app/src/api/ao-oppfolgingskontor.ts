@@ -13,9 +13,9 @@ interface ArbeidsoppfolgingKontorDto {
 	kontorNavn: string;
 }
 export interface KontorTilhorigheter {
-	arena: ArenaKontorDto;
-	geografiskTilknytning: GeografiskTilknyttetKontorDto;
-	arbeidsoppfolging: ArbeidsoppfolgingKontorDto;
+	arena?: ArenaKontorDto;
+	geografiskTilknytning?: GeografiskTilknyttetKontorDto;
+	arbeidsoppfolging?: ArbeidsoppfolgingKontorDto;
 }
 export interface KontorHistorikkQueryDto {
 	kontorId: string;
