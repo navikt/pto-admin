@@ -89,7 +89,6 @@ export function Veilarbportefolje() {
 			/>
 			<AdminKnapp
 				tittel="Start henting av aap data"
-				tittel2="Stopp henting av aap data"
 				beskrivelse="Hent aap data for alle oppfølgingsbrukere som får aap ytelse."
 				request={hentAapBrukerData}
 			/>
@@ -99,7 +98,6 @@ export function Veilarbportefolje() {
 
 interface AdminKnappProps {
 	tittel: string;
-	tittel2: string;
 	beskrivelse: string;
 	request: () => AxiosPromise<JobId>;
 }
@@ -135,11 +133,6 @@ function AdminKnapp(props: AdminKnappProps) {
 				<Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
 					{props.tittel}
 				</Button>
-				{props.tittel2 ? (
-					<Button className="veilarbportefolje-knapp" onClick={() => setOpen(false)}>
-					{props.tittel2}
-					</Button>
-				) : null}
 			</Card>
 			<BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel} />
 		</>
