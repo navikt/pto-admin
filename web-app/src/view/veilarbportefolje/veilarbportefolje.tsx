@@ -134,6 +134,7 @@ function AdminKnapp(props: AdminKnappProps) {
 					{props.tittel}
 				</Button>
 			</Card>
+
 			<BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel} />
 		</>
 	);
