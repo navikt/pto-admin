@@ -4,11 +4,10 @@ import { HttpStatusCode } from 'axios';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
 
-
 const antallAvsluttet = {
 	antallAvsluttet: 500,
 	antallKunneIkkeAvsluttes: 2
-}
+};
 
 const kafkaRecords: KafkaRecord[] = [];
 
@@ -50,68 +49,58 @@ const topicPartitionOffsets: TopicPartitionOffset[] = [
 export const handlers: RequestHandler[] = [
 	http.get('/api/auth/me', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(
-			{
-				navn: 'Test Testersen'
-			}
-		);
+		return HttpResponse.json({
+			navn: 'Test Testersen'
+		});
 	}),
 
 	http.post('/api/v2/ident/hent-fnr', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				fnr: '12345678900'
-			}
-		);
+			fnr: '12345678900'
+		});
 	}),
 	http.post('/api/v2/ident/hent-aktorid', async () => {
- 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				aktorId: '1111222344555'
-			}
-		);
+			aktorId: '1111222344555'
+		});
 	}),
 	http.get('/api/tilgang/enhet', async () => {
- 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: true
-			}
-		);
+			harTilgang: true
+		});
 	}),
 	http.post('/api/v2/tilgang/hent-skriv', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: true
-			}
-		);
+			harTilgang: true
+		});
 	}),
 	http.post('/api/v2/tilgang/hent-les', async () => {
- 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: true
-			}
-		);
+			harTilgang: true
+		});
 	}),
 	http.get('/api/tilgang/kode6', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: true
-			}
-		);
+			harTilgang: true
+		});
 	}),
 	http.get('/api/tilgang/kode7', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: false
-			}
-		);
+			harTilgang: false
+		});
 	}),
 	http.get('/api/tilgang/skjermet', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
-				harTilgang: false
-			}
-		);
+			harTilgang: false
+		});
 	}),
 	http.put('/api/admin/veilarbvedtaksstotte/slett-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -143,7 +132,9 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.get('/api/admin/veilarbportefolje/opensearch/getAliases', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json('{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}');
+		return HttpResponse.json(
+			'{"brukerindeks_20220825_0215":{"aliases":{"brukerindeks":{}}},".kibana_1":{"aliases":{".kibana":{}}},".opensearch-notebooks":{"aliases":{}}'
+		);
 	}),
 	http.post(`/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -253,7 +244,7 @@ export const handlers: RequestHandler[] = [
 						sisteDato: '2021-01-01',
 						erLestAvBruker: true,
 						oppfolgingsperiode: '550e8400-e29b-41d4-a716-446655440000'
-					}	
+					}
 				] satisfies Dialog[]
 			}
 		});
@@ -274,7 +265,7 @@ export const handlers: RequestHandler[] = [
 								opprettetDato: '2021-01-01T00:00:00.000Z',
 								status: 'GJENNOMFORES',
 								historisk: false,
-								type: 'SOKEAVTALE',
+								type: 'SOKEAVTALE'
 							},
 							{
 								id: '125321312',
@@ -284,7 +275,7 @@ export const handlers: RequestHandler[] = [
 								opprettetDato: '2021-01-01T00:00:00.000Z',
 								status: 'GJENNOMFORES',
 								historisk: false,
-								type: 'SOKEAVTALE',
+								type: 'SOKEAVTALE'
 							}
 						]
 					},
@@ -299,7 +290,7 @@ export const handlers: RequestHandler[] = [
 								opprettetDato: '2021-01-01T00:00:00.000Z',
 								status: 'GJENNOMFORES',
 								historisk: false,
-								type: 'SOKEAVTALE',
+								type: 'SOKEAVTALE'
 							}
 						]
 					}
@@ -307,4 +298,42 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
+	http.post(`/api/ao-oppfolgingskontor/graphql`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({
+			data: {
+				kontorTilhorigheter: {
+					arena: { kontorId: '4151', kontorNavn: 'Nasjonal oppfølgingsenhet' },
+					geografiskTilknytning: { kontorId: '3030', kontorNavn: 'Sogn' },
+					arbeidsoppfolging: { kontorId: '4151', kontorNavn: 'Nasjonal oppfølgingsenhet' }
+				},
+				kontorHistorikk: [
+					{
+						kontorId: '4145',
+						kontorType: 'ARENA',
+						endringsType: 'ArenaKontorVedOppfolgingStart',
+						endretAv: 'ARENA',
+						endretAvType: 'SYSTEM',
+						endretTidspunkt: '2021-01-01T00:00:00.000Z'
+					},
+					{
+						kontorId: '4145',
+						kontorType: 'ARBEIDSOPPFOLGING',
+						endringsType: 'ArenaKontorVedOppfolgingStart',
+						endretAv: 'ARENA',
+						endretAvType: 'SYSTEM',
+						endretTidspunkt: '2021-03-01T00:00:00.000Z'
+					},
+					{
+						kontorId: '4145',
+						kontorType: 'GEOGRAFISK_TILKNYTNING',
+						endringsType: 'ArenaKontorVedOppfolgingStart',
+						endretAv: 'ARENA',
+						endretAvType: 'SYSTEM',
+						endretTidspunkt: '2021-02-01T00:00:00.000Z'
+					}
+				]
+			}
+		});
+	})
 ];

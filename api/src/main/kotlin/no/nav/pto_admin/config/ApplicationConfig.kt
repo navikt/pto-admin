@@ -71,6 +71,12 @@ class ApplicationConfig {
                 if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
             ), token)
         }
+        val aoKontorTokenProvider: (token: String) -> String = { token ->
+            oboClient.exchangeOnBehalfOfToken(String.format(
+                "api://%s-gcp.dab.veilarbaktivitet/.default",
+                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+            ), token)
+        }
 
 
         val systemTokenSuppliers: Map<SystembrukereAzure, (String) -> String> =
@@ -78,7 +84,8 @@ class ApplicationConfig {
                 SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
                 SystembrukereAzure.VEILARBDIALOG to veilarbdialogTokenProvider,
                 SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
-                SystembrukereAzure.VEILARBAKTIVITET to veilarbaktivitetTokenProvider)
+                SystembrukereAzure.VEILARBAKTIVITET to veilarbaktivitetTokenProvider,
+                SystembrukereAzure.AO_OPPFOLGINGSKONTOR to aoKontorTokenProvider)
         return AzureSystemTokenProvider(systemTokenSuppliers)
     }
 
