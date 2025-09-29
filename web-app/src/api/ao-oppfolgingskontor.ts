@@ -42,7 +42,7 @@ const graphqlQuery = `
 				kontorNavn
 			}
 		}
-		kontorHistorikk {
+		kontorHistorikk(ident: $ident) {
 		 	kontorId,
 			kontorType,
 			endringsType,
