@@ -73,7 +73,7 @@ class ApplicationConfig {
         }
         val aoKontorTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.veilarbaktivitet/.default",
+                "api://%s-gcp.dab.ao-oppfolgingskontor/.default",
                 if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
             ), token)
         }
