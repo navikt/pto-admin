@@ -81,12 +81,13 @@ const KontorHistorikk = ({ kontorHistorikk }: { kontorHistorikk: KontorHistorikk
 		<ul>
 			{kontorHistorikk.map(entry => {
 				return (
-					<li className="grid odd:bg-gray-100 py-1 grid-cols-7" key={entry.endretTidspunkt}>
+					<li className="grid odd:bg-gray-100 py-1 grid-cols-10" key={entry.endretTidspunkt}>
 						<span className="col-span-2">{entry.kontorType}</span>
 						<span className="col-span-1">{entry.kontorId}</span>
-						<span className="col-span-1">{entry.endretAv}</span>
+						<span className="col-span-2">{entry.endretAv}</span>
 						<span className="col-span-1">{entry.endretAvType}</span>
-						<span className="col-span-1">
+						<span className="col-span-2">{entry.endringsType}</span>
+						<span className="col-span-2">
 							<Tooltip content={entry.endretTidspunkt}>
 								<span>{dayjs(entry.endretTidspunkt).fromNow()}</span>
 							</Tooltip>
