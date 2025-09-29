@@ -10,7 +10,8 @@ import {
 	indekserFnr,
 	JobId,
 	pdlLastInnData,
-	hentEnsligForsorgerData
+	hentEnsligForsorgerData,
+	hentAapBrukerData
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -53,7 +54,9 @@ export function Veilarbportefolje() {
 				request={hovedindekseringNyttAlias}
 			/>
 
-			<AdminKnapp tittel="Hent indekser" beskrivelse="Henter alle aktive indekser." request={getAliases} />
+			<AdminKnapp tittel="Hent indekser"
+						beskrivelse="Henter alle aktive indekser."
+						request={getAliases} />
 
 			<AdminKnapp
 				tittel="Lag indeks"
@@ -83,6 +86,11 @@ export function Veilarbportefolje() {
 				tittel="Hent data om overgangsstønad"
 				beskrivelse="Hent data om overgangsstønad for alle oppfølgingsbrukere."
 				request={hentEnsligForsorgerData}
+			/>
+			<AdminKnapp
+				tittel="Start henting av aap data"
+				beskrivelse="Hent aap data for alle oppfølgingsbrukere som får aap ytelse."
+				request={hentAapBrukerData}
 			/>
 		</div>
 	);
@@ -121,6 +129,7 @@ function AdminKnapp(props: AdminKnappProps) {
 						Jobb startet med jobId: {jobId}
 					</Alert>
 				)}
+				<br/>
 				<Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
 					{props.tittel}
 				</Button>
@@ -169,12 +178,13 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
 		<>
 			<Card title={props.tittel} className="veilarbportefolje-card">
 				<BodyShort className="blokk-xxs">{props.beskrivelse}</BodyShort>
-				<TextField label={inputType} value={id} onChange={e => setid(e.target.value)} />
+				<TextField label={inputType} value={id} onChange={e => setid(e.target.value)}/>
 				{respons && (
 					<Alert size="small" variant="success" inline>
 						Respons: {respons}
 					</Alert>
 				)}
+				<br/>
 				<Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
 					{props.tittel}
 				</Button>
