@@ -62,9 +62,13 @@ spec:
           namespace: obo
         - application: veilarbvedtaksstotte
           namespace: obo
+        - application: poao-admin
+          namespace: poao
         - application: pdl-pip-api
           namespace: pdl
           cluster: dev-fss
+        - application: ao-oppfolgingskontor
+          namespace: dab
 
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
@@ -87,3 +91,7 @@ spec:
       value: api://dev-fss.pdl.pdl-pip-api/.default
     - name: PDLPIP_URL
       value: https://pdl-pip-api.dev-fss-pub.nais.io
+    - name: AO_OPPFOLGINGSKONTOR_API_URL
+      value: http://ao-oppfolgingskontor.dab
+    - name: AO_OPPFOLGINGSKONTOR_SCOPE
+      value: api://dev-gcp.poao.ao-oppfolgingskontor/.default

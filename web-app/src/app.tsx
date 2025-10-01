@@ -7,6 +7,10 @@ import { ToastContainer } from 'react-toastify';
 import './app.less';
 import './app.css';
 import 'react-toastify/dist/ReactToastify.css';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 function App() {
 	return (
