@@ -142,3 +142,8 @@ export function hentAapBrukerData(): AxiosPromise<JobId> {
 	console.log("Startet: hentAapBrukerData");
 	return axiosInstance.post(`/api/admin/veilarbportefolje/hentAapBrukerData`);
 }
+
+export function hentTildelingstidspunkt(): AxiosPromise<JobId> {
+	console.log("Startet: hentTildelingstidspunkt");
+	return axiosInstance.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere`);
+}
