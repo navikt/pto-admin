@@ -11,7 +11,7 @@ import {
 	JobId,
 	pdlLastInnData,
 	hentEnsligForsorgerData,
-	hentAapBrukerData, hentTildelingstidspunkt
+	hentAapBrukerData
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -91,11 +91,6 @@ export function Veilarbportefolje() {
 				tittel="Start henting av aap data"
 				beskrivelse="Hent aap data for alle oppfølgingsbrukere som får aap ytelse."
 				request={hentAapBrukerData}
-			/>
-			<AdminKnapp
-				tittel="Hent tildelttidspunkt"
-				beskrivelse="Hent tildelttidspunkt fra oppfølging data"
-				request={hentTildelingstidspunkt}
 			/>
 		</div>
 	);
