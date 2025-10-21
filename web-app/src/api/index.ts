@@ -99,7 +99,7 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
-  return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/aktorId`, ({aktorId}));
+  return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker`, ({aktorId}));
 }
 
 export function indekserFnr(fnr: string): AxiosPromise<string> {
