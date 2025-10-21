@@ -81,9 +81,10 @@ export function Veilarbportefolje() {
 				beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
 				request={pdlLastInnData}
 			/>
-			<AdminKnapp
+			<AdminKnappMedInput
 				tittel="Hent data om overgangsstønad"
-				beskrivelse="Hent data om overgangsstønad for alle oppfølgingsbrukere."
+				beskrivelse="Hent data om overgangsstønad for en bruker."
+        inputType="AktørId"
 				request={hentEnsligForsorgerData}
 			/>
 		</div>
