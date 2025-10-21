@@ -99,11 +99,11 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
-	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker?aktorId=${aktorId}`);
+  return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/aktorId`, ({aktorId}));
 }
 
 export function indekserFnr(fnr: string): AxiosPromise<string> {
-	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr?fnr=${fnr}`);
+	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, ({fnr}));
 }
 
 export function hovedindeksering(): AxiosPromise<JobId> {
