@@ -94,23 +94,17 @@ export function Veilarbportefolje() {
         beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
         request={pdlLastInnData}
       />
-      <AdminKnappMedInput
-        tittel="Hent data om overgangsstønad"
-        beskrivelse="Hent data om overgangsstønad for en bruker."
-        inputType="AktørId"
-        request={hentEnsligForsorgerData}
-      />
       <AdminKnapp
         tittel="Hent overgangsstønad for alle"
         beskrivelse="Hent overgangsstønad data for alle oppfølgingsbrukere."
         request={hentEnsligForsorgerDataBatch}
       />
       <AdminCheckboxerMedInput
-        dataTyper={dataTyper}
+        tittel={"Hent valgte data for en bruker"}
         beskrivelse={"Hent / oppdater data for en bruker basert på valg av datatypene under"}
         inputType={"AktørId"}
-        tittel={"Hent valgte data for en bruker"}
         request={hentValgteDataForBruker}
+        dataTyper={dataTyper}
       />
     </div>
   );
@@ -279,11 +273,11 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
         </CheckboxGroup>
         <br/>
         <TextField label={inputType} value={id} onChange={e => setid(e.target.value)}/>
+        <br/>
         <Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
           {props.tittel}
         </Button>
       </Card>
-
       <BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel}/>
     </>
   );
