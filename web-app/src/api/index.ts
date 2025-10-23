@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import {AdminDataTypeResponse} from "../view/veilarbportefolje/veilarbportefolje";
+import {AdminDataForBrukerRequest, AdminDataTypeResponse} from "../view/veilarbportefolje/veilarbportefolje";
 
 export const axiosInstance = axios.create({
 	withCredentials: true,
@@ -146,5 +146,9 @@ export function hentEnsligForsorgerDataBatch(): AxiosPromise<JobId> {
 
 export function hentMuligeDataTyperSomKanHentes(): AxiosPromise<AdminDataTypeResponse[]> {
 	return axiosInstance.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`)
+}
+
+export function hentValgteDataForBruker(valgteDataTyper: AdminDataForBrukerRequest): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, ({valgteDataTyper}))
 }
 

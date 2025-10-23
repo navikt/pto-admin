@@ -7,6 +7,7 @@ import {
   hentEnsligForsorgerData,
   hentEnsligForsorgerDataBatch,
   hentMuligeDataTyperSomKanHentes,
+  hentValgteDataForBruker,
   hovedindeksering,
   hovedindekseringNyttAlias,
   indekserAktoer,
@@ -18,7 +19,7 @@ import {AxiosPromise} from 'axios';
 import {errorToast, successToast} from '../../utils/toast-utils';
 import {Card} from '../../component/card/card';
 import BekreftModal from '../../component/bekreft-modal';
-import {Alert, BodyShort, Button, TextField} from '@navikt/ds-react';
+import {Alert, BodyShort, Button, Checkbox, CheckboxGroup, TextField} from '@navikt/ds-react';
 
 import './veilarbportefolje.less';
 
@@ -104,15 +105,13 @@ export function Veilarbportefolje() {
         beskrivelse="Hent overgangsstønad data for alle oppfølgingsbrukere."
         request={hentEnsligForsorgerDataBatch}
       />
-      {dataTyper.map((typer, index) => (
-        <AdminKnappMedInput
-          tittel={`TEST Hent data om ${typer.displayName}`}
-          beskrivelse={`Hent data om ${typer.displayName} for en bruker.`}
-          inputType="AktørId"
-          request={hentEnsligForsorgerData}
-        />
-      ))}
-
+      <AdminCheckboxerMedInput
+        dataTyper={dataTyper}
+        beskrivelse={"Hent / oppdater data for en bruker basert på valg av datatypene under"}
+        inputType={"AktørId"}
+        tittel={"Hent valgte data for en bruker"}
+        request={hentValgteDataForBruker}
+      />
     </div>
   );
 }
@@ -120,6 +119,11 @@ export function Veilarbportefolje() {
 export interface AdminDataTypeResponse {
   name: string
   displayName: string
+}
+
+export interface AdminDataForBrukerRequest {
+  aktorId: string,
+  valg: string[]
 }
 
 interface AdminKnappProps {
@@ -211,6 +215,69 @@ function AdminKnappMedInput(props: AdminKnappInputProps) {
           </Alert>
         )}
         <br/>
+        <Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
+          {props.tittel}
+        </Button>
+      </Card>
+
+      <BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel}/>
+    </>
+  );
+}
+
+interface AdminCheckboxerMedInputProps {
+  dataTyper: AdminDataTypeResponse[]
+  beskrivelse: string;
+  inputType: string;
+  tittel: string;
+  request: (requestBody: AdminDataForBrukerRequest) => AxiosPromise<string | boolean>;
+}
+
+function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
+  const [valg, setValg] = useState<string[]>([]);
+  const [respons, setRespons] = useState<string | undefined>(undefined);
+  const [isOpen, setOpen] = useState(false);
+  const [id, setid] = useState('');
+  const inputType = props.inputType;
+
+  const handleAdminResponse = () => {
+    if (id) {
+      props
+        .request({aktorId: id, valg: valg})
+        .then(resp => {
+          const data = resp.data;
+          if (typeof data === 'string' && isJsonString(data)) {
+            setRespons(JSON.stringify(data));
+          } else if (typeof data === 'boolean') {
+            setRespons(data ? 'true' : 'false');
+          } else {
+            setRespons(data);
+          }
+          successToast(`${props.tittel} er startet`);
+        })
+        .catch(() => errorToast(`Klarte ikke å utføre handling: ${props.tittel}`));
+    } else {
+      errorToast(`Input felt er tomt`);
+    }
+  };
+
+  return (
+    <>
+      <Card title={props.tittel} className="veilarbportefolje-card">
+        <BodyShort className="blokk-xxs">{props.beskrivelse}</BodyShort>
+        <TextField label={inputType} value={id} onChange={e => setid(e.target.value)}/>
+        {respons && (
+          <Alert size="small" variant="success" inline>
+            Respons: {respons}
+          </Alert>
+        )}
+        <br/>
+        <CheckboxGroup legend="Datavalg" onChange={setValg} value={valg}>
+          {props.dataTyper.map((type) => (
+            <Checkbox value={type.name}>{type.displayName}</Checkbox>
+          ))}
+
+        </CheckboxGroup>
         <Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
           {props.tittel}
         </Button>
