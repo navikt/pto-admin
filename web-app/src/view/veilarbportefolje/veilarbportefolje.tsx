@@ -10,7 +10,7 @@ import {
 	indekserFnr,
 	JobId,
 	pdlLastInnData,
-	hentEnsligForsorgerData,
+	hentEnsligForsorgerData, hentEnsligForsorgerDataBatch,
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -86,6 +86,11 @@ export function Veilarbportefolje() {
 				beskrivelse="Hent data om overgangsstønad for en bruker."
         inputType="AktørId"
 				request={hentEnsligForsorgerData}
+			/>
+			<AdminKnapp
+				tittel="Hent overgangsstønad for alle"
+				beskrivelse="Hent overgangsstønad data for alle oppfølgingsbrukere."
+				request={hentEnsligForsorgerDataBatch}
 			/>
 		</div>
 	);
