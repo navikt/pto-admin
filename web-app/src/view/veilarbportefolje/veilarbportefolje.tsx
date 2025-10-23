@@ -265,7 +265,6 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
     <>
       <Card title={props.tittel} className="veilarbportefolje-card">
         <BodyShort className="blokk-xxs">{props.beskrivelse}</BodyShort>
-        <TextField label={inputType} value={id} onChange={e => setid(e.target.value)}/>
         {respons && (
           <Alert size="small" variant="success" inline>
             Respons: {respons}
@@ -278,6 +277,8 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
           ))}
 
         </CheckboxGroup>
+        <br/>
+        <TextField label={inputType} value={id} onChange={e => setid(e.target.value)}/>
         <Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
           {props.tittel}
         </Button>
