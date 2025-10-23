@@ -1,4 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
+import {AdminDataTypeResponse} from "../view/veilarbportefolje/veilarbportefolje";
 
 export const axiosInstance = axios.create({
 	withCredentials: true,
@@ -142,3 +143,8 @@ export function hentEnsligForsorgerDataBatch(): AxiosPromise<JobId> {
 	console.log("Startet: hentEnsligForsorgerDataBatch");
 	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerDataBatch` );
 }
+
+export function hentMuligeDataTyperSomKanHentes(): AxiosPromise<AdminDataTypeResponse[]> {
+	return axiosInstance.get(`/api/admin/hentData/veilarbportefolje/hentDataForBruker/muligeValg`)
+}
+
