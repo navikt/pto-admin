@@ -149,6 +149,6 @@ export function hentMuligeDataTyperSomKanHentes(): AxiosPromise<AdminDataTypeRes
 }
 
 export function hentValgteDataForBruker(valgteDataTyper: AdminDataForBrukerRequest): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, ({valgteDataTyper}))
+	return axiosInstance.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, valgteDataTyper)
 }
 
