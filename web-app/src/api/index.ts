@@ -145,6 +145,6 @@ export function hentEnsligForsorgerDataBatch(): AxiosPromise<JobId> {
 }
 
 export function hentMuligeDataTyperSomKanHentes(): AxiosPromise<AdminDataTypeResponse[]> {
-	return axiosInstance.get(`/api/admin/hentData/veilarbportefolje/hentDataForBruker/muligeValg`)
+	return axiosInstance.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`)
 }
 
