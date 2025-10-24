@@ -18,20 +18,20 @@ export function AvsluttOppfolging() {
 			<div className="border rounded-t-lg bg-white border-gray-300 flex-1 max-w-[960px]">
 				<Tabs value={tab} onChange={value => setTab(value as TabKey)}>
 					<Tabs.List>
-						<Tabs.Tab value={TabKey.avlsuttBrukere} label={'Avslutt brukere'} />
+						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
 						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
 						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
 					</Tabs.List>
-					<Tabs.Panel value="avlsuttBrukere">
+					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
 							<AvsluttOppfolgingForMangeBrukereCard />
 							<AvsluttOppfolgingsperiode />
 						</div>
 					</Tabs.Panel>
-					<Tabs.Panel value="aktiviteter">
+					<Tabs.Panel value={TabKey.aktiviteter}>
 						<BrukerDataCard />
 					</Tabs.Panel>
-					<Tabs.Panel value="kontor">
+					<Tabs.Panel value={TabKey.kontor}>
 						<KontorCard />
 					</Tabs.Panel>
 				</Tabs>
@@ -138,7 +138,7 @@ function AvsluttOppfolgingsperiode() {
 }
 
 enum TabKey {
-	'avlsuttBrukere' = 'avsuttBrukere',
+	'avsluttBrukere' = 'avsluttBrukere',
 	'kontor' = 'kontor',
 	'aktiviteter' = 'aktiviteter'
 }
