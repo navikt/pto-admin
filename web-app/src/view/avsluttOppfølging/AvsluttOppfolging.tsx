@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Button, Heading, Textarea, TextField } from '@navikt/ds-react';
-import {
-	avsluttOppfolgingsperiode,
-	batchAvsluttOppfolging,
-} from '../../api/veilarboppfolging';
+import { Button, Heading, Tabs, Textarea, TextField } from '@navikt/ds-react';
+import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api/veilarboppfolging';
 import { BrukerDataCard } from './BrukerDataCard';
+import KontorCard from './KontorCard';
+import { ViewType } from '../../store/view-store';
 
 export function AvsluttOppfolging() {
+	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
+
+	useEffect(() => {
+		setTabInLocalStorage(tab);
+	}, [tab]);
+
 	return (
-		<div className="flex flex-1 justify-around">
-			<div className="flex gap-4 flex-wrap p-4">
-				<div className="flex flex-col flex-wrap gap-4">
-					<AvsluttOppfolgingForMangeBrukereCard />
-					<AvsluttOppfolgingsperiode />
-				</div>
-					<BrukerDataCard />
+		<div className="flex p-4 justify-center">
+			<div className="border rounded-t-lg bg-white border-gray-300 flex-1 max-w-[960px]">
+				<Tabs value={tab} onChange={value => setTab(value as TabKey)}>
+					<Tabs.List>
+						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
+						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
+						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
+					</Tabs.List>
+					<Tabs.Panel value={TabKey.avsluttBrukere}>
+						<div className="flex flex-row flex-wrap gap-4">
+							<AvsluttOppfolgingForMangeBrukereCard />
+							<AvsluttOppfolgingsperiode />
+						</div>
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey.aktiviteter}>
+						<BrukerDataCard />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey.kontor}>
+						<KontorCard />
+					</Tabs.Panel>
+				</Tabs>
 			</div>
 		</div>
 	);
@@ -42,10 +61,7 @@ function AvsluttOppfolgingForMangeBrukereCard() {
 	}
 
 	return (
-		<Card
-			className="small-card"
-			innholdClassName="hovedside__card-innhold"
-		>
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
 			<Heading size="medium">Avslutt oppfølging for mange brukere</Heading>
 			<form onSubmit={handleSubmit} className="space-y-4">
 				<Textarea
@@ -121,3 +137,20 @@ function AvsluttOppfolgingsperiode() {
 	);
 }
 
+enum TabKey {
+	'avsluttBrukere' = 'avsluttBrukere',
+	'kontor' = 'kontor',
+	'aktiviteter' = 'aktiviteter'
+}
+
+const tabKey = 'last-selected-tab';
+const getTabFromLocalStorage = (): TabKey => {
+	const lastSelectedTab = localStorage.getItem(tabKey);
+	if (lastSelectedTab && Object.values(TabKey).includes(lastSelectedTab as TabKey)) {
+		return lastSelectedTab as TabKey;
+	}
+	return TabKey.aktiviteter;
+};
+const setTabInLocalStorage = (view: TabKey) => {
+	localStorage.setItem(tabKey, view);
+};

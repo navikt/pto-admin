@@ -59,6 +59,12 @@ spring:
           uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
           predicates:
             - Path=/api/admin/veilarbportefolje/**
+        - id: ao-oppfolgingskontor
+          uri: ${AO_OPPFOLGINGSKONTOR_API_URL}
+          predicates:
+            - Path=/api/ao-oppfolgingskontor/**
+          filters:
+            - RewritePath=/api/ao-oppfolgingskontor/(?<remainingPath>.*), /${remainingPath}
 
 app:
   env:
