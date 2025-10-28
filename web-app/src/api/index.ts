@@ -110,7 +110,7 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 
 // Republisering ao-oppfolgingskontor
 export function republiserArbeidsoppfolgingskontorendret(): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
 }
 
 // Veilarbportefolje admin-funksjoner
