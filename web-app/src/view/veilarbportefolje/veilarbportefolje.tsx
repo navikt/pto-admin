@@ -26,8 +26,7 @@ export function Veilarbportefolje() {
 	const [dataTyper, setDataTyper] = useState<AdminDataTypeResponse[]>([]);
 
 	useEffect(() => {
-		hentMuligeDataTyperSomKanHentes()
-			.then((response) => setDataTyper(response.data));
+		hentMuligeDataTyperSomKanHentes().then(response => setDataTyper(response.data));
 	}, []);
 
 	return (
@@ -62,11 +61,7 @@ export function Veilarbportefolje() {
 				request={hovedindekseringNyttAlias}
 			/>
 
-			<AdminKnapp
-				tittel="Hent indekser"
-				beskrivelse="Henter alle aktive indekser."
-				request={getAliases}
-			/>
+			<AdminKnapp tittel="Hent indekser" beskrivelse="Henter alle aktive indekser." request={getAliases} />
 
 			<AdminKnapp
 				tittel="Lag indeks"
@@ -114,8 +109,8 @@ export interface AdminDataTypeResponse {
 }
 
 export interface AdminDataForBrukerRequest {
-	aktorId: string,
-	valg: string[]
+	aktorId: string;
+	valg: string[];
 }
 
 interface AdminKnappProps {
@@ -264,10 +259,11 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
 				)}
 				<br />
 				<CheckboxGroup legend="Datavalg" onChange={setValg} value={valg}>
-					{props.dataTyper.map((type) => (
-						<Checkbox value={type.name} key={type.name}>{type.displayName}</Checkbox>
+					{props.dataTyper.map(type => (
+						<Checkbox value={type.name} key={type.name}>
+							{type.displayName}
+						</Checkbox>
 					))}
-
 				</CheckboxGroup>
 				<br />
 				<TextField label={inputType} value={id} onChange={e => setid(e.target.value)} />
