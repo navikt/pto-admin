@@ -12,8 +12,7 @@ import {
 	indekserAktoer,
 	indekserFnr,
 	JobId,
-	pdlLastInnData,
-	republiserArbeidsoppfolgingskontorendret
+	pdlLastInnData
 } from '../../api';
 import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
@@ -99,11 +98,6 @@ export function Veilarbportefolje() {
 				inputType={'AktørId'}
 				request={hentValgteDataForBruker}
 				dataTyper={dataTyper}
-			/>
-			<AdminKnapp
-				tittel="Republiser arbeidsoppfølgingskontor endret"
-				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v1"
-				request={republiserArbeidsoppfolgingskontorendret}
 			/>
 		</div>
 	);
