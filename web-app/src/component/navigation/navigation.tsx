@@ -1,31 +1,30 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { ViewType, useViewStore } from '../../store/view-store';
-import './navigation.less';
 import { useAppStore } from '../../store/app-store';
-import { BodyShort, Select } from '@navikt/ds-react';
+import { BodyShort, Heading, Tabs } from '@navikt/ds-react';
 
 export function Navigation() {
 	const { loggedInUser } = useAppStore();
 	const { changeView, view } = useViewStore();
 
-	function handleOnChange(e: ChangeEvent<HTMLSelectElement>) {
-		changeView(e.target.value as ViewType);
-	}
-
 	return (
-		<header className="navigation">
-			<div className="navigation__innhold">
-				<h1>POAO Admin</h1>
-				<Select label="PTO Admin" className="navigation__visning-velger" value={view} onChange={handleOnChange}>
-					<option value={ViewType.HOVEDSIDE}>Hovedside</option>
-					<option value={ViewType.VEDTAKSSTOTTE}>Vedtaksstøtte</option>
-					<option value={ViewType.REPUBLISERING_KAFKA}>Republisering Kafka</option>
-					<option value={ViewType.KAFKA_ADMIN}>Kafka Admin</option>
-					<option value={ViewType.VEILARBPORTEFOLJE}>Veilarbportefolje</option>
-					<option value={ViewType.AVSLUTT_BRUKERE}>Avslutt oppfølging</option>
-				</Select>
+		<header className="flex drop-shadow-xl flex-col bg-white flex-1 px-10">
+			<div className="flex flex-row flex-1 pt-4 justify-between items-baseline">
+				<Heading size="medium" className="">
+					POAO Admin
+				</Heading>
+				<BodyShort>{loggedInUser?.navn || ''}</BodyShort>
 			</div>
-			<BodyShort>{loggedInUser?.navn || ''}</BodyShort>
+			<Tabs value={view} onChange={changeView}>
+				<Tabs.List>
+					<Tabs.Tab value={ViewType.HOVEDSIDE} label="Hovedside" />
+					<Tabs.Tab value={ViewType.VEDTAKSSTOTTE} label="Vedtaksstøtte" />
+					<Tabs.Tab value={ViewType.REPUBLISERING_KAFKA} label="Republisering Kafka" />
+					<Tabs.Tab value={ViewType.KAFKA_ADMIN} label="Kafka Admin" />
+					<Tabs.Tab value={ViewType.VEILARBPORTEFOLJE} label="Veilarbportefolje" />
+					<Tabs.Tab value={ViewType.AVSLUTT_BRUKERE} label="Avslutt oppfølging" />
+				</Tabs.List>
+			</Tabs>
 		</header>
 	);
 }

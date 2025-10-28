@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
+	republiserArbeidsoppfolgingskontorendret,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
@@ -43,6 +44,11 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser oppfølgingsperiode for bruker"
 				inputLabel={'Aktør-ID'}
 				request={republiserOppfolgingsperiodeForBruker}
+			/>
+			<RepubliseringsKort
+				tittel="Republiser arbeidsoppfølgingskontor endret"
+				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v1"
+				request={republiserArbeidsoppfolgingskontorendret}
 			/>
 		</div>
 	);
