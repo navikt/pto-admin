@@ -73,7 +73,7 @@ export function republiserArbeidsoppfolgingskontorendret(): AxiosPromise<JobId> 
 }
 
 export function syncArenaKontorForBruker(payload: { identer: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`, {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/sync-arena-kontor`, {
 		identer: payload.identer
 	});
 }
