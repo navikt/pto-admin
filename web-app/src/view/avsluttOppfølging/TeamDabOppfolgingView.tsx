@@ -35,7 +35,7 @@ export function TeamDabOppfolgingView() {
 					<Tabs.Panel value={TabKey.kontor}>
 						<KontorCard />
 					</Tabs.Panel>
-					<Tabs.Panel value={TabKey.kontor}>
+					<Tabs.Panel value={TabKey['ao-kontor-admin']}>
 						<AoKontorAdmin />
 					</Tabs.Panel>
 				</Tabs>
