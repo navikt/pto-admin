@@ -6,7 +6,7 @@ import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
 import { ViewType } from '../../store/view-store';
 
-export function AvsluttOppfolging() {
+export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
 
 	useEffect(() => {
