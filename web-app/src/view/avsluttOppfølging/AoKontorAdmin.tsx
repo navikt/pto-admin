@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { syncArenaKontorForBruker } from '../../api/ao-oppfolgingskontor';
-import { Button, TextField } from '@navikt/ds-react';
+import {Button, Heading, TextField} from '@navikt/ds-react';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,6 +17,7 @@ export const AoKontorAdmin = () => {
 	return (
 		<div className="p-4 bg-gray-white">
 			<form className="space-y-4" onSubmit={fetchKontorData}>
+				<Heading size="medium">Sync Arena-kontor</Heading>
 				<TextField name="identer" label={'Identer (kommaseparert)'} />
 				<Button loading={isLoading} disabled={isLoading}>
 					Hent
