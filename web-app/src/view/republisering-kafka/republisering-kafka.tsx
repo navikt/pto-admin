@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
-	republiserArbeidsoppfolgingskontorendret,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
@@ -14,6 +13,7 @@ import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 import { republiserOppfolgingsperiodeForBruker } from '../../api/veilarboppfolging';
+import { republiserArbeidsoppfolgingskontorendret } from '../../api/ao-oppfolgingskontor';
 
 export function RepubliseringKafka() {
 	return (

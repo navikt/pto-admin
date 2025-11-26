@@ -1,4 +1,5 @@
-import { axiosInstance } from './index';
+import { axiosInstance, JobId } from './index';
+import { AxiosPromise } from 'axios';
 
 interface ArenaKontorDto {
 	kontorId: string;
@@ -64,4 +65,15 @@ export function hentKontorerMedHistorikk(payload: {
 	return axiosInstance
 		.post(`/api/ao-oppfolgingskontor/graphql`, graphqlBody(payload.ident))
 		.then(response => response.data);
+}
+
+// Republisering ao-oppfolgingskontor
+export function republiserArbeidsoppfolgingskontorendret(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
+}
+
+export function syncArenaKontorForBruker(payload: { identer: string }): Promise<void> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`, {
+		identer: payload.identer
+	});
 }

@@ -4,7 +4,7 @@ import { Button, Heading, Tabs, Textarea, TextField } from '@navikt/ds-react';
 import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api/veilarboppfolging';
 import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
-import { ViewType } from '../../store/view-store';
+import { AoKontorAdmin } from './AoKontorAdmin';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -21,6 +21,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
 						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
 						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
+						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
@@ -33,6 +34,9 @@ export function TeamDabOppfolgingView() {
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey.kontor}>
 						<KontorCard />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey.kontor}>
+						<AoKontorAdmin />
 					</Tabs.Panel>
 				</Tabs>
 			</div>
@@ -140,6 +144,7 @@ function AvsluttOppfolgingsperiode() {
 enum TabKey {
 	'avsluttBrukere' = 'avsluttBrukere',
 	'kontor' = 'kontor',
+	'ao-kontor-admin' = 'ao-kontor-admin',
 	'aktiviteter' = 'aktiviteter'
 }
 
