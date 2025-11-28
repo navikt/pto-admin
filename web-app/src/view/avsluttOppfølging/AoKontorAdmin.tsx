@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {patchIdentMappingOgRepubliser, syncArenaKontorForBruker} from '../../api/ao-oppfolgingskontor';
+import {republiserForUtvalgteOppfolgingsperioder, syncArenaKontorForBruker} from '../../api/ao-oppfolgingskontor';
 import {Button, Heading, TextField} from '@navikt/ds-react';
 
 export const AoKontorAdmin = () => {
@@ -14,12 +14,12 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const patchIdentmappingOgRepubliserKontortilordning = async e => {
+	const republiserKontorordningForUtvalgteOppfolgingsperioder = async e => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		const identer = formData.get('identer') as string;
+		const oppfolgingsperiodeIder = formData.get('oppfolgingsperiodeIder') as string;
 		setIsLoading(true);
-		await patchIdentMappingOgRepubliser({ identer });
+		await republiserForUtvalgteOppfolgingsperioder({ oppfolgingsperiodeIder: oppfolgingsperiodeIder });
 		setIsLoading(false);
 	}
 
@@ -32,9 +32,9 @@ export const AoKontorAdmin = () => {
 					Hent
 				</Button>
 			</form>
-			<Heading size="medium">Patch identmapping og republiser kontortilordning</Heading>
-			<form className="space-y-4" onSubmit={patchIdentmappingOgRepubliserKontortilordning}>
-				<TextField name="identer" label={'Identer (kommaseparert)'} />
+			<Heading size="medium">Republiser kontortilordninger</Heading>
+			<form className="space-y-4" onSubmit={republiserKontorordningForUtvalgteOppfolgingsperioder}>
+				<TextField name="oppfolgingsperiodeIder" label={'Liste med oppfolgingsperiode-ID-er (kommaseparert)'} />
 				<Button loading={isLoading} disabled={isLoading}>
 					Hent
 				</Button>

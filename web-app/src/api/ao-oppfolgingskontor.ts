@@ -78,8 +78,8 @@ export function syncArenaKontorForBruker(payload: { identer: string }): Promise<
 	});
 }
 
-export function patchIdentMappingOgRepubliser(payload: { identer: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-brukere`, {
-		identer: payload.identer
+export function republiserForUtvalgteOppfolgingsperioder(payload: { oppfolgingsperiodeIder: string }): Promise<void> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-perioder`, {
+		oppfolgingsperioder: payload.oppfolgingsperiodeIder
 	});
 }
