@@ -82,6 +82,7 @@ const KontorHistorikk = ({ kontorHistorikk }: { kontorHistorikk: KontorHistorikk
 			{kontorHistorikk.map(entry => {
 				return (
 					<li className="grid odd:bg-gray-100 py-1 grid-cols-10" key={entry.endretTidspunkt}>
+						<span className="col-span-2">{entry.ident}</span>
 						<span className="col-span-2">{entry.kontorType}</span>
 						<span className="col-span-1">{entry.kontorId}</span>
 						<span className="col-span-2">{entry.endretAv}</span>

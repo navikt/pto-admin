@@ -19,6 +19,7 @@ export interface KontorTilhorigheter {
 	arbeidsoppfolging?: ArbeidsoppfolgingKontorDto;
 }
 export interface KontorHistorikkQueryDto {
+	ident: string;
 	kontorId: string;
 	kontorType: string;
 	endringsType: string;
@@ -44,6 +45,7 @@ const graphqlQuery = `
 			}
 		}
 		kontorHistorikk(ident: $ident) {
+		 	ident,
 		 	kontorId,
 			kontorType,
 			endringsType,
@@ -79,7 +81,10 @@ export function syncArenaKontorForBruker(payload: { identer: string }): Promise<
 }
 
 export function patchIdentMappingOgRepubliser(payload: { identer: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-brukere`, {
-		identer: payload.identer
-	});
+	return axiosInstance.post(
+		`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-brukere`,
+		{
+			identer: payload.identer
+		}
+	);
 }

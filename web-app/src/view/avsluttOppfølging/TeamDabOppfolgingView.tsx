@@ -15,7 +15,7 @@ export function TeamDabOppfolgingView() {
 
 	return (
 		<div className="flex p-4 justify-center">
-			<div className="border rounded-t-lg bg-white border-gray-300 flex-1 max-w-[960px]">
+			<div className="border rounded-t-lg bg-white border-gray-300 flex-1 max-w-[1200px]">
 				<Tabs value={tab} onChange={value => setTab(value as TabKey)}>
 					<Tabs.List>
 						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
