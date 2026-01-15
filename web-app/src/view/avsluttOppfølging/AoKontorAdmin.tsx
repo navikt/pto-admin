@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import {republiserForUtvalgteOppfolgingsperioder, syncArenaKontorForBruker} from '../../api/ao-oppfolgingskontor';
-import {Button, Heading, TextField} from '@navikt/ds-react';
+import {
+	doDryRunFinnKontor,
+	republiserForUtvalgteOppfolgingsperioder,
+	syncArenaKontorForBruker
+} from '../../api/ao-oppfolgingskontor';
+import { Button, Heading, TextField } from '@navikt/ds-react';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [dryRunKontorResult, setDryRunKontorResult] = useState<Record<string, string> | null>(null);
 
 	const fetchKontorData = async e => {
 		e.preventDefault();
@@ -21,7 +26,17 @@ export const AoKontorAdmin = () => {
 		setIsLoading(true);
 		await republiserForUtvalgteOppfolgingsperioder({ oppfolgingsperiodeIder: oppfolgingsperiodeIder });
 		setIsLoading(false);
-	}
+	};
+
+	const dryRunFinnKontor = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const identer = formData.get('identer') as string;
+		setIsLoading(true);
+		const result = await doDryRunFinnKontor({ identer });
+		setDryRunKontorResult(result.data);
+		setIsLoading(false);
+	};
 
 	return (
 		<div className="p-4 bg-gray-white">
@@ -38,6 +53,16 @@ export const AoKontorAdmin = () => {
 				<Button loading={isLoading} disabled={isLoading}>
 					Hent
 				</Button>
+			</form>
+			<Heading size="medium">
+				Dry-run finn kontor (som om det var arbeidssøker, dvs kan blir rutet til NOE)
+			</Heading>
+			<form className="space-y-4" onSubmit={dryRunFinnKontor}>
+				<TextField name="oppfolgingsperiodeIder" label={'Identer (kommaseparert)'} />
+				<Button loading={isLoading} disabled={isLoading}>
+					Hent
+				</Button>
+				<div>{dryRunKontorResult ? JSON.stringify(dryRunKontorResult) : null}</div>
 			</form>
 		</div>
 	);
