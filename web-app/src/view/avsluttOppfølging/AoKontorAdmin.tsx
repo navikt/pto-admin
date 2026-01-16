@@ -31,7 +31,7 @@ export const AoKontorAdmin = () => {
 	const dryRunFinnKontor = async e => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		const identer = formData.get('identer') as string;
+		const identer = formData.get('identer2') as string;
 		setIsLoading(true);
 		const result = await doDryRunFinnKontor({ identer });
 		setDryRunKontorResult(result.data);
@@ -58,7 +58,7 @@ export const AoKontorAdmin = () => {
 				Dry-run finn kontor (som om det var arbeidssøker, dvs kan blir rutet til NOE)
 			</Heading>
 			<form className="space-y-4" onSubmit={dryRunFinnKontor}>
-				<TextField name="oppfolgingsperiodeIder" label={'Identer (kommaseparert)'} />
+				<TextField name="identer2" label={'Identer (kommaseparert)'} />
 				<Button loading={isLoading} disabled={isLoading}>
 					Hent
 				</Button>
