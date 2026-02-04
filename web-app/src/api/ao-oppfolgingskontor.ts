@@ -88,3 +88,9 @@ export function republiserForUtvalgteOppfolgingsperioder(payload: { oppfolgingsp
 		}
 	);
 }
+
+export function doDryRunFinnKontor(payload: { identer: string }): AxiosPromise<Record<string, string>> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/finn-kontor`, {
+		identer: payload.identer
+	});
+}
