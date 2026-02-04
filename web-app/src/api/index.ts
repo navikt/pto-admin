@@ -108,11 +108,6 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
 
-// Republisering ao-oppfolgingskontor
-export function republiserArbeidsoppfolgingskontorendret(): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
-}
-
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker`, { aktorId });
