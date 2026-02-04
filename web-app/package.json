@@ -35,7 +35,7 @@
   "dependencies": {
     "@microlink/react-json-view": "1.27.0",
     "@navikt/ds-css": "7.32.3",
-    "@navikt/ds-react": "7.32.3",
+    "@navikt/ds-react": "7.35.0",
     "@navikt/fnrvalidator": "2.1.5",
     "@tailwindcss/vite": "4.1.17",
     "@types/react-modal": "3.16.3",
