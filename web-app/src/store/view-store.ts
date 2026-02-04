@@ -7,7 +7,7 @@ export enum ViewType {
 	REPUBLISERING_KAFKA = 'REPUBLISERING_KAFKA',
 	KAFKA_ADMIN = 'KAFKA_ADMIN',
 	VEILARBPORTEFOLJE = 'VEILARBPORTEFOLJE',
-	AVSLUTT_BRUKERE = 'AVSLUTT_BRUKERE',
+	TEAM_DAB = 'TEAM_DAB'
 }
 
 const ViewLocalStorageKey = 'current-view';
@@ -18,11 +18,11 @@ const getViewFromLocalStorage = (): ViewType => {
 		return view as ViewType;
 	}
 	return ViewType.HOVEDSIDE;
-}
+};
 
 const setViewInLocalStorage = (view: ViewType) => {
 	localStorage.setItem(ViewLocalStorageKey, view);
-}
+};
 
 export const [ViewStoreProvider, useViewStore] = constate(() => {
 	const [view, setView] = useState<ViewType>(getViewFromLocalStorage());
