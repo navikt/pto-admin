@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
-	republiserArbeidsoppfolgingskontorendret,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
@@ -14,6 +13,7 @@ import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 import { republiserOppfolgingsperiodeForBruker } from '../../api/veilarboppfolging';
+import { republiserArbeidsoppfolgingskontorendret } from '../../api/ao-oppfolgingskontor';
 
 export function RepubliseringKafka() {
 	return (
@@ -22,33 +22,39 @@ export function RepubliseringKafka() {
 				tittel="Republiser siste 14a vedtak i veilarbvedtaksstotte"
 				beskrivelse="Republiserer siste 14a vedtak for brukere som har vedtak i Modia vedtaksstøtte eller i Arena."
 				request={republiserSiste14aVedtak}
+				topicNavn={'<ukjent topic>'}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser fattede 14a vedtak i veilarbvedtaksstotte til DVH"
 				beskrivelse="Republiser alle fattede 14a vedtak i veilarbvedtaksstotte på topic for DVH."
 				request={republiserVedtak14aFattetDvh}
+				topicNavn={'<ukjent topic>'}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
 				beskrivelse="Republiser endring på dialog i veilarbdialog for alle brukere som har en aktiv dialog
 					(dvs. ikke historisk)."
 				request={republiserEndringPaaDialog}
+				topicNavn={'dab.endring-paa-dialog-v1'}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)"
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
+				topicNavn={'pto.siste-oppfolgingsperiode-v1 + pto.oppfolgingsperiode-v1'}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser oppfølgingsperiode for bruker"
 				beskrivelse="Republiser oppfølgingsperiode for bruker"
 				inputLabel={'Aktør-ID'}
 				request={republiserOppfolgingsperiodeForBruker}
+				topicNavn={'pto.siste-oppfolgingsperiode-v1 + pto.oppfolgingsperiode-v1'}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser arbeidsoppfølgingskontor endret"
 				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v1"
 				request={republiserArbeidsoppfolgingskontorendret}
+				topicNavn={'dab.arbeidsoppfolgingskontortilordninger-v1'}
 			/>
 		</div>
 	);
@@ -56,6 +62,7 @@ export function RepubliseringKafka() {
 
 interface RepubliseringsKortProps {
 	tittel: string;
+	topicNavn: string;
 	beskrivelse: string;
 	request: () => AxiosPromise<JobId>;
 }
@@ -63,11 +70,18 @@ interface RepubliseringsKortProps {
 interface RepubliseringsKortMedInputProps {
 	tittel: string;
 	beskrivelse: string;
+	topicNavn: string;
 	inputLabel: string;
 	request: (input: string) => AxiosPromise<JobId>;
 }
 
-function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }: RepubliseringsKortMedInputProps) {
+function RepubliseringsKortMedInput({
+	tittel,
+	beskrivelse,
+	inputLabel,
+	request,
+	topicNavn
+}: RepubliseringsKortMedInputProps) {
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
 	const [input, setInput] = useState<string>('');
@@ -95,7 +109,12 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 						Jobb startet med jobId: {jobId}
 					</Alert>
 				)}
-				<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+				<div>
+					<code className="bg-gray-200 p-2 rounded-sm">{topicNavn}</code>
+				</div>
+				<div>
+					<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+				</div>
 			</Card>
 
 			<BekreftModal
@@ -108,7 +127,7 @@ function RepubliseringsKortMedInput({ tittel, beskrivelse, inputLabel, request }
 	);
 }
 
-function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKortProps) {
+function RepubliseringsKort({ tittel, beskrivelse, request, topicNavn }: RepubliseringsKortProps) {
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
 
@@ -130,7 +149,12 @@ function RepubliseringsKort({ tittel, beskrivelse, request }: RepubliseringsKort
 						Jobb startet med jobId: {jobId}
 					</Alert>
 				)}
-				<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+				<div>
+					<code className="bg-gray-200 p-2 rounded-sm">{topicNavn}</code>
+				</div>
+				<div>
+					<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+				</div>
 			</Card>
 
 			<BekreftModal

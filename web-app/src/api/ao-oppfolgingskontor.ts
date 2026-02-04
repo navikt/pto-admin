@@ -1,4 +1,5 @@
-import { axiosInstance } from './index';
+import { axiosInstance, JobId } from './index';
+import { AxiosPromise } from 'axios';
 
 interface ArenaKontorDto {
 	kontorId: string;
@@ -18,6 +19,7 @@ export interface KontorTilhorigheter {
 	arbeidsoppfolging?: ArbeidsoppfolgingKontorDto;
 }
 export interface KontorHistorikkQueryDto {
+	ident: string;
 	kontorId: string;
 	kontorType: string;
 	endringsType: string;
@@ -43,6 +45,7 @@ const graphqlQuery = `
 			}
 		}
 		kontorHistorikk(ident: $ident) {
+		 	ident,
 		 	kontorId,
 			kontorType,
 			endringsType,
@@ -64,4 +67,30 @@ export function hentKontorerMedHistorikk(payload: {
 	return axiosInstance
 		.post(`/api/ao-oppfolgingskontor/graphql`, graphqlBody(payload.ident))
 		.then(response => response.data);
+}
+
+// Republisering ao-oppfolgingskontor
+export function republiserArbeidsoppfolgingskontorendret(): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
+}
+
+export function syncArenaKontorForBruker(payload: { identer: string }): Promise<void> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/sync-arena-kontor`, {
+		identer: payload.identer
+	});
+}
+
+export function republiserForUtvalgteOppfolgingsperioder(payload: { oppfolgingsperiodeIder: string }): Promise<void> {
+	return axiosInstance.post(
+		`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-perioder`,
+		{
+			oppfolgingsperioder: payload.oppfolgingsperiodeIder
+		}
+	);
+}
+
+export function doDryRunFinnKontor(payload: { identer: string }): AxiosPromise<Record<string, string>> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/finn-kontor`, {
+		identer: payload.identer
+	});
 }
