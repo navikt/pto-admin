@@ -54,7 +54,7 @@
 	},
 	"devDependencies": {
 		"@types/classnames": "2.3.4",
-		"@types/react-dom": "19.1.9",
+		"@types/react-dom": "19.2.3",
 		"husky": "9.1.7",
 		"lint-staged": "16.2.6",
 		"msw": "2.11.6",
