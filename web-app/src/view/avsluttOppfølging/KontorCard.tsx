@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import { Button, TextField, Tooltip } from '@navikt/ds-react';
 import { hentKontorerMedHistorikk, KontorHistorikkQueryDto, KontorTilhorigheter } from '../../api/ao-oppfolgingskontor';
 import dayjs from 'dayjs';
+import { UserQuery, UserQueryResultsContainer } from '../../component/UserQueryResults';
 
 const KontorCard = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [kontorData, setKontorData] = useState<
-		| {
-				data: {
-					kontorTilhorigheter: KontorTilhorigheter;
-					kontorHistorikk: KontorHistorikkQueryDto[];
-				};
-		  }
-		| undefined
-	>(undefined);
+	const [results, setResults] = useState<UserQuery[]>([]);
 
 	const fetchKontorData = async e => {
 		e.preventDefault();
@@ -22,7 +15,19 @@ const KontorCard = () => {
 		setIsLoading(true);
 		const result = await hentKontorerMedHistorikk({ ident });
 		setIsLoading(false);
-		setKontorData(result);
+		setResults([
+			...results,
+			{
+				id: results.length + 1 + '',
+				ident,
+				component: (
+					<>
+						<KontorTilhorigheter kontorTilhorigheter={result.data.kontorTilhorigheter} />
+						<KontorHistorikk kontorHistorikk={result.data.kontorHistorikk} />
+					</>
+				)
+			}
+		]);
 	};
 
 	return (
@@ -33,8 +38,12 @@ const KontorCard = () => {
 					Hent
 				</Button>
 			</form>
-			{kontorData ? <KontorTilhorigheter kontorTilhorigheter={kontorData.data.kontorTilhorigheter} /> : null}
-			{kontorData ? <KontorHistorikk kontorHistorikk={kontorData.data.kontorHistorikk} /> : null}
+			<UserQueryResultsContainer
+				queries={results}
+				onCloseTab={itemId => {
+					setResults(results.filter(it => it.id !== itemId));
+				}}
+			/>
 		</div>
 	);
 };
