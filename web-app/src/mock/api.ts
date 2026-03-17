@@ -335,5 +335,13 @@ export const handlers: RequestHandler[] = [
 				]
 			}
 		});
+	}),
+	http.post(`/api/ao-oppfolgingskontor/admin/kontortelling`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(42);
+	}),
+	http.post(`/api/ao-oppfolgingskontor/admin/merge-kontorer`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return new HttpResponse(null, { status: 200 });
 	})
 ];

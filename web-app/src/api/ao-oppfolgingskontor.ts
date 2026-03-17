@@ -94,3 +94,18 @@ export function doDryRunFinnKontor(payload: { identer: string }): AxiosPromise<R
 		identer: payload.identer
 	});
 }
+
+export function kontortelling(payload: { fraKontorer: string[]; tilKontor: string }): AxiosPromise<number> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/kontortelling`, {
+		fraKontorer: payload.fraKontorer,
+		tilKontor: payload.tilKontor
+	});
+}
+
+export function mergeKontorer(payload: { fraKontorer: string[]; tilKontor: string }): AxiosPromise<void> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/merge-kontorer`, {
+		fraKontorer: payload.fraKontorer,
+		tilKontor: payload.tilKontor
+	});
+}
+
