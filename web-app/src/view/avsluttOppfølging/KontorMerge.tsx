@@ -83,7 +83,7 @@ export const KontorMerge = () => {
 	return (
 		<div className="p-4 space-y-8 ">
 			<Heading size="medium" className="!mb-4">
-				Kontor Merge
+				Kontorsammenslåing
 			</Heading>
 			<form className="space-y-4" onSubmit={handleTelling}>
 				<div className="flex space-x-12">
@@ -147,10 +147,10 @@ export const KontorMerge = () => {
 						type="button"
 						variant="danger"
 						loading={isLoading}
-						disabled={isLoading}
+						disabled={isLoading || tellingResult === null}
 						onClick={handleMerge}
 					>
-						Utfør merge
+						Utfør sammenslåing
 					</Button>
 				</div>
 			</form>

@@ -23,7 +23,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
 						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
 						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
-						<Tabs.Tab value={TabKey['kontor-merge']} label={'KontorMerge'} />
+						<Tabs.Tab value={TabKey['kontor-merge']} label={'Kontorsammenslåing'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
