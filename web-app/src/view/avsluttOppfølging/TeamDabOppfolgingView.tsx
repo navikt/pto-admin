@@ -5,6 +5,7 @@ import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api/vei
 import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
 import { AoKontorAdmin } from './AoKontorAdmin';
+import { KontorMerge } from './KontorMerge';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -22,6 +23,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
 						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
 						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
+						<Tabs.Tab value={TabKey['kontor-merge']} label={'Kontorsammenslåing'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
@@ -37,6 +39,9 @@ export function TeamDabOppfolgingView() {
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey['ao-kontor-admin']}>
 						<AoKontorAdmin />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey['kontor-merge']}>
+						<KontorMerge />
 					</Tabs.Panel>
 				</Tabs>
 			</div>
@@ -145,6 +150,7 @@ enum TabKey {
 	'avsluttBrukere' = 'avsluttBrukere',
 	'kontor' = 'kontor',
 	'ao-kontor-admin' = 'ao-kontor-admin',
+	'kontor-merge' = 'kontor-merge',
 	'aktiviteter' = 'aktiviteter'
 }
 
