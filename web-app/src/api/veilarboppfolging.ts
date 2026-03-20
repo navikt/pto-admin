@@ -9,7 +9,7 @@ export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPro
 
 export function republiserTilordnetVeilederUtvalg(ids: string): AxiosPromise<JobId> {
 	return axiosInstance.post(
-		`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/tilordnet-veileder/utvalg`,
+		`/api/veilarboppfolging/api/v2/admin/veilarboppfolging/republiser/tilordnet-veileder/utvalg`,
 		{ aktorIder: ids.split(',').map(it => it.trim()) }
 	);
 }
