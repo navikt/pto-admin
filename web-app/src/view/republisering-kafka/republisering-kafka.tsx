@@ -12,7 +12,7 @@ import { AxiosPromise } from 'axios';
 import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
-import { republiserOppfolgingsperiodeForBruker } from '../../api/veilarboppfolging';
+import { republiserOppfolgingsperiodeForBruker, republiserTilordnetVeilederUtvalg } from '../../api/veilarboppfolging';
 import { republiserArbeidsoppfolgingskontorendret } from '../../api/ao-oppfolgingskontor';
 
 export function RepubliseringKafka() {
@@ -55,6 +55,13 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v1"
 				request={republiserArbeidsoppfolgingskontorendret}
 				topicNavn={'dab.arbeidsoppfolgingskontortilordninger-v1'}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser tilordnet veileder for et utvalg av brukere"
+				beskrivelse="Republiser tilordnet veileder for et utvalg av brukere. Legg inn én ID per linje."
+				inputLabel={'Aktør-IDer (én per linje)'}
+				request={republiserTilordnetVeilederUtvalg}
+				topicNavn={'pto.siste-tilordnet-veileder-v1'}
 			/>
 		</div>
 	);
