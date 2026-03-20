@@ -8,9 +8,12 @@ export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPro
 }
 
 export function republiserTilordnetVeilederUtvalg(ids: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/veilarboppfolging/api/v2/admin/republiser/tilordnet-veileder/utvalg`, {
-		aktorIder: ids.split(',').map(it => it.trim())
-	});
+	return axiosInstance.post(
+		`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/tilordnet-veileder/utvalg`,
+		{
+			aktorIder: ids.split(',').map(it => it.trim())
+		}
+	);
 }
 
 export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): AxiosPromise<JobId> {
