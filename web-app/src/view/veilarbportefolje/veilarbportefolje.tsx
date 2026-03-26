@@ -26,7 +26,9 @@ export function Veilarbportefolje() {
 	const [dataTyper, setDataTyper] = useState<AdminDataTypeResponse[]>([]);
 
 	useEffect(() => {
-		hentMuligeDataTyperSomKanHentes().then(response => setDataTyper(response.data));
+		hentMuligeDataTyperSomKanHentes()
+			.then(response => setDataTyper(Array.isArray(response.data) ? response.data : []))
+			.catch(() => setDataTyper([]));
 	}, []);
 
 	return (
