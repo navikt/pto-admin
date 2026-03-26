@@ -108,6 +108,10 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
 
+export function republiserEndringPaaOppfolgingsbruker(fnr: string): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnr });
+}
+
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): AxiosPromise<string> {
 	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker`, { aktorId });

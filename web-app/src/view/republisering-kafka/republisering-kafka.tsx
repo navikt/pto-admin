@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
+	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaDialog,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
@@ -42,6 +43,13 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser endring på alle oppfølgingsbrukere i veilarbarena (v2 på Aiven)."
 				request={republiserEndringPaaOppfolgingsbrukere}
 				topicNavn={'pto.siste-oppfolgingsperiode-v1 + pto.oppfolgingsperiode-v1'}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser endring på en oppfølgingsbruker i veilarbarena (v2 på Aiven)"
+				beskrivelse="Republiserer endring på én enkelt oppfølgingsbruker i veilarbarena basert på fødselsnummer."
+				inputLabel={'Fødselsnummer'}
+				request={republiserEndringPaaOppfolgingsbruker}
+				topicNavn={'pto.endring-paa-oppfolgingsbruker-v2'}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser oppfølgingsperiode for bruker"
