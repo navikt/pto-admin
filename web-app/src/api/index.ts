@@ -104,8 +104,14 @@ export function republiserEndringPaaDialog(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
 }
 
+// Republisering veilarbarena
+
 export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
+}
+
+export function republiserEndringPaaOppfolgingsbruker(fnr: string): AxiosPromise<JobId> {
+	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnrs: fnr.split(",").map(f => f.trim()) });
 }
 
 // Veilarbportefolje admin-funksjoner

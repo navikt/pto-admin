@@ -35,6 +35,10 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: java
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki
   azure:
     sidecar:
       enabled: true
@@ -50,6 +54,7 @@ spec:
     outbound:
       external:
         - host: pdl-api.prod-fss-pub.nais.io
+        - host: veilarbarena.prod-fss-pub.nais.io
       rules:
         - application: veilarboppfolging
           namespace: poao
@@ -80,7 +85,7 @@ spec:
     - name: VEILARBOPPFOLGING_ADMIN_API_URL
       value: http://veilarboppfolging.poao
     - name: VEILARBARENA_ADMIN_API_URL
-      value: https://veilarbarena.intern.nav.no
+      value: https://veilarbarena.prod-fss-pub.nais.io
     - name: VEILARBDIALOG_ADMIN_API_URL
       value: http://veilarbdialog.dab
     - name: VEILARBAKTIVITET_ADMIN_API_URL

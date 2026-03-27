@@ -77,11 +77,18 @@ class ApplicationConfig {
                 if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
             ), token)
         }
+        val veilarbarenaTokenProvider: (token: String) -> String = { token ->
+            oboClient.exchangeOnBehalfOfToken(String.format(
+                "api://%s-fss.pto.veilarbarena/.default",
+                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+            ), token)
+        }
 
 
         val systemTokenSuppliers: Map<SystembrukereAzure, (String) -> String> =
             mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
                 SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
+                SystembrukereAzure.VEILARBARENA to veilarbarenaTokenProvider,
                 SystembrukereAzure.VEILARBDIALOG to veilarbdialogTokenProvider,
                 SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
                 SystembrukereAzure.VEILARBAKTIVITET to veilarbaktivitetTokenProvider,

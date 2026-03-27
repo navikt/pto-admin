@@ -343,5 +343,20 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/ao-oppfolgingskontor/admin/merge-kontorer`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return new HttpResponse(null, { status: 200 });
+	}),
+	http.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json([
+			{"name": "PDL_DATA", "displayName": "Persondata (PDL)"},
+			{"name": "ENSLIG_FORSORGER_DATA", "displayName": "Enslig forsørger"}
+		]);
+	}),
+	http.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
 	})
 ];
