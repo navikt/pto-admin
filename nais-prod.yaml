@@ -54,6 +54,7 @@ spec:
     outbound:
       external:
         - host: pdl-api.prod-fss-pub.nais.io
+        - host: veilarbarena.prod-fss-pub.nais.io
       rules:
         - application: veilarboppfolging
           namespace: poao
