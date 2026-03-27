@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
 	doDryRunFinnKontor,
 	republiserForUtvalgteOppfolgingsperioder,
+	republiserTombstone,
 	syncArenaKontorForBruker
 } from '../../api/ao-oppfolgingskontor';
 import { Button, Heading, TextField } from '@navikt/ds-react';
@@ -38,6 +39,15 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
+	const tombstoneIdenter = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const identer = formData.get('tombstoneIdenter') as string;
+		setIsLoading(true);
+		await republiserTombstone({ identer });
+		setIsLoading(false);
+	};
+
 	return (
 		<div className="p-4 bg-gray-white">
 			<Heading size="medium">Sync Arena-kontor</Heading>
@@ -63,6 +73,13 @@ export const AoKontorAdmin = () => {
 					Hent
 				</Button>
 				<div>{dryRunKontorResult ? JSON.stringify(dryRunKontorResult) : null}</div>
+			</form>
+			<Heading size="medium">Republiser tombstone for identer</Heading>
+			<form className="space-y-4" onSubmit={tombstoneIdenter}>
+				<TextField name="tombstoneIdenter" label={'Identer (kommaseparert)'} />
+				<Button loading={isLoading} disabled={isLoading}>
+					Send
+				</Button>
 			</form>
 		</div>
 	);

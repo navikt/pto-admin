@@ -109,3 +109,9 @@ export function mergeKontorer(payload: { fraKontorer: string[]; tilKontor: strin
 	});
 }
 
+export function republiserTombstone(payload: { identer: string }): Promise<void> {
+	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-tombstone`, {
+		identer: payload.identer
+	});
+}
+
