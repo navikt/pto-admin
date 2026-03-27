@@ -47,7 +47,7 @@ export function RepubliseringKafka() {
 			<RepubliseringsKortMedInput
 				tittel="Republiser endring på en oppfølgingsbruker i veilarbarena (v2 på Aiven)"
 				beskrivelse="Republiserer endring på én enkelt oppfølgingsbruker i veilarbarena basert på fødselsnummer."
-				inputLabel={'Fødselsnummer'}
+				inputLabel={'Fødselsnummer, kan være kommaseparert liste'}
 				request={republiserEndringPaaOppfolgingsbruker}
 				topicNavn={'pto.endring-paa-oppfolgingsbruker-v2'}
 			/>

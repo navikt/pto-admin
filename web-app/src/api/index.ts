@@ -111,7 +111,7 @@ export function republiserEndringPaaOppfolgingsbrukere(): AxiosPromise<JobId> {
 }
 
 export function republiserEndringPaaOppfolgingsbruker(fnr: string): AxiosPromise<JobId> {
-	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnr });
+	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnrs: fnr.split(",").map(f => f.trim()) });
 }
 
 // Veilarbportefolje admin-funksjoner
