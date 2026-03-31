@@ -180,9 +180,7 @@ function HentIdenterCard() {
 							return (
 								<li className="flex justify-between space-y-4" key={ident.ident}>
 									<span>{ident.ident}</span>
-									<span>
-										<span className="font-bold">gruppe:</span> {ident.gruppe}
-									</span>
+									<span>{getIdentGruppeTagColor(ident.gruppe)}</span>
 									<span className="flex items-center gap-1">
 										<Tag
 											size="small"
@@ -261,3 +259,32 @@ function HarTilgangTilKodeOgSkjermetCard() {
 		</Card>
 	);
 }
+
+const getIdentGruppeTagColor = (gruppe: 'FOLKEREGISTERIDENT' | 'NPID' | 'AKTORID' | string) => {
+	switch (gruppe) {
+		case 'AKTORID':
+			return (
+				<Tag size="small" variant="outline" data-color="brand-beige">
+					AktorId
+				</Tag>
+			);
+		case 'FOLKEREGISTERIDENT':
+			return (
+				<Tag size="small" variant="outline" data-color="accent">
+					Folkeregisterident
+				</Tag>
+			);
+		case 'NPID':
+			return (
+				<Tag size="small" variant="outline" data-color="meta-purple">
+					NPID
+				</Tag>
+			);
+		default:
+			return (
+				<Tag size="small" variant="outline" data-color="warning">
+					Ukjent
+				</Tag>
+			);
+	}
+};

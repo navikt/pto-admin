@@ -1,4 +1,4 @@
-import { axiosInstance } from './index';
+import { fetchInstance } from './index';
 
 export interface Dialog {
 	id: string;
@@ -33,9 +33,12 @@ query hentDialoger($fnr: String!) {
 const hentDialogerGraphqlBody = (fnr: string) => ({
 	query: hentDialogerQuery,
 	variables: { fnr }
-})
+});
 
 export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialoger: Dialog[] } }> => {
-	return axiosInstance.post<{ data: { dialoger: Dialog[] } }>(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
+	return fetchInstance
+		.post<{
+			data: { dialoger: Dialog[] };
+		}>(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
 		.then(response => response.data);
-}
+};

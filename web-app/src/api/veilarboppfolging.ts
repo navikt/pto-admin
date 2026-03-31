@@ -1,13 +1,13 @@
-import { axiosInstance, JobId } from './index';
+import { fetchInstance, JobId } from './index';
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {
+	return fetchInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {
 		aktorId
 	});
 }
 
 export function republiserTilordnetVeilederUtvalg(ids: string): Promise<{ data: JobId }> {
-	return axiosInstance.post(
+	return fetchInstance.post(
 		`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/tilordnet-veileder/utvalg`,
 		{
 			aktorIder: ids.split(',').map(it => it.trim())
@@ -16,7 +16,7 @@ export function republiserTilordnetVeilederUtvalg(ids: string): Promise<{ data: 
 }
 
 export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttBrukere`, payload);
+	return fetchInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttBrukere`, payload);
 }
 
 export function avsluttOppfolgingsperiode(payload: {
@@ -24,7 +24,7 @@ export function avsluttOppfolgingsperiode(payload: {
 	begrunnelse: string;
 	oppfolgingsperiodeUuid: string;
 }): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
+	return fetchInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
 }
 
 const graphqlQuery = `
@@ -53,7 +53,9 @@ interface OppfolgingsPeriode {
 export function hentOppfolgingsperioder(payload: {
 	fnr: string;
 }): Promise<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }> {
-	return axiosInstance
-		.post<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }>(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, graphqlBody(payload.fnr))
+	return fetchInstance
+		.post<{
+			data: { oppfolgingsPerioder: OppfolgingsPeriode[] };
+		}>(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, graphqlBody(payload.fnr))
 		.then(response => response.data);
 }

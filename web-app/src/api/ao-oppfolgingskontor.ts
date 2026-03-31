@@ -1,4 +1,4 @@
-import { axiosInstance, JobId } from './index';
+import { fetchInstance, JobId } from './index';
 
 interface ArenaKontorDto {
 	kontorId: string;
@@ -63,54 +63,60 @@ const graphqlBody = (ident: string) => ({
 export function hentKontorerMedHistorikk(payload: {
 	ident: string;
 }): Promise<{ data: { kontorTilhorigheter: KontorTilhorigheter; kontorHistorikk: KontorHistorikkQueryDto[] } }> {
-	return axiosInstance
-		.post<{ data: { kontorTilhorigheter: KontorTilhorigheter; kontorHistorikk: KontorHistorikkQueryDto[] } }>(`/api/ao-oppfolgingskontor/graphql`, graphqlBody(payload.ident))
+	return fetchInstance
+		.post<{
+			data: { kontorTilhorigheter: KontorTilhorigheter; kontorHistorikk: KontorHistorikkQueryDto[] };
+		}>(`/api/ao-oppfolgingskontor/graphql`, graphqlBody(payload.ident))
 		.then(response => response.data);
 }
 
 // Republisering ao-oppfolgingskontor
 export function republiserArbeidsoppfolgingskontorendret(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret`);
 }
 
 export function syncArenaKontorForBruker(payload: { identer: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/sync-arena-kontor`, {
-		identer: payload.identer
-	}).then(() => {});
+	return fetchInstance
+		.post(`/api/ao-oppfolgingskontor/admin/sync-arena-kontor`, {
+			identer: payload.identer
+		})
+		.then(() => {});
 }
 
 export function republiserForUtvalgteOppfolgingsperioder(payload: { oppfolgingsperiodeIder: string }): Promise<void> {
-	return axiosInstance.post(
-		`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-perioder`,
-		{
+	return fetchInstance
+		.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-utvalgte-perioder`, {
 			oppfolgingsperioder: payload.oppfolgingsperiodeIder
-		}
-	).then(() => {});
+		})
+		.then(() => {});
 }
 
 export function doDryRunFinnKontor(payload: { identer: string }): Promise<{ data: Record<string, string> }> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/finn-kontor`, {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/finn-kontor`, {
 		identer: payload.identer
 	});
 }
 
 export function kontortelling(payload: { fraKontorer: string[]; tilKontor: string }): Promise<{ data: number }> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/kontortelling`, {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/kontortelling`, {
 		fraKontorer: payload.fraKontorer,
 		tilKontor: payload.tilKontor
 	});
 }
 
 export function mergeKontorer(payload: { fraKontorer: string[]; tilKontor: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/merge-kontorer`, {
-		fraKontorer: payload.fraKontorer,
-		tilKontor: payload.tilKontor
-	}).then(() => {});
+	return fetchInstance
+		.post(`/api/ao-oppfolgingskontor/admin/merge-kontorer`, {
+			fraKontorer: payload.fraKontorer,
+			tilKontor: payload.tilKontor
+		})
+		.then(() => {});
 }
 
 export function republiserTombstone(payload: { identer: string }): Promise<void> {
-	return axiosInstance.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-tombstone`, {
-		identer: payload.identer
-	}).then(() => {});
+	return fetchInstance
+		.post(`/api/ao-oppfolgingskontor/admin/republiser-arbeidsoppfolgingskontorendret-tombstone`, {
+			identer: payload.identer
+		})
+		.then(() => {});
 }
-

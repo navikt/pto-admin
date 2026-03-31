@@ -1,31 +1,31 @@
 import { graphqlPayload } from './graphql';
-import { axiosInstance } from './index';
+import { fetchInstance } from './index';
 
 interface PeriodeMedAktiviteter {
-	id: string,
-	aktiviteter: Aktivitet[],
+	id: string;
+	aktiviteter: Aktivitet[];
 }
 
 export interface Aktivitet {
-	id: string,
-	funksjonellId: string,
-	versjon: number,
-	endretDato: string,
-	opprettetDato: string,
-	status: string,
-	historisk: boolean,
-	type: string,
+	id: string;
+	funksjonellId: string;
+	versjon: number;
+	endretDato: string;
+	opprettetDato: string;
+	status: string;
+	historisk: boolean;
+	type: string;
 }
 
 export interface TiltaksAktivitet {
-	id: string
-	status: string
-	type: string
-	fraDato: string
-	tilDato: string
-	opprettetDato: string
-	avtalt: boolean
-	oppfolgingsperiodeId: string
+	id: string;
+	status: string;
+	type: string;
+	fraDato: string;
+	tilDato: string;
+	opprettetDato: string;
+	avtalt: boolean;
+	oppfolgingsperiodeId: string;
 }
 
 const graphqlQuery = `
@@ -54,9 +54,14 @@ query hentAktiviteter($fnr: String!) {
 		oppfolgingsperiodeId
 	}
 }
-`
+`;
 
-export function hentAktiviteter(payload: { fnr: string }): Promise<{ data: { perioder: PeriodeMedAktiviteter[], tiltaksaktiviteter: TiltaksAktivitet[] } }> {
-	return axiosInstance.post<{ data: { perioder: PeriodeMedAktiviteter[], tiltaksaktiviteter: TiltaksAktivitet[] } }>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
+export function hentAktiviteter(payload: {
+	fnr: string;
+}): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
+	return fetchInstance
+		.post<{
+			data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] };
+		}>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
 		.then(response => response.data);
 }

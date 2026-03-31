@@ -1,4 +1,4 @@
-import { axiosInstance } from './index';
+import { fetchInstance } from './index';
 
 export interface ReadFromTopicRequest {
 	username: string;
@@ -51,7 +51,7 @@ export interface LastRecordOffsetResponse {
 }
 
 export function readFromTopic(request: ReadFromTopicRequest): Promise<{ data: KafkaRecord[] }> {
-	return axiosInstance.post(`/api/kafka-admin/read-topic`, {
+	return fetchInstance.post(`/api/kafka-admin/read-topic`, {
 		credentials: {
 			username: request.username,
 			password: request.password
@@ -64,7 +64,7 @@ export function readFromTopic(request: ReadFromTopicRequest): Promise<{ data: Ka
 }
 
 export function getConsumerOffsets(request: GetConsumerOffsetsRequest): Promise<{ data: TopicPartitionOffset[] }> {
-	return axiosInstance.post(`/api/kafka-admin/get-consumer-offsets`, {
+	return fetchInstance.post(`/api/kafka-admin/get-consumer-offsets`, {
 		credentials: {
 			username: request.username,
 			password: request.password
@@ -75,7 +75,7 @@ export function getConsumerOffsets(request: GetConsumerOffsetsRequest): Promise<
 }
 
 export function getLastRecordOffset(request: GetLastRecordOffsetRequest): Promise<{ data: LastRecordOffsetResponse }> {
-	return axiosInstance.post(`/api/kafka-admin/get-last-record-offset`, {
+	return fetchInstance.post(`/api/kafka-admin/get-last-record-offset`, {
 		credentials: {
 			username: request.username,
 			password: request.password
@@ -86,7 +86,7 @@ export function getLastRecordOffset(request: GetLastRecordOffsetRequest): Promis
 }
 
 export function setConsumerOffset(request: SetConsumerOffsetRequest): Promise<{ data: unknown }> {
-	return axiosInstance.post(`/api/kafka-admin/set-consumer-offset`, {
+	return fetchInstance.post(`/api/kafka-admin/set-consumer-offset`, {
 		credentials: {
 			username: request.username,
 			password: request.password

@@ -20,7 +20,7 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 	return { data };
 }
 
-export const axiosInstance = {
+export const fetchInstance = {
 	get: <T>(url: string) => apiFetch<T>(url),
 	post: <T>(url: string, body?: unknown) =>
 		apiFetch<T>(url, { method: 'POST', body: body !== undefined ? JSON.stringify(body) : undefined }),
@@ -53,7 +53,7 @@ export interface User {
 }
 
 export function me(): Promise<{ data: User }> {
-	return axiosInstance.get(`/api/auth/me`);
+	return fetchInstance.get(`/api/auth/me`);
 }
 
 export type JobId = string;
@@ -61,39 +61,39 @@ export type JobId = string;
 // Hovedside
 
 export function fnrTilAktorId(fnr: string): Promise<{ data: AktorIdResponse }> {
-	return axiosInstance.post(`/api/v2/ident/hent-aktorId`, { fnr });
+	return fetchInstance.post(`/api/v2/ident/hent-aktorId`, { fnr });
 }
 
 export function aktorIdTilFnr(aktorId: string): Promise<{ data: FnrResponse }> {
-	return axiosInstance.post(`/api/v2/ident/hent-fnr`, { aktorId });
+	return fetchInstance.post(`/api/v2/ident/hent-fnr`, { aktorId });
 }
 
 export function hentIdenter(eksternBrukerId: string): Promise<{ data: AlleIdenterResponse }> {
-	return axiosInstance.post(`/api/v2/ident/hent-identer`, { eksternBrukerId });
+	return fetchInstance.post(`/api/v2/ident/hent-identer`, { eksternBrukerId });
 }
 
 export function sjekkHarTilgangTilEnhet(navIdent: string, enhetId: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.get(`/api/tilgang/enhet?navIdent=${navIdent}&enhetId=${enhetId}`);
+	return fetchInstance.get(`/api/tilgang/enhet?navIdent=${navIdent}&enhetId=${enhetId}`);
 }
 
 export function sjekkHarSkrivetilgang(navIdent: string, norskIdent: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.post(`/api/v2/tilgang/hent-skriv`, { navIdent, norskIdent });
+	return fetchInstance.post(`/api/v2/tilgang/hent-skriv`, { navIdent, norskIdent });
 }
 
 export function sjekkHarLesetilgang(navIdent: string, norskIdent: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.post(`/api/v2/tilgang/hent-les`, { navIdent, norskIdent });
+	return fetchInstance.post(`/api/v2/tilgang/hent-les`, { navIdent, norskIdent });
 }
 
 export function sjekkHarTilgangTilKode6(navIdent: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.get(`/api/tilgang/kode6?navIdent=${navIdent}`);
+	return fetchInstance.get(`/api/tilgang/kode6?navIdent=${navIdent}`);
 }
 
 export function sjekkHarTilgangTilKode7(navIdent: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.get(`/api/tilgang/kode7?navIdent=${navIdent}`);
+	return fetchInstance.get(`/api/tilgang/kode7?navIdent=${navIdent}`);
 }
 
 export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): Promise<{ data: TilgangResponse }> {
-	return axiosInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
+	return fetchInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
 }
 
 export function slett14avedtak(
@@ -102,7 +102,7 @@ export function slett14avedtak(
 	ansvarligVeileder: string,
 	slettVedtakBestillingId: string
 ) {
-	return axiosInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, {
+	return fetchInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, {
 		journalpostId,
 		fnr,
 		ansvarligVeileder,
@@ -113,79 +113,81 @@ export function slett14avedtak(
 // Republisering vedtaksstøtte
 
 export function republiserSiste14aVedtak(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak`);
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak`);
 }
 
 export function republiserVedtak14aFattetDvh(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh`);
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh`);
 }
 
 // Republisering veilarbdialog
 
 export function republiserEndringPaaDialog(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
+	return fetchInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
 }
 
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
+	return fetchInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker/all`);
 }
 
 export function republiserEndringPaaOppfolgingsbruker(fnr: string): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, { fnrs: fnr.split(",").map(f => f.trim()) });
+	return fetchInstance.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, {
+		fnrs: fnr.split(',').map(f => f.trim())
+	});
 }
 
 // Veilarbportefolje admin-funksjoner
 export function indekserAktoer(aktorId: string): Promise<{ data: string }> {
-	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker`, { aktorId });
+	return fetchInstance.put(`/api/admin/veilarbportefolje/indeks/bruker`, { aktorId });
 }
 
 export function indekserFnr(fnr: string): Promise<{ data: string }> {
-	return axiosInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, { fnr });
+	return fetchInstance.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, { fnr });
 }
 
 export function hovedindeksering(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`);
 }
 
 export function hovedindekseringNyttAlias(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukereNyIndex`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/indeks/AlleBrukereNyIndex`);
 }
 
 export function assignAliasToIndex(indexName: string): Promise<{ data: string }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex?indexName=${indexName}`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex?indexName=${indexName}`);
 }
 
 export function deleteIndex(indexName: string): Promise<{ data: boolean }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex?indexName=${indexName}`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex?indexName=${indexName}`);
 }
 
 export function createIndex(): Promise<{ data: string }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/opensearch/createIndex`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/opensearch/createIndex`);
 }
 
 export function getAliases(): Promise<{ data: string }> {
-	return axiosInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
+	return fetchInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
 }
 
 export function pdlLastInnData(): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
 }
 export function hentEnsligForsorgerData(aktorId: string): Promise<{ data: JobId }> {
 	console.log('Startet: hentEnsligForsorgerData');
-	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, { aktorId });
+	return fetchInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, { aktorId });
 }
 
 export function hentEnsligForsorgerDataBatch(): Promise<{ data: JobId }> {
 	console.log('Startet: hentEnsligForsorgerDataBatch');
-	return axiosInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerDataBatch`);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerDataBatch`);
 }
 
 export function hentMuligeDataTyperSomKanHentes(): Promise<{ data: AdminDataTypeResponse[] }> {
-	return axiosInstance.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`);
+	return fetchInstance.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`);
 }
 
 export function hentValgteDataForBruker(valgteDataTyper: AdminDataForBrukerRequest): Promise<{ data: JobId }> {
-	return axiosInstance.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, valgteDataTyper);
+	return fetchInstance.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, valgteDataTyper);
 }
