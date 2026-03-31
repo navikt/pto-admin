@@ -36,6 +36,6 @@ const hentDialogerGraphqlBody = (fnr: string) => ({
 })
 
 export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialoger: Dialog[] } }> => {
-	return axiosInstance.post(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
+	return axiosInstance.post<{ data: { dialoger: Dialog[] } }>(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
 		.then(response => response.data);
 }

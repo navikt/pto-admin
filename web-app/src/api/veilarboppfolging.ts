@@ -1,13 +1,12 @@
-import { AxiosPromise } from 'axios';
 import { axiosInstance, JobId } from './index';
 
-export function republiserOppfolgingsperiodeForBruker(aktorId: string): AxiosPromise<JobId> {
+export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
 	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/oppfolgingsperioder`, {
 		aktorId
 	});
 }
 
-export function republiserTilordnetVeilederUtvalg(ids: string): AxiosPromise<JobId> {
+export function republiserTilordnetVeilederUtvalg(ids: string): Promise<{ data: JobId }> {
 	return axiosInstance.post(
 		`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/tilordnet-veileder/utvalg`,
 		{
@@ -16,7 +15,7 @@ export function republiserTilordnetVeilederUtvalg(ids: string): AxiosPromise<Job
 	);
 }
 
-export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): AxiosPromise<JobId> {
+export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): Promise<{ data: JobId }> {
 	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttBrukere`, payload);
 }
 
@@ -24,7 +23,7 @@ export function avsluttOppfolgingsperiode(payload: {
 	aktorId: string;
 	begrunnelse: string;
 	oppfolgingsperiodeUuid: string;
-}): AxiosPromise<JobId> {
+}): Promise<{ data: JobId }> {
 	return axiosInstance.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/avsluttOppfolgingsperiode`, payload);
 }
 
@@ -55,6 +54,6 @@ export function hentOppfolgingsperioder(payload: {
 	fnr: string;
 }): Promise<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }> {
 	return axiosInstance
-		.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, graphqlBody(payload.fnr))
+		.post<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }>(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, graphqlBody(payload.fnr))
 		.then(response => response.data);
 }

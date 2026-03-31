@@ -57,6 +57,6 @@ query hentAktiviteter($fnr: String!) {
 `
 
 export function hentAktiviteter(payload: { fnr: string }): Promise<{ data: { perioder: PeriodeMedAktiviteter[], tiltaksaktiviteter: TiltaksAktivitet[] } }> {
-	return axiosInstance.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
+	return axiosInstance.post<{ data: { perioder: PeriodeMedAktiviteter[], tiltaksaktiviteter: TiltaksAktivitet[] } }>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
 		.then(response => response.data);
 }
