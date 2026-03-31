@@ -9,7 +9,6 @@ import {
 	republiserVedtak14aFattetDvh
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
-import { AxiosPromise } from 'axios';
 import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
@@ -79,7 +78,7 @@ interface RepubliseringsKortProps {
 	tittel: string;
 	topicNavn: string;
 	beskrivelse: string;
-	request: () => AxiosPromise<JobId>;
+	request: () => Promise<{ data: JobId }>;
 }
 
 interface RepubliseringsKortMedInputProps {
@@ -87,7 +86,7 @@ interface RepubliseringsKortMedInputProps {
 	beskrivelse: string;
 	topicNavn: string;
 	inputLabel: string;
-	request: (input: string) => AxiosPromise<JobId>;
+	request: (input: string) => Promise<{ data: JobId }>;
 }
 
 function RepubliseringsKortMedInput({

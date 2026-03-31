@@ -14,7 +14,6 @@ import {
 	JobId,
 	pdlLastInnData
 } from '../../api';
-import { AxiosPromise } from 'axios';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
 import BekreftModal from '../../component/bekreft-modal';
@@ -118,7 +117,7 @@ export interface AdminDataForBrukerRequest {
 interface AdminKnappProps {
 	tittel: string;
 	beskrivelse: string;
-	request: () => AxiosPromise<JobId>;
+	request: () => Promise<{ data: JobId }>;
 }
 
 function AdminKnapp(props: AdminKnappProps) {
@@ -163,7 +162,7 @@ interface AdminKnappInputProps {
 	tittel: string;
 	beskrivelse: string;
 	inputType: string;
-	request: (id: string) => AxiosPromise<string | boolean>;
+	request: (id: string) => Promise<{ data: string | boolean }>;
 }
 
 function AdminKnappMedInput(props: AdminKnappInputProps) {
@@ -219,7 +218,7 @@ interface AdminCheckboxerMedInputProps {
 	beskrivelse: string;
 	inputType: string;
 	tittel: string;
-	request: (requestBody: AdminDataForBrukerRequest) => AxiosPromise<string | boolean>;
+	request: (requestBody: AdminDataForBrukerRequest) => Promise<{ data: string | boolean }>;
 }
 
 function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {

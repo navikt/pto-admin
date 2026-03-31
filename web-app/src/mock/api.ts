@@ -1,6 +1,5 @@
 import { RequestHandler, http, HttpResponse, delay } from 'msw';
 import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
-import { HttpStatusCode } from 'axios';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
 
@@ -113,7 +112,7 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.put('/api/admin/veilarbvedtaksstotte/slett-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -137,7 +136,7 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.post('/api/kafka-admin/set-consumer-offset', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.get('/api/admin/veilarbportefolje/opensearch/getAliases', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -163,11 +162,11 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.put(`/api/admin/veilarbportefolje/indeks/bruker`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -183,11 +182,11 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(HttpStatusCode.Ok);
+		return HttpResponse.json(200);
 	}),
 	http.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
