@@ -13,7 +13,7 @@ import {
 	sjekkHarTilgangTilKode6,
 	sjekkHarTilgangTilKode7
 } from '../../api';
-import { BodyShort, Button, Select, TextField } from '@navikt/ds-react';
+import { BodyShort, Button, Select, Tag, TextField } from '@navikt/ds-react';
 
 export function Hovedside() {
 	return (
@@ -162,21 +162,38 @@ function HentIdenterCard() {
 	}
 
 	return (
-		<Card title="Alle identer til bruker (inkl historiske)" className="small-card" innholdClassName="hovedside__card-innhold">
-			<TextField label="Ekstern bruker id (aktorId / fnr / dnr / npid)" value={eksternBrukerId} onChange={e => setEksternBrukerId(e.target.value)} />
+		<Card
+			title="Alle identer til bruker (inkl historiske)"
+			className="small-card"
+			innholdClassName="hovedside__card-innhold"
+		>
+			<TextField
+				label="Ekstern bruker id (aktorId / fnr / dnr / npid)"
+				value={eksternBrukerId}
+				onChange={e => setEksternBrukerId(e.target.value)}
+			/>
 			<BodyShort as="div" className="hovedside__har-tilgang-label">
 				<div className="flex flex-col">
 					<span className="font-bold mt-4">Identer:</span>
 					<ul>
-						{
-							alleIdenter?.map((ident) => {
-								return <li className="flex justify-between space-y-4" key={ident.ident}>
-									<span>{ ident.ident }</span>
-									<span><span className="font-bold">gruppe:</span> { ident.gruppe }</span>
-									<span><span className="font-bold">historisk:</span> {ident.historisk ? "true" : "false"}</span>
+						{alleIdenter?.map(ident => {
+							return (
+								<li className="flex justify-between space-y-4" key={ident.ident}>
+									<span>{ident.ident}</span>
+									<span>
+										<span className="font-bold">gruppe:</span> {ident.gruppe}
+									</span>
+									<span className="flex items-center gap-1">
+										<Tag
+											size="small"
+											variant={ident.historisk ? 'error-moderate' : 'success-moderate'}
+										>
+											{ident.historisk ? 'Inaktiv' : 'Aktiv'}
+										</Tag>
+									</span>
 								</li>
-							})
-						}
+							);
+						})}
 					</ul>
 				</div>
 			</BodyShort>

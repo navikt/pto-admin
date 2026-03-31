@@ -66,6 +66,15 @@ export const handlers: RequestHandler[] = [
 			aktorId: '1111222344555'
 		});
 	}),
+	http.post('/api/v2/ident/hent-identer', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json([
+			{ ident: '12345678900', historisk: false, gruppe: 'FOLKEREGISTERIDENT' },
+			{ ident: '09876543211', historisk: true, gruppe: 'FOLKEREGISTERIDENT' },
+			{ ident: '1111222344555', historisk: false, gruppe: 'AKTORID' },
+			{ ident: '9998887776665', historisk: true, gruppe: 'AKTORID' },
+		]);
+	}),
 	http.get('/api/tilgang/enhet', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
