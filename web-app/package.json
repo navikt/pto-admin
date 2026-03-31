@@ -34,7 +34,7 @@
 	],
 	"dependencies": {
 		"@microlink/react-json-view": "1.31.15",
-		"@navikt/ds-css": "7.40.0",
+		"@navikt/ds-css": "8.8.0",
 		"@navikt/ds-react": "7.40.0",
 		"@navikt/fnrvalidator": "2.2.1",
 		"@tailwindcss/vite": "4.1.18",
