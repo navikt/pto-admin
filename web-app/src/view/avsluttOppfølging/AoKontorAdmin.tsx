@@ -7,6 +7,7 @@ import {
 } from '../../api/ao-oppfolgingskontor';
 import { Button, Heading, TextField } from '@navikt/ds-react';
 import { AoKontorFailedMessages } from './AoKontorFailedMessages';
+import { Card } from '../../component/card/card';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,8 +51,8 @@ export const AoKontorAdmin = () => {
 	};
 
 	return (
-		<div className="p-4 space-y-4 bg-gray-white">
-			<div>
+		<div className="p-4 grid grid-cols-2 gap-4 space-y-4 bg-slate-200">
+			<Card>
 				<Heading size="medium">Sync Arena-kontor</Heading>
 				<form className="space-y-4" onSubmit={fetchKontorData}>
 					<TextField name="identer" label={'Identer (kommaseparert)'} />
@@ -59,8 +60,8 @@ export const AoKontorAdmin = () => {
 						Hent
 					</Button>
 				</form>
-			</div>
-			<div>
+			</Card>
+			<Card>
 				<Heading size="medium">Republiser kontortilordninger</Heading>
 				<form className="space-y-4" onSubmit={republiserKontorordningForUtvalgteOppfolgingsperioder}>
 					<TextField
@@ -71,8 +72,8 @@ export const AoKontorAdmin = () => {
 						Hent
 					</Button>
 				</form>
-			</div>
-			<div>
+			</Card>
+			<Card>
 				<Heading size="medium">
 					Dry-run finn kontor (som om det var arbeidssøker, dvs kan blir rutet til NOE)
 				</Heading>
@@ -83,8 +84,8 @@ export const AoKontorAdmin = () => {
 					</Button>
 					<div>{dryRunKontorResult ? JSON.stringify(dryRunKontorResult) : null}</div>
 				</form>
-			</div>
-			<div>
+			</Card>
+			<Card>
 				<Heading size="medium">Republiser tombstone for identer</Heading>
 				<form className="space-y-4" onSubmit={tombstoneIdenter}>
 					<TextField name="tombstoneIdenter" label={'Identer (kommaseparert)'} />
@@ -92,10 +93,10 @@ export const AoKontorAdmin = () => {
 						Send
 					</Button>
 				</form>
-			</div>
-			<div>
+			</Card>
+			<Card className="col-span-2">
 				<AoKontorFailedMessages />
-			</div>
+			</Card>
 		</div>
 	);
 };
