@@ -25,7 +25,17 @@ export const fetchInstance = {
 	post: <T>(url: string, body?: unknown) =>
 		apiFetch<T>(url, { method: 'POST', body: body !== undefined ? JSON.stringify(body) : undefined }),
 	put: <T>(url: string, body?: unknown) =>
-		apiFetch<T>(url, { method: 'PUT', body: body !== undefined ? JSON.stringify(body) : undefined })
+		apiFetch<T>(url, { method: 'PUT', body: body !== undefined ? JSON.stringify(body) : undefined }),
+	delete: async (url: string): Promise<void> => {
+		const response = await fetch(url, {
+			method: 'DELETE',
+			credentials: 'include',
+			headers: { 'Nav-Consumer-Id': 'poao-admin' }
+		});
+		if (!response.ok) {
+			throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+		}
+	}
 };
 
 interface AktorIdResponse {

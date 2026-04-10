@@ -377,6 +377,14 @@ export const handlers: RequestHandler[] = [
 			}
 		]);
 	}),
+	http.delete(`/api/ao-oppfolgingskontor/admin/failed-messages/:id`, async ({ params }) => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		const id = Number(params.id);
+		if (!id || id <= 0) {
+			return new HttpResponse(null, { status: 400 });
+		}
+		return new HttpResponse(null, { status: 200 });
+	}),
 	http.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([

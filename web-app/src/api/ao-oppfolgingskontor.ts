@@ -135,3 +135,8 @@ export interface FailedMessage {
 export function fetchFailedMessages(): Promise<{ data: FailedMessage[] }> {
 	return fetchInstance.get(`/api/ao-oppfolgingskontor/admin/failed-messages`);
 }
+
+export function deleteFailedMessage(id: number): Promise<void> {
+	return fetchInstance.delete(`/api/ao-oppfolgingskontor/admin/failed-messages/${id}`);
+}
+

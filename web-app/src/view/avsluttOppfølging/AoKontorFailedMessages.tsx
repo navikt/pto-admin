@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Alert, Button, Heading, Table } from '@navikt/ds-react';
-import { FailedMessage, fetchFailedMessages } from '../../api/ao-oppfolgingskontor';
+import { TrashIcon } from '@navikt/aksel-icons';
+import { deleteFailedMessage, FailedMessage, fetchFailedMessages } from '../../api/ao-oppfolgingskontor';
+import BekreftModal from '../../component/bekreft-modal';
+import { errorToast, successToast } from '../../utils/toast-utils';
 
 export const AoKontorFailedMessages = () => {
 	const [messages, setMessages] = useState<FailedMessage[] | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [deleteTarget, setDeleteTarget] = useState<FailedMessage | null>(null);
+	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
 	const handleFetch = () => {
 		setIsLoading(true);
@@ -14,6 +19,21 @@ export const AoKontorFailedMessages = () => {
 			.then(response => setMessages(response.data))
 			.catch(err => setError(err.message ?? 'Ukjent feil ved henting av meldinger'))
 			.finally(() => setIsLoading(false));
+	};
+
+	const handleDeleteClick = (msg: FailedMessage) => {
+		setDeleteTarget(msg);
+		setIsConfirmOpen(true);
+	};
+
+	const handleDeleteConfirm = () => {
+		if (!deleteTarget) return;
+		deleteFailedMessage(deleteTarget.id)
+			.then(() => {
+				successToast(`Melding ${deleteTarget.id} slettet`);
+				handleFetch();
+			})
+			.catch(err => errorToast(`Kunne ikke slette melding: ${err.message}`));
 	};
 
 	return (
@@ -48,6 +68,7 @@ export const AoKontorFailedMessages = () => {
 								<Table.HeaderCell>Forsøk</Table.HeaderCell>
 								<Table.HeaderCell>Køtidspunkt</Table.HeaderCell>
 								<Table.HeaderCell>Siste forsøk</Table.HeaderCell>
+								<Table.HeaderCell />
 							</Table.Row>
 						</Table.Header>
 						<Table.Body>
@@ -95,11 +116,29 @@ export const AoKontorFailedMessages = () => {
 											? new Date(msg.lastAttemptTimestamp).toLocaleString()
 											: '–'}
 									</Table.DataCell>
+									<Table.DataCell>
+										<Button
+											variant="danger"
+											size="small"
+											icon={<TrashIcon title="Slett melding" />}
+											onClick={e => {
+												e.stopPropagation();
+												handleDeleteClick(msg);
+											}}
+										/>
+									</Table.DataCell>
 								</Table.ExpandableRow>
 							))}
 						</Table.Body>
 					</Table>
 				))}
+
+			<BekreftModal
+				isOpen={isConfirmOpen}
+				setOpen={setIsConfirmOpen}
+				action={handleDeleteConfirm}
+				description={`Er du sikker på at du vil slette melding med ID ${deleteTarget?.id}?`}
+			/>
 		</div>
 	);
 };
