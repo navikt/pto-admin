@@ -352,6 +352,31 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return new HttpResponse(null, { status: 200 });
 	}),
+	http.get(`/api/ao-oppfolgingskontor/admin/failed-messages`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json([
+			{
+				id: 1,
+				topic: 'aapen-arbeidsoppfolging-kontorEndret-v1',
+				messageKeyText: '12345678-abcd-1234-efgh-123456789012',
+				humanReadableValue: 'KontorEndret for bruker 12345678900',
+				failureReason: 'Connection refused: broker not available',
+				retryCount: 3,
+				queueTimestamp: '2026-04-09T10:30:00.000Z',
+				lastAttemptTimestamp: '2026-04-09T12:15:00.000Z'
+			},
+			{
+				id: 2,
+				topic: 'aapen-arbeidsoppfolging-kontorEndret-v1',
+				messageKeyText: '98765432-dcba-4321-hgfe-987654321098',
+				humanReadableValue: 'KontorEndret for bruker 98765432100',
+				failureReason: 'Timeout after 30000ms',
+				retryCount: 1,
+				queueTimestamp: '2026-04-10T08:00:00.000Z',
+				lastAttemptTimestamp: null
+			}
+		]);
+	}),
 	http.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([

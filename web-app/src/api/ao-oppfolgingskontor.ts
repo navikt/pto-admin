@@ -120,3 +120,18 @@ export function republiserTombstone(payload: { identer: string }): Promise<void>
 		})
 		.then(() => {});
 }
+
+export interface FailedMessage {
+	id: number;
+	topic: string;
+	messageKeyText: string;
+	humanReadableValue: string;
+	failureReason: string;
+	retryCount: number;
+	queueTimestamp: string;
+	lastAttemptTimestamp: string | null;
+}
+
+export function fetchFailedMessages(): Promise<{ data: FailedMessage[] }> {
+	return fetchInstance.get(`/api/ao-oppfolgingskontor/admin/failed-messages`);
+}
