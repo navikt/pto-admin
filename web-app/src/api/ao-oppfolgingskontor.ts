@@ -141,7 +141,7 @@ export function deleteFailedMessage(id: number): Promise<void> {
 }
 
 export function hentInternIdent(payload: { ident: string }): Promise<{ data: { internIdent: number } }> {
-	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/intern-ident`, {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/hent-intern-ident`, {
 		ident: payload.ident
 	});
 }
