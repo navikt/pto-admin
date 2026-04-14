@@ -145,3 +145,9 @@ export function hentInternIdent(payload: { ident: string }): Promise<{ data: { i
 		ident: payload.ident
 	});
 }
+
+export function hentIdenterForInternIdent(payload: { internIdent: number }): Promise<{ data: { aktorId: string | null; fnr: string | null } }> {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/identer-for-intern-ident`, {
+		internIdent: payload.internIdent
+	});
+}

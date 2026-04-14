@@ -356,6 +356,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({ internIdent: 123456 });
 	}),
+	http.post(`/api/ao-oppfolgingskontor/admin/identer-for-intern-ident`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({ aktorId: '1111222344555', fnr: '12345678900' });
+	}),
 	http.get(`/api/ao-oppfolgingskontor/admin/failed-messages`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([
