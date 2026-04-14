@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
 	doDryRunFinnKontor,
+	hentInternIdent,
 	republiserForUtvalgteOppfolgingsperioder,
 	republiserTombstone,
 	syncArenaKontorForBruker
@@ -12,6 +13,7 @@ import { Card } from '../../component/card/card';
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [dryRunKontorResult, setDryRunKontorResult] = useState<Record<string, string> | null>(null);
+	const [internIdentResult, setInternIdentResult] = useState<number | null>(null);
 
 	const fetchKontorData = async e => {
 		e.preventDefault();
@@ -47,6 +49,16 @@ export const AoKontorAdmin = () => {
 		const identer = formData.get('tombstoneIdenter') as string;
 		setIsLoading(true);
 		await republiserTombstone({ identer });
+		setIsLoading(false);
+	};
+
+	const hentInternIdentForBruker = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const ident = formData.get('internIdent') as string;
+		setIsLoading(true);
+		const result = await hentInternIdent({ ident });
+		setInternIdentResult(result.data.internIdent);
 		setIsLoading(false);
 	};
 
@@ -92,6 +104,16 @@ export const AoKontorAdmin = () => {
 					<Button loading={isLoading} disabled={isLoading}>
 						Send
 					</Button>
+				</form>
+			</Card>
+			<Card>
+				<Heading size="medium">Hent intern-ID</Heading>
+				<form className="space-y-4" onSubmit={hentInternIdentForBruker}>
+					<TextField name="internIdent" label={'Ident'} />
+					<Button loading={isLoading} disabled={isLoading}>
+						Hent
+					</Button>
+					<div>{internIdentResult !== null ? `Intern-ID: ${internIdentResult}` : null}</div>
 				</form>
 			</Card>
 			<Card className="col-span-2">

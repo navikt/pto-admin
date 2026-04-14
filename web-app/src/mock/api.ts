@@ -352,6 +352,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return new HttpResponse(null, { status: 200 });
 	}),
+	http.post(`/api/ao-oppfolgingskontor/admin/intern-ident`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json({ internIdent: 123456 });
+	}),
 	http.get(`/api/ao-oppfolgingskontor/admin/failed-messages`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([
