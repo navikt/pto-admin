@@ -140,3 +140,14 @@ export function deleteFailedMessage(id: number): Promise<void> {
 	return fetchInstance.delete(`/api/ao-oppfolgingskontor/admin/failed-messages/${id}`);
 }
 
+export function hentInternIdent(payload: { ident: string }): Promise<{ data: { internIdent: number } }> {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/hent-intern-ident`, {
+		ident: payload.ident
+	});
+}
+
+export function hentIdenterForInternIdent(payload: { internIdent: number }): Promise<{ data: { aktorId: string | null; fnr: string | null } }> {
+	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/identer-for-intern-ident`, {
+		internIdent: payload.internIdent
+	});
+}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
 	doDryRunFinnKontor,
+	hentIdenterForInternIdent,
+	hentInternIdent,
 	republiserForUtvalgteOppfolgingsperioder,
 	republiserTombstone,
 	syncArenaKontorForBruker
@@ -12,6 +14,8 @@ import { Card } from '../../component/card/card';
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [dryRunKontorResult, setDryRunKontorResult] = useState<Record<string, string> | null>(null);
+	const [internIdentResult, setInternIdentResult] = useState<number | null>(null);
+	const [identerForInternIdentResult, setIdenterForInternIdentResult] = useState<{ aktorId: string | null; fnr: string | null } | null>(null);
 
 	const fetchKontorData = async e => {
 		e.preventDefault();
@@ -47,6 +51,26 @@ export const AoKontorAdmin = () => {
 		const identer = formData.get('tombstoneIdenter') as string;
 		setIsLoading(true);
 		await republiserTombstone({ identer });
+		setIsLoading(false);
+	};
+
+	const hentInternIdentForBruker = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const ident = formData.get('internIdent') as string;
+		setIsLoading(true);
+		const result = await hentInternIdent({ ident });
+		setInternIdentResult(result.data.internIdent);
+		setIsLoading(false);
+	};
+
+	const hentIdenterForInternIdentForBruker = async e => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const internIdent = Number(formData.get('identerForInternIdent') as string);
+		setIsLoading(true);
+		const result = await hentIdenterForInternIdent({ internIdent });
+		setIdenterForInternIdentResult(result.data);
 		setIsLoading(false);
 	};
 
@@ -92,6 +116,31 @@ export const AoKontorAdmin = () => {
 					<Button loading={isLoading} disabled={isLoading}>
 						Send
 					</Button>
+				</form>
+			</Card>
+			<Card>
+				<Heading size="medium">Hent intern-ID</Heading>
+				<form className="space-y-4" onSubmit={hentInternIdentForBruker}>
+					<TextField name="internIdent" label={'Ident'} />
+					<Button loading={isLoading} disabled={isLoading}>
+						Hent
+					</Button>
+					<div>{internIdentResult !== null ? `Intern-ID: ${internIdentResult}` : null}</div>
+				</form>
+			</Card>
+			<Card>
+				<Heading size="medium">Hent identer for intern-ID</Heading>
+				<form className="space-y-4" onSubmit={hentIdenterForInternIdentForBruker}>
+					<TextField name="identerForInternIdent" label={'Intern-ID'} />
+					<Button loading={isLoading} disabled={isLoading}>
+						Hent
+					</Button>
+					{identerForInternIdentResult !== null && (
+						<div>
+							<div>Aktør-ID: {identerForInternIdentResult.aktorId ?? 'Ikke funnet'}</div>
+							<div>Fnr: {identerForInternIdentResult.fnr ?? 'Ikke funnet'}</div>
+						</div>
+					)}
 				</form>
 			</Card>
 			<Card className="col-span-2">
