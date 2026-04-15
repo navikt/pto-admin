@@ -55,31 +55,47 @@ const KontorTilhorigheter = ({ kontorTilhorigheter }: { kontorTilhorigheter: Kon
 	return (
 		<div className="grid mb-4 border-b p-4 grid-cols-3 gap-y-2">
 			<div>
-				{arenaKontor ? (
+				<div className="flex flex-col">
+					<span className="font-medium text-gray-700">Arenakontor</span>
 					<span>
-						<span className="font-bold">{arenaKontor.kontorId}</span> - {arenaKontor.kontorNavn}
+						{arenaKontor ? (
+							<span>
+								<span className="font-bold">{arenaKontor.kontorId}</span> - {arenaKontor.kontorNavn}
+							</span>
+						) : (
+							<span className="italic text-gray-700">Ingen arenakontor</span>
+						)}
 					</span>
-				) : (
-					<span className="italic text-gray-700">Ingen arenakontor</span>
-				)}
+				</div>
 			</div>
 			<div>
-				{arbeidsoppfolging ? (
+				<div className="flex flex-col">
+					<span className="font-medium text-gray-700">Arbeidsoppfolgingskontor</span>
 					<span>
-						<span className="font-bold">{arbeidsoppfolging.kontorId}</span> - {arbeidsoppfolging.kontorNavn}
+						{arbeidsoppfolging ? (
+							<span>
+								<span className="font-bold">{arbeidsoppfolging.kontorId}</span> -{' '}
+								{arbeidsoppfolging.kontorNavn}
+							</span>
+						) : (
+							<span className="italic text-gray-700">Ingen ao-kontor</span>
+						)}
 					</span>
-				) : (
-					<span className="italic text-gray-700">Ingen ao-kontor</span>
-				)}
+				</div>
 			</div>
 			<div>
-				{gtKontor ? (
+				<div className="flex flex-col">
+					<span className="font-medium text-gray-700">Gt-kontor</span>
 					<span>
-						<span className="font-bold">{gtKontor.kontorId}</span> - {gtKontor.kontorNavn}
+						{gtKontor ? (
+							<span>
+								<span className="font-bold">{gtKontor.kontorId}</span> - {gtKontor.kontorNavn}
+							</span>
+						) : (
+							<span className="italic text-gray-700">Ingen gt-kontor</span>
+						)}
 					</span>
-				) : (
-					<span className="italic text-gray-700">Ingen gt-kontor</span>
-				)}
+				</div>
 			</div>
 		</div>
 	);
