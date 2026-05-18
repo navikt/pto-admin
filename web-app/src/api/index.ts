@@ -136,6 +136,12 @@ export function republiserEndringPaaDialog(): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
 }
 
+export function republiserEndringPaaDialogForBruker(aktorId: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog/bruker`, {
+		aktorId: aktorId.trim()
+	});
+}
+
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {

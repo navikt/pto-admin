@@ -4,6 +4,7 @@ import {
 	JobId,
 	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaDialog,
+	republiserEndringPaaDialogForBruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh
@@ -35,6 +36,13 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser endring på dialog i veilarbdialog for alle brukere som har en aktiv dialog
 					(dvs. ikke historisk)."
 				request={republiserEndringPaaDialog}
+				topicNavn={'dab.endring-paa-dialog-v1'}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser endring på dialog i veilarbdialog for én bruker"
+				beskrivelse="Republiser endring på dialog i veilarbdialog for én enkelt bruker basert på aktør-ID."
+				inputLabel={'Aktør-ID'}
+				request={republiserEndringPaaDialogForBruker}
 				topicNavn={'dab.endring-paa-dialog-v1'}
 			/>
 			<RepubliseringsKort
