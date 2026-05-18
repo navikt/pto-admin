@@ -49,6 +49,10 @@ spring:
             - Path=/api/veilarbdialog/**
           filters:
             - RewritePath=/api/veilarbdialog/(?<remainingPath>.*), /${remainingPath}
+        - id: veilarbdialog-admin
+          uri: ${VEILARBDIALOG_ADMIN_API_URL}
+          predicates:
+            - Path=/api/admin/veilarbdialog/**
         - id: veilarbaktivitet
           uri: ${VEILARBAKTIVITET_ADMIN_API_URL}
           predicates:
