@@ -72,6 +72,7 @@ val routeIdTokenExchangeMapping = mapOf(
     "veilarboppfolging" to SystembrukereAzure.VEILARBOPPFOLGING,
     "veilarbarena" to SystembrukereAzure.VEILARBARENA,
     "veilarbdialog" to SystembrukereAzure.VEILARBDIALOG,
+    "veilarbdialog-admin" to SystembrukereAzure.VEILARBDIALOG,
     "veilarbaktivitet" to SystembrukereAzure.VEILARBAKTIVITET,
     "ao-oppfolgingskontor" to SystembrukereAzure.AO_OPPFOLGINGSKONTOR,
 )
