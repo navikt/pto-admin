@@ -3,8 +3,6 @@ import { Card } from '../../component/card/card';
 import {
 	JobId,
 	republiserEndringPaaOppfolgingsbruker,
-	republiserEndringPaaDialog,
-	republiserEndringPaaDialogForBruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh
@@ -15,6 +13,7 @@ import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 import { republiserOppfolgingsperiodeForBruker, republiserTilordnetVeilederUtvalg } from '../../api/veilarboppfolging';
 import { republiserArbeidsoppfolgingskontorendret } from '../../api/ao-oppfolgingskontor';
+import { republiserEndringPaaDialog, republiserEndringPaaDialogForBruker } from '../../api/veilarbdialog';
 
 export function RepubliseringKafka() {
 	return (

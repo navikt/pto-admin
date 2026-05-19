@@ -1,4 +1,4 @@
-import { fetchInstance } from './index';
+import { fetchInstance, JobId } from './index';
 
 export interface Dialog {
 	id: string;
@@ -42,3 +42,15 @@ export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialog
 		}>(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
 		.then(response => response.data);
 };
+
+// Republisering veilarbdialog
+
+export function republiserEndringPaaDialog(): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/veilarbdialog/veilarbdialog/api/admin/republiser/endring-paa-dialog`);
+}
+
+export function republiserEndringPaaDialogForBruker(aktorId: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/veilarbdialog/veilarbdialog/api/admin/republiser/endring-paa-dialog/bruker`, {
+		aktorId: aktorId.trim()
+	});
+}

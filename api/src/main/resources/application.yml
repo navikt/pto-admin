@@ -46,7 +46,9 @@ spring:
         - id: veilarbdialog
           uri: ${VEILARBDIALOG_ADMIN_API_URL}
           predicates:
-            - Path=/api/admin/veilarbdialog/**
+            - Path=/api/veilarbdialog/**
+          filters:
+            - RewritePath=/api/veilarbdialog/(?<remainingPath>.*), /${remainingPath}
         - id: veilarbaktivitet
           uri: ${VEILARBAKTIVITET_ADMIN_API_URL}
           predicates:
