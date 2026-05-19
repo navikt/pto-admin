@@ -46,11 +46,11 @@ export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialog
 // Republisering veilarbdialog
 
 export function republiserEndringPaaDialog(): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/veilarbdialog/veilarbdialog/api/admin/republiser/endring-paa-dialog`);
+	return fetchInstance.post(`/api/veilarbdialog/api/admin/veilarbdialog/republiser/endring-paa-dialog`);
 }
 
 export function republiserEndringPaaDialogForBruker(aktorId: string): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/veilarbdialog/veilarbdialog/api/admin/republiser/endring-paa-dialog/bruker`, {
+	return fetchInstance.post(`/api/veilarbdialog//api/admin/veilarbdialog/republiser/endring-paa-dialog/bruker`, {
 		aktorId: aktorId.trim()
 	});
 }
