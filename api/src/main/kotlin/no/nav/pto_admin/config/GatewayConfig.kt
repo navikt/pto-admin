@@ -3,8 +3,8 @@ package no.nav.pto_admin.config
 import no.nav.common.rest.client.RestUtils
 import no.nav.common.rest.filter.LogRequestFilter.NAV_CALL_ID_HEADER_NAME
 import no.nav.common.utils.IdUtils
-import no.nav.pto_admin.utils.AzureSystemTokenProvider
-import no.nav.pto_admin.utils.SystembrukereAzure
+import no.nav.pto_admin.utils.AzureOboTokenProvider
+import no.nav.pto_admin.utils.AppName
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono
 class GatewayConfig {
 
     @Autowired
-    lateinit var azureSystemTokenProvider: AzureSystemTokenProvider
+    lateinit var azureOboTokenProvider: AzureOboTokenProvider
 
     @Bean
     fun customGlobalFilter(): GlobalFilter {
@@ -41,7 +41,7 @@ class GatewayConfig {
                 val exchangeApp = routeIdTokenExchangeMapping[routeId]
                     ?: throw Exception("Fant ingen app å gjøre token exchange mot for route $routeId")
 
-                val bearerToken: String = azureSystemTokenProvider.getOboToken(exchangeApp, token)
+                val bearerToken: String = azureOboTokenProvider.getOboToken(exchangeApp, token)
                 val exchangeWithAuth = exchange.mutate()
                     .request { request ->
                         request.headers { headers ->
@@ -67,12 +67,12 @@ class GatewayConfig {
 }
 
 val routeIdTokenExchangeMapping = mapOf(
-    "veilarbportefolje" to SystembrukereAzure.VEILARBPORTEFOLJE,
-    "veilarbvedtaksstotte" to SystembrukereAzure.VEILARBVEDTAKSTOTTE,
-    "veilarboppfolging" to SystembrukereAzure.VEILARBOPPFOLGING,
-    "veilarbarena" to SystembrukereAzure.VEILARBARENA,
-    "veilarbdialog" to SystembrukereAzure.VEILARBDIALOG,
-    "veilarbdialog-admin" to SystembrukereAzure.VEILARBDIALOG,
-    "veilarbaktivitet" to SystembrukereAzure.VEILARBAKTIVITET,
-    "ao-oppfolgingskontor" to SystembrukereAzure.AO_OPPFOLGINGSKONTOR,
+    "veilarbportefolje" to AppName.VEILARBPORTEFOLJE,
+    "veilarbvedtaksstotte" to AppName.VEILARBVEDTAKSTOTTE,
+    "veilarboppfolging" to AppName.VEILARBOPPFOLGING,
+    "veilarbarena" to AppName.VEILARBARENA,
+    "veilarbdialog" to AppName.VEILARBDIALOG,
+    "veilarbdialog-admin" to AppName.VEILARBDIALOG,
+    "veilarbaktivitet" to AppName.VEILARBAKTIVITET,
+    "ao-oppfolgingskontor" to AppName.AO_OPPFOLGINGSKONTOR,
 )

@@ -9,8 +9,8 @@ import no.nav.common.utils.EnvironmentUtils
 import no.nav.poao_tilgang.client.PoaoTilgangCachedClient
 import no.nav.poao_tilgang.client.PoaoTilgangClient
 import no.nav.poao_tilgang.client.PoaoTilgangHttpClient
-import no.nav.pto_admin.utils.AzureSystemTokenProvider
-import no.nav.pto_admin.utils.SystembrukereAzure
+import no.nav.pto_admin.utils.AzureOboTokenProvider
+import no.nav.pto_admin.utils.AppName
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -34,7 +34,7 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient, oboClient: AzureAdOnBehalfOfTokenClient): AzureSystemTokenProvider {
+    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient, oboClient: AzureAdOnBehalfOfTokenClient): AzureOboTokenProvider {
         val veilarbportefoljeTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(
                 String.format(
@@ -85,15 +85,15 @@ class ApplicationConfig {
         }
 
 
-        val systemTokenSuppliers: Map<SystembrukereAzure, (String) -> String> =
-            mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
-                SystembrukereAzure.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
-                SystembrukereAzure.VEILARBARENA to veilarbarenaTokenProvider,
-                SystembrukereAzure.VEILARBDIALOG to veilarbdialogTokenProvider,
-                SystembrukereAzure.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
-                SystembrukereAzure.VEILARBAKTIVITET to veilarbaktivitetTokenProvider,
-                SystembrukereAzure.AO_OPPFOLGINGSKONTOR to aoKontorTokenProvider)
-        return AzureSystemTokenProvider(systemTokenSuppliers)
+        val oboTokenSuppliers: Map<AppName, (String) -> String> =
+            mapOf(AppName.VEILARBPORTEFOLJE to veilarbportefoljeTokenProvider,
+                AppName.VEILARBOPPFOLGING to veilarboppfolgingTokenProvider,
+                AppName.VEILARBARENA to veilarbarenaTokenProvider,
+                AppName.VEILARBDIALOG to veilarbdialogTokenProvider,
+                AppName.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
+                AppName.VEILARBAKTIVITET to veilarbaktivitetTokenProvider,
+                AppName.AO_OPPFOLGINGSKONTOR to aoKontorTokenProvider)
+        return AzureOboTokenProvider(oboTokenSuppliers)
     }
 
     @Bean

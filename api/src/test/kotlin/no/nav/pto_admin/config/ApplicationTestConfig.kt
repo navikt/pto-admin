@@ -8,8 +8,8 @@ import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
 import no.nav.poao_tilgang.client.PoaoTilgangClient
-import no.nav.pto_admin.utils.AzureSystemTokenProvider
-import no.nav.pto_admin.utils.SystembrukereAzure
+import no.nav.pto_admin.utils.AzureOboTokenProvider
+import no.nav.pto_admin.utils.AppName
 import org.mockito.Mockito.mock
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -64,8 +64,8 @@ class ApplicationTestConfig {
     }
 
     @Bean
-    fun azureSystemTokenProvider(): AzureSystemTokenProvider {
-        return AzureSystemTokenProvider(mapOf(SystembrukereAzure.VEILARBPORTEFOLJE to { "SYSTEM_USER_TOKEN_AZURE" }))
+    fun azureSystemTokenProvider(): AzureOboTokenProvider {
+        return AzureOboTokenProvider(mapOf(AppName.VEILARBPORTEFOLJE to { "SYSTEM_USER_TOKEN_AZURE" }))
     }
 
     @Bean

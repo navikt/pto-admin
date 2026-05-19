@@ -1,6 +1,6 @@
 package no.nav.pto_admin.utils
 
-enum class SystembrukereAzure {
+enum class AppName {
     VEILARBPORTEFOLJE,
     VEILARBVEDTAKSTOTTE,
     VEILARBOPPFOLGING,
