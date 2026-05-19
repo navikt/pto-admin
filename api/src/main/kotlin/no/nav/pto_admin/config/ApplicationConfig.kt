@@ -34,7 +34,7 @@ class ApplicationConfig {
     }
 
     @Bean
-    fun azureSystemTokenProvider(tokenClient: AzureAdMachineToMachineTokenClient, oboClient: AzureAdOnBehalfOfTokenClient): AzureOboTokenProvider {
+    fun azureOboTokenProvider(oboClient: AzureAdOnBehalfOfTokenClient): AzureOboTokenProvider {
         val veilarbportefoljeTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(
                 String.format(
