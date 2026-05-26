@@ -1,5 +1,4 @@
 import { RequestHandler, http, HttpResponse, delay } from 'msw';
-import { KafkaRecord, LastRecordOffsetResponse, TopicPartitionOffset } from '../api/kafka-admin';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
 
@@ -7,43 +6,6 @@ const antallAvsluttet = {
 	antallAvsluttet: 500,
 	antallKunneIkkeAvsluttes: 2
 };
-
-const kafkaRecords: KafkaRecord[] = [];
-
-for (let i = 0; i < 25; i++) {
-	const key = (i + 123) * (i + 99999);
-	const offset = i + 10000;
-
-	kafkaRecords.push({
-		key: key.toString(),
-		value: '{"aktoerid":"xxxxxxx","fodselsnr":"xxxxxxxx","formidlingsgruppekode":"ARBS","iserv_fra_dato":null,"etternavn":"TESTERSEN","fornavn":"TEST","nav_kontor":"0425","kvalifiseringsgruppekode":"IKVAL","rettighetsgruppekode":"IYT","hovedmaalkode":"SKAFFEA","sikkerhetstiltak_type_kode":null,"fr_kode":null,"har_oppfolgingssak":true,"sperret_ansatt":false,"er_doed":false,"doed_fra_dato":null,"endret_dato":"2021-03-28T20:11:12+02:00"}',
-		offset,
-		timestamp: 1620126765357,
-		headers: [
-			{
-				name: 'CORRELATION_ID',
-				value: 'ddemc238fsdf0fd3s22'
-			}
-		]
-	});
-}
-
-const lastRecordOffsetResponse: LastRecordOffsetResponse = {
-	latestRecordOffset: 1234
-};
-
-const topicPartitionOffsets: TopicPartitionOffset[] = [
-	{
-		topicName: 'test-topic',
-		topicPartition: 0,
-		offset: 4567
-	},
-	{
-		topicName: 'test-topic',
-		topicPartition: 1,
-		offset: 4570
-	}
-];
 
 export const handlers: RequestHandler[] = [
 	http.get('/api/auth/me', async () => {
@@ -71,7 +33,7 @@ export const handlers: RequestHandler[] = [
 			{ ident: '12345678900', historisk: false, gruppe: 'FOLKEREGISTERIDENT' },
 			{ ident: '09876543211', historisk: true, gruppe: 'FOLKEREGISTERIDENT' },
 			{ ident: '1111222344555', historisk: false, gruppe: 'AKTORID' },
-			{ ident: '9998887776665', historisk: true, gruppe: 'AKTORID' },
+			{ ident: '9998887776665', historisk: true, gruppe: 'AKTORID' }
 		]);
 	}),
 	http.get('/api/tilgang/enhet', async () => {
@@ -121,22 +83,6 @@ export const handlers: RequestHandler[] = [
 	http.post('/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
-	}),
-	http.post('/api/kafka-admin/read-topic', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(kafkaRecords);
-	}),
-	http.post('/api/kafka-admin/get-consumer-offsets', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(topicPartitionOffsets);
-	}),
-	http.post('/api/kafka-admin/get-last-record-offset', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(lastRecordOffsetResponse);
-	}),
-	http.post('/api/kafka-admin/set-consumer-offset', async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
 	}),
 	http.get('/api/admin/veilarbportefolje/opensearch/getAliases', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -396,8 +342,8 @@ export const handlers: RequestHandler[] = [
 	http.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([
-			{"name": "PDL_DATA", "displayName": "Persondata (PDL)"},
-			{"name": "ENSLIG_FORSORGER_DATA", "displayName": "Enslig forsørger"}
+			{ name: 'PDL_DATA', displayName: 'Persondata (PDL)' },
+			{ name: 'ENSLIG_FORSORGER_DATA', displayName: 'Enslig forsørger' }
 		]);
 	}),
 	http.post(`/api/admin/veilarbarena/republiser/endring-pa-bruker`, async () => {

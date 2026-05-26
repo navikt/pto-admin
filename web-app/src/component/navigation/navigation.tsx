@@ -20,7 +20,6 @@ export function Navigation() {
 					<Tabs.Tab value={ViewType.HOVEDSIDE} label="Hovedside" />
 					<Tabs.Tab value={ViewType.VEDTAKSSTOTTE} label="Vedtaksstøtte" />
 					<Tabs.Tab value={ViewType.REPUBLISERING_KAFKA} label="Republisering Kafka" />
-					<Tabs.Tab value={ViewType.KAFKA_ADMIN} label="Kafka Admin" />
 					<Tabs.Tab value={ViewType.VEILARBPORTEFOLJE} label="Veilarbportefolje" />
 					<Tabs.Tab value={ViewType.TEAM_DAB} label="Team DAB" />
 				</Tabs.List>

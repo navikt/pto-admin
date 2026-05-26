@@ -1,7 +1,6 @@
 import React from 'react';
 import { useViewStore, ViewType } from '../store/view-store';
 import { Hovedside } from '../view/hovedside/hovedside';
-import { KafkaAdmin } from '../view/kafka-admin/kafka-admin';
 import { RepubliseringKafka } from '../view/republisering-kafka/republisering-kafka';
 import { Veilarbportefolje } from '../view/veilarbportefolje/veilarbportefolje';
 import { TeamDabOppfolgingView } from '../view/avsluttOppfølging/TeamDabOppfolgingView';
@@ -17,8 +16,6 @@ export function ViewController() {
 			return <RepubliseringKafka />;
 		case ViewType.HOVEDSIDE:
 			return <Hovedside />;
-		case ViewType.KAFKA_ADMIN:
-			return <KafkaAdmin />;
 		case ViewType.VEILARBPORTEFOLJE:
 			return <Veilarbportefolje />;
 		case ViewType.TEAM_DAB:
