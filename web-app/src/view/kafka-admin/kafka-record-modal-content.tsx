@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { KafkaRecord } from '../../api/kafka-admin';
 import './kafka-record-modal-content.less';
 import { isJson, NO_OP } from '../../utils';
 import { toTimestamp } from '../../utils/date-utils';
 import { BodyShort, Label, Textarea, TextField } from '@navikt/ds-react';
-import ReactJson from '@microlink/react-json-view';
+
+const ReactJson = lazy(() => import('@microlink/react-json-view'));
 
 export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 	if (props.record == null) {
@@ -42,7 +43,9 @@ export function KafkaRecordModalContent(props: { record: KafkaRecord | null }) {
 
 			<Label htmlFor="label">Payload</Label>
 			{isRecordValueJson ? (
-				<ReactJson name={false} src={JSON.parse(safeValue)} />
+				<Suspense fallback={<BodyShort>Laster JSON-visning...</BodyShort>}>
+					<ReactJson name={false} src={JSON.parse(safeValue)} />
+				</Suspense>
 			) : (
 				<Textarea value={safeValue} readOnly={true} onChange={NO_OP} />
 			)}
