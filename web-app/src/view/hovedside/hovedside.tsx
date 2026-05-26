@@ -18,13 +18,13 @@ import { BodyShort, Button, Select, Tag, TextField } from '@navikt/ds-react';
 export function Hovedside() {
 	return (
 		<div className="view hovedside">
-			<FnrTilAktorIdCard />
-			<AktorIdTilFnrCard />
+			<HentIdenterCard />
 			<HarTilgangTilEnhetCard />
 			<HarSkrivetilgangCard />
 			<HarLesetilgangCard />
 			<HarTilgangTilKodeOgSkjermetCard />
-			<HentIdenterCard />
+			<FnrTilAktorIdCard />
+			<AktorIdTilFnrCard />
 		</div>
 	);
 }
