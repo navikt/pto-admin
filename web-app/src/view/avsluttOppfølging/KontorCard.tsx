@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Button, TextField, Tooltip } from '@navikt/ds-react';
-import { hentKontorerMedHistorikk, KontorHistorikkQueryDto, KontorTilhorigheter } from '../../api/ao-oppfolgingskontor';
+import {
+	hentKontorerMedHistorikk,
+	type KontorHistorikkQueryDto,
+	type KontorTilhorigheter as KontorTilhorigheterDto
+} from '../../api/ao-oppfolgingskontor';
 import dayjs from 'dayjs';
 import { UserQuery, UserQueryResultsContainer } from '../../component/UserQueryResults';
 
@@ -8,7 +12,7 @@ const KontorCard = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [results, setResults] = useState<UserQuery[]>([]);
 
-	const fetchKontorData = async e => {
+	const fetchKontorData = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const ident = formData.get('ident') as string;
@@ -48,7 +52,7 @@ const KontorCard = () => {
 	);
 };
 
-const KontorTilhorigheter = ({ kontorTilhorigheter }: { kontorTilhorigheter: KontorTilhorigheter }) => {
+const KontorTilhorigheter = ({ kontorTilhorigheter }: { kontorTilhorigheter: KontorTilhorigheterDto }) => {
 	const arenaKontor = kontorTilhorigheter.arena;
 	const arbeidsoppfolging = kontorTilhorigheter.arbeidsoppfolging;
 	const gtKontor = kontorTilhorigheter.geografiskTilknytning;

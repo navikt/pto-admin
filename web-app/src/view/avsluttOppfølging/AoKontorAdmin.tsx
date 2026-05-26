@@ -17,7 +17,7 @@ export const AoKontorAdmin = () => {
 	const [internIdentResult, setInternIdentResult] = useState<number | null>(null);
 	const [identerForInternIdentResult, setIdenterForInternIdentResult] = useState<{ aktorId: string | null; fnr: string | null } | null>(null);
 
-	const fetchKontorData = async e => {
+	const fetchKontorData = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('identer') as string;
@@ -26,7 +26,7 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const republiserKontorordningForUtvalgteOppfolgingsperioder = async e => {
+	const republiserKontorordningForUtvalgteOppfolgingsperioder = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const oppfolgingsperiodeIder = formData.get('oppfolgingsperiodeIder') as string;
@@ -35,7 +35,7 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const dryRunFinnKontor = async e => {
+	const dryRunFinnKontor = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('identer2') as string;
@@ -45,7 +45,7 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const tombstoneIdenter = async e => {
+	const tombstoneIdenter = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('tombstoneIdenter') as string;
@@ -54,7 +54,7 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const hentInternIdentForBruker = async e => {
+	const hentInternIdentForBruker = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const ident = formData.get('internIdent') as string;
@@ -64,7 +64,7 @@ export const AoKontorAdmin = () => {
 		setIsLoading(false);
 	};
 
-	const hentIdenterForInternIdentForBruker = async e => {
+	const hentIdenterForInternIdentForBruker = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const internIdent = Number(formData.get('identerForInternIdent') as string);

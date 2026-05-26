@@ -1,1 +1,1 @@
-export { UserQueryResultsContainer, type QueryResult, type UserQuery } from './UserQueryResultsContainer';
+export { UserQueryResultsContainer, type UserQuery } from './UserQueryResultsContainer';

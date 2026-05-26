@@ -15,7 +15,7 @@ export function Navigation() {
 				</Heading>
 				<BodyShort>{loggedInUser?.navn || ''}</BodyShort>
 			</div>
-			<Tabs value={view} onChange={changeView}>
+			<Tabs value={view} onChange={value => changeView(value as ViewType)}>
 				<Tabs.List>
 					<Tabs.Tab value={ViewType.HOVEDSIDE} label="Hovedside" />
 					<Tabs.Tab value={ViewType.VEDTAKSSTOTTE} label="Vedtaksstøtte" />
