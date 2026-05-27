@@ -8,6 +8,7 @@ import no.nav.common.token_client.client.AzureAdOnBehalfOfTokenClient
 import no.nav.common.types.identer.*
 import no.nav.common.utils.Credentials
 import no.nav.poao_tilgang.client.PoaoTilgangClient
+import no.nav.pto_admin.pdl_pip.PdlPipClient
 import no.nav.pto_admin.utils.AzureOboTokenProvider
 import no.nav.pto_admin.utils.AppName
 import org.mockito.Mockito.mock
@@ -71,6 +72,11 @@ class ApplicationTestConfig {
     @Bean
     fun poaoTilgangClient(): PoaoTilgangClient {
         return mock(PoaoTilgangClient::class.java)
+    }
+
+    @Bean
+    fun pdlPipClient(): PdlPipClient {
+        return mock(PdlPipClient::class.java)
     }
 
 }

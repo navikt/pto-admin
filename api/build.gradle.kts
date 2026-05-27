@@ -68,3 +68,7 @@ group = "no.nav.pto-admin"
 version = "1.0.0"
 description = "pto-admin"
 java.sourceCompatibility = JavaVersion.VERSION_21
+
+tasks.test {
+    useJUnitPlatform()
+}

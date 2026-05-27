@@ -23,7 +23,7 @@ org-springframework-boot-spring-boot-starter-test = "3.5.14"
 org-springframework-boot-spring-boot-starter-webflux = "3.5.14"
 org-springframework-cloud-spring-cloud-starter-gateway = "4.3.4"
 org-springframework-security-spring-security-test = "6.5.10"
-org-junit-platform-junit-platform-launcher = "1.10.5"
+org-junit-platform-junit-platform-launcher = "1.12.2"
 
 [libraries]
 com-fasterxml-jackson-module-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "com-fasterxml-jackson-module-jackson-module-kotlin" }
