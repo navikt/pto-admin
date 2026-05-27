@@ -7,7 +7,7 @@
 plugins {
     kotlin("jvm") version "2.3.21"
     kotlin("plugin.spring") version "2.3.21"
-    id("org.springframework.boot") version "3.5.14"
+    id("org.springframework.boot") version "4.0.6"
 }
 
 java {
@@ -53,9 +53,10 @@ dependencies {
     implementation(libs.com.squareup.okhttp3.okhttp)
     implementation(libs.org.springframework.boot.spring.boot.configuration.processor)
 
-    testImplementation(libs.org.springframework.boot.spring.boot.starter.oauth2.client)
+    testImplementation(libs.org.springframework.boot.spring.boot.starter.security.oauth2.client)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security)
-    testImplementation(libs.org.springframework.security.spring.security.test)
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.0.4")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.0.4")
     testImplementation(libs.no.nav.security.mock.oauth2.server)
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)

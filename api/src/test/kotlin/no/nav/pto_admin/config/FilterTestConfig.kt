@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class FilterTestConfig {
     @Bean
-    fun testSubjectFilterRegistrationBean(): FilterRegistrationBean<TestAuthContextFilter?> {
-        val registration: FilterRegistrationBean<TestAuthContextFilter?> =
-            FilterRegistrationBean<TestAuthContextFilter?>()
+    fun testSubjectFilterRegistrationBean(): FilterRegistrationBean<TestAuthContextFilter> {
+        val registration: FilterRegistrationBean<TestAuthContextFilter> =
+            FilterRegistrationBean<TestAuthContextFilter>()
         registration.setFilter(TestAuthContextFilter())
         registration.setOrder(1)
         registration.addUrlPatterns("/api/*")

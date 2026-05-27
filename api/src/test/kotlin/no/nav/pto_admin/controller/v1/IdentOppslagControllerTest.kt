@@ -7,7 +7,7 @@ import no.nav.pto_admin.config.SetupLocalEnvironment
 import no.nav.pto_admin.service.IdentOppslagService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
