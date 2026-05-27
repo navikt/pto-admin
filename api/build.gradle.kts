@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.no.nav.common.token.client)
     implementation(libs.no.nav.common.auth)
     implementation(libs.no.nav.common.health)
-    implementation(libs.no.nav.common.kafka)
     implementation(libs.com.squareup.okhttp3.okhttp)
     implementation(libs.org.springframework.boot.spring.boot.configuration.processor)
 

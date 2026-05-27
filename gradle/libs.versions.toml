@@ -34,7 +34,6 @@ io-micrometer-micrometer-registry-prometheus = { module = "io.micrometer:microme
 no-nav-common-auth = { module = "no.nav.common:auth", version.ref = "no-nav-common" }
 no-nav-common-client = { module = "no.nav.common:client", version.ref = "no-nav-common" }
 no-nav-common-health = { module = "no.nav.common:health", version.ref = "no-nav-common" }
-no-nav-common-kafka = { module = "no.nav.common:kafka", version.ref = "no-nav-common" }
 no-nav-common-log = { module = "no.nav.common:log", version.ref = "no-nav-common" }
 no-nav-common-token-client = { module = "no.nav.common:token-client", version.ref = "no-nav-common" }
 no-nav-common-types = { module = "no.nav.common:types", version.ref = "no-nav-common" }
