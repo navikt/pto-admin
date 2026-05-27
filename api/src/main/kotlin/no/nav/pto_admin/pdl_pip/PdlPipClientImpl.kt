@@ -1,6 +1,5 @@
 package no.nav.pto_admin.pdl_pip
 
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import no.nav.common.json.JsonUtils
 import no.nav.common.rest.client.RestClient
 import okhttp3.OkHttpClient
@@ -15,10 +14,6 @@ open class PdlPipClientImpl(
 ): PdlPipClient {
 
 	private val IDENT_PARAM_NAME: String = "ident"
-
-	init {
-		JsonUtils.getMapper().registerKotlinModule()
-	}
 
 	override fun hentBrukerInfo(
 		brukerIdent: String,
