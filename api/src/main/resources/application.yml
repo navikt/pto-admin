@@ -23,6 +23,10 @@ management:
 spring:
   main:
     banner-mode: off
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration
+      - org.springframework.cloud.client.discovery.simple.reactive.SimpleReactiveDiscoveryClientAutoConfiguration
   cloud:
     discovery:
       enabled: false
