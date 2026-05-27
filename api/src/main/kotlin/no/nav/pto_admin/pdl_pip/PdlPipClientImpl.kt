@@ -35,7 +35,7 @@ open class PdlPipClientImpl(
 			if (!response.isSuccessful && response.code != 404) {
 				throw RuntimeException("Klarte ikke å hente personinfo fra pdl-pip. Status: ${response.code}")
 			}
-			val body = response.body?.string() ?: throw RuntimeException("Body is missing")
+			val body = response.body.string()
 			val brukerInfoResponse = JsonUtils.fromJson(body, BrukerInfo::class.java)
 			return brukerInfoResponse
 		}

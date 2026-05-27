@@ -19,12 +19,12 @@ export function Hovedside() {
 	return (
 		<div className="view hovedside">
 			<HentIdenterCard />
+			<FnrTilAktorIdCard />
+			<AktorIdTilFnrCard />
 			<HarTilgangTilEnhetCard />
 			<HarSkrivetilgangCard />
 			<HarLesetilgangCard />
 			<HarTilgangTilKodeOgSkjermetCard />
-			<FnrTilAktorIdCard />
-			<AktorIdTilFnrCard />
 		</div>
 	);
 }

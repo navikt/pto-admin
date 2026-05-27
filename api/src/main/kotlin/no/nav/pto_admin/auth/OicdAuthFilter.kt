@@ -17,7 +17,6 @@ import org.springframework.web.util.pattern.PathPattern
 
 import reactor.core.publisher.Mono
 import java.text.ParseException
-import kotlin.math.log
 
 
 class OicdAuthFilter(
@@ -62,17 +61,9 @@ class OicdAuthFilter(
                         .contextWrite { it.put("authContext", authContext) }
 
                 } catch (exception: ParseException) {
-                    if (exception === BadJWTExceptions.EXPIRED_EXCEPTION) {
-                        logger.info("Token validation failed", exception)
-                    } else {
-                        logger.error("Token validation failed", exception)
-                    }
+                    logger.error("Token validation failed", exception)
                 } catch (exception: JOSEException) {
-                    if (exception === BadJWTExceptions.EXPIRED_EXCEPTION) {
-                        logger.info("Token validation failed", exception)
-                    } else {
-                        logger.error("Token validation failed", exception)
-                    }
+                    logger.error("Token validation failed", exception)
                 } catch (exception: BadJOSEException) {
                     if (exception === BadJWTExceptions.EXPIRED_EXCEPTION) {
                         logger.info("Token validation failed", exception)
