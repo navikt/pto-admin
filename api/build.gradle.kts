@@ -32,6 +32,9 @@ repositories {
 }
 
 dependencies {
+    // Temporary security override for Netty CVEs. Remove when Boot/Cloud BOM includes patched Netty.
+    implementation(platform(libs.io.netty.netty.bom))
+
     implementation(libs.org.springframework.boot.spring.boot.starter.webflux)
     implementation(libs.org.springframework.boot.spring.boot.starter.cache)
     implementation(libs.org.springframework.boot.spring.boot.starter.actuator)
