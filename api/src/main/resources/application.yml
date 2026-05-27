@@ -24,47 +24,51 @@ spring:
   main:
     banner-mode: off
   cloud:
+    discovery:
+      enabled: false
     gateway:
-      default-filters:
-        - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
-        - RemoveRequestHeader=Cookie
-      routes:
-        - id: veilarbvedtaksstotte
-          uri: ${VEILARBVEDTAKSSTOTTE_ADMIN_API_URL}
-          predicates:
-            - Path=/api/admin/veilarbvedtaksstotte/**
-        - id: veilarboppfolging
-          uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
-          predicates:
-            - Path=/api/veilarboppfolging/**
-          filters:
-            - RewritePath=/api/veilarboppfolging/(?<remainingPath>.*), /${remainingPath}
-        - id: veilarbarena
-          uri: ${VEILARBARENA_ADMIN_API_URL}
-          predicates:
-            - Path=/api/admin/veilarbarena/**
-        - id: veilarbdialog
-          uri: ${VEILARBDIALOG_ADMIN_API_URL}
-          predicates:
-            - Path=/api/veilarbdialog/**
-          filters:
-            - RewritePath=/api/veilarbdialog/(?<remainingPath>.*), /${remainingPath}
-        - id: veilarbaktivitet
-          uri: ${VEILARBAKTIVITET_ADMIN_API_URL}
-          predicates:
-            - Path=/api/veilarbaktivitet/**
-          filters:
-            - RewritePath=/api/veilarbaktivitet/(?<remainingPath>.*), /${remainingPath}
-        - id: veilarbportefolje
-          uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
-          predicates:
-            - Path=/api/admin/veilarbportefolje/**
-        - id: ao-oppfolgingskontor
-          uri: ${AO_OPPFOLGINGSKONTOR_API_URL}
-          predicates:
-            - Path=/api/ao-oppfolgingskontor/**
-          filters:
-            - RewritePath=/api/ao-oppfolgingskontor/(?<remainingPath>.*), /${remainingPath}
+      server:
+        webflux:
+          default-filters:
+            - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
+            - RemoveRequestHeader=Cookie
+          routes:
+            - id: veilarbvedtaksstotte
+              uri: ${VEILARBVEDTAKSSTOTTE_ADMIN_API_URL}
+              predicates:
+                - Path=/api/admin/veilarbvedtaksstotte/**
+            - id: veilarboppfolging
+              uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
+              predicates:
+                - Path=/api/veilarboppfolging/**
+              filters:
+                - RewritePath=/api/veilarboppfolging/(?<remainingPath>.*), /${remainingPath}
+            - id: veilarbarena
+              uri: ${VEILARBARENA_ADMIN_API_URL}
+              predicates:
+                - Path=/api/admin/veilarbarena/**
+            - id: veilarbdialog
+              uri: ${VEILARBDIALOG_ADMIN_API_URL}
+              predicates:
+                - Path=/api/veilarbdialog/**
+              filters:
+                - RewritePath=/api/veilarbdialog/(?<remainingPath>.*), /${remainingPath}
+            - id: veilarbaktivitet
+              uri: ${VEILARBAKTIVITET_ADMIN_API_URL}
+              predicates:
+                - Path=/api/veilarbaktivitet/**
+              filters:
+                - RewritePath=/api/veilarbaktivitet/(?<remainingPath>.*), /${remainingPath}
+            - id: veilarbportefolje
+              uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
+              predicates:
+                - Path=/api/admin/veilarbportefolje/**
+            - id: ao-oppfolgingskontor
+              uri: ${AO_OPPFOLGINGSKONTOR_API_URL}
+              predicates:
+                - Path=/api/ao-oppfolgingskontor/**
+              filters:
+                - RewritePath=/api/ao-oppfolgingskontor/(?<remainingPath>.*), /${remainingPath}
 
 app:
   env:
