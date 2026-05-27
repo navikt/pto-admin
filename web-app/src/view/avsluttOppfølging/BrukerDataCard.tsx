@@ -15,7 +15,7 @@ interface PeriodeMedDialoger {
 	startetBegrunnelse: string | undefined;
 	dialoger: Dialog[];
 	aktiviteter: Aktivitet[];
-	tiltaksAktiviteter: TiltaksAktivitet[]
+	tiltaksAktiviteter: TiltaksAktivitet[];
 }
 
 export const BrukerDataCard = () => {
@@ -37,17 +37,19 @@ export const BrukerDataCard = () => {
 				const perioderMedAktiviteter = aktiviteterResponse?.data?.perioder || [];
 				const tiltaksAktiviteter = aktiviteterResponse?.data?.tiltaksaktiviteter || [];
 				const dialoger = dialogerResponse?.data?.dialoger || [];
-				const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || []).map(periode => {
-					return {
-						...periode,
-						dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id),
-						aktiviteter:
-							perioderMedAktiviteter.find(
-								periodeMedAktiviteter => periodeMedAktiviteter.id === periode.id
-							)?.aktiviteter || [],
-						tiltaksAktiviteter
-					};
-				});
+				const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || [])
+					.map(periode => {
+						return {
+							...periode,
+							dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id),
+							aktiviteter:
+								perioderMedAktiviteter.find(
+									periodeMedAktiviteter => periodeMedAktiviteter.id === periode.id
+								)?.aktiviteter || [],
+							tiltaksAktiviteter
+						};
+					})
+					.sort((a, b) => new Date(b.startTidspunkt).getTime() - new Date(a.startTidspunkt).getTime());
 				setOppfolgingsperioder(perioder);
 			})
 			.catch(e => {
@@ -199,7 +201,9 @@ export const BrukerDataCard = () => {
 										))}
 									</Table.Body>
 								</Table>
-								<div className="font-bold">Gamle arenaaktiviteter (tiltaksaktiviteter) ({periode.tiltaksAktiviteter.length})</div>
+								<div className="font-bold">
+									Gamle arenaaktiviteter (tiltaksaktiviteter) ({periode.tiltaksAktiviteter.length})
+								</div>
 								<Table size="small">
 									<Table.Header>
 										<Table.Row>
