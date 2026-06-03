@@ -40,7 +40,7 @@
     "@tailwindcss/vite": "4.3.0",
     "@types/react-modal": "3.16.3",
     "classnames": "2.5.1",
-    "constate": "3.3.3",
+    "constate": "4.0.0",
     "dayjs": "1.11.20",
     "less": "4.6.4",
     "prop-types": "15.8.1",
