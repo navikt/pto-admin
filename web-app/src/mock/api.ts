@@ -353,5 +353,9 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/forValgte`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
 	})
 ];
