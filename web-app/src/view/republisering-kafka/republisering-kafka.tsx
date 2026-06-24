@@ -75,7 +75,7 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser tilordnet veileder for et utvalg av brukere. Legg inn én ID per linje."
 				inputLabel={'Aktør-IDer (én per linje)'}
 				request={republiserTilordnetVeilederUtvalg}
-				topicNavn={'pto.siste-tilordnet-veileder-v1'}
+				topicNavn={'pto.veileder-tilordnet-v1'}
 			/>
 		</div>
 	);
