@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+  msw: true
+
+minimumReleaseAge: 10080
+
+minimumReleaseAgeExclude:
+  - "@navikt/*"
