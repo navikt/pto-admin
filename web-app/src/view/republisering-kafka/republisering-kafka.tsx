@@ -66,16 +66,16 @@ export function RepubliseringKafka() {
 			/>
 			<RepubliseringsKort
 				tittel="Republiser arbeidsoppfølgingskontor endret"
-				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v1"
+				beskrivelse="Republiserer kontoret til alle brukere med aktiv oppfølgingsperiode på topic dab.arbeidsoppfolgingskontortilordninger-v2. Husk å stoppe lytterne i ao-kontor med unleash-toggle ao-kontor.stopp-kafkalyttere først."
 				request={republiserArbeidsoppfolgingskontorendret}
-				topicNavn={'dab.arbeidsoppfolgingskontortilordninger-v1'}
+				topicNavn={'dab.arbeidsoppfolgingskontortilordninger-v2'}
 			/>
 			<RepubliseringsKortMedInput
 				tittel="Republiser tilordnet veileder for et utvalg av brukere"
 				beskrivelse="Republiser tilordnet veileder for et utvalg av brukere. Legg inn én ID per linje."
 				inputLabel={'Aktør-IDer (én per linje)'}
 				request={republiserTilordnetVeilederUtvalg}
-				topicNavn={'pto.siste-tilordnet-veileder-v1'}
+				topicNavn={'pto.veileder-tilordnet-v1'}
 			/>
 		</div>
 	);

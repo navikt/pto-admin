@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.org.springframework.cloud.spring.cloud.starter.gateway)
     implementation(libs.no.nav.poao.tilgang.client)
     implementation(libs.org.jetbrains.kotlin.kotlin.reflect)
-    implementation(libs.com.fasterxml.jackson.module.jackson.module.kotlin)
     implementation(libs.org.jetbrains.kotlin.kotlin.stdlib.jdk8)
     implementation(libs.com.github.ben.manes.caffeine.caffeine)
     implementation(libs.io.micrometer.micrometer.registry.prometheus)
@@ -58,8 +57,8 @@ dependencies {
 
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security.oauth2.client)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security)
-    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.0.4")
-    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.0.4")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.0.6")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.0.6")
     testImplementation(libs.no.nav.security.mock.oauth2.server)
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
