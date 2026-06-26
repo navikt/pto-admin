@@ -10,7 +10,7 @@ export const BrukerStatusCard = () => {
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const fetchBrukerStatus = async (e: React.FormEvent<HTMLFormElement>) => {
+	const fetchBrukerStatus = async (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const fnr = formData.get('fnr') as string;
