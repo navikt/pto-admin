@@ -31,8 +31,9 @@
   ],
   "dependencies": {
     "@microlink/react-json-view": "1.31.20",
-    "@navikt/ds-css": "8.11.0",
-    "@navikt/ds-react": "8.11.0",
+    "@navikt/ds-css": "8.14.0",
+    "@navikt/ds-react": "8.14.0",
+    "@navikt/aksel-icons": "8.14.0",
     "@navikt/fnrvalidator": "2.2.1",
     "@tailwindcss/vite": "4.3.0",
     "@types/react-modal": "3.16.3",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "@types/react": "^19.2.3",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "eslint": "^9.0.0",
