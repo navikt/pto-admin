@@ -36,6 +36,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v6
         with:
+          cache_dependency_path: 'web-app/pnpm-lock.yaml'
           cache: true
           version: 11
 
