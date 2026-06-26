@@ -178,14 +178,13 @@ export function getAliases(): Promise<{ data: string }> {
 export function pdlLastInnData(): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
 }
-export function hentEnsligForsorgerData(aktorId: string): Promise<{ data: JobId }> {
-	console.log('Startet: hentEnsligForsorgerData');
-	return fetchInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, { aktorId });
-}
 
 export function hentEnsligForsorgerDataBatch(): Promise<{ data: JobId }> {
-	console.log('Startet: hentEnsligForsorgerDataBatch');
 	return fetchInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerDataBatch`);
+}
+
+export function hentTilordningsdatoBatch(antall: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere?limit=${antall}`);
 }
 
 export function hentMuligeDataTyperSomKanHentes(): Promise<{ data: AdminDataTypeResponse[] }> {

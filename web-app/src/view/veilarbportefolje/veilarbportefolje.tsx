@@ -6,6 +6,7 @@ import {
 	getAliases,
 	hentEnsligForsorgerDataBatch,
 	hentMuligeDataTyperSomKanHentes,
+	hentTilordningsdatoBatch,
 	hentValgteDataForBruker,
 	hovedindeksering,
 	hovedindekseringNyttAlias,
@@ -92,6 +93,12 @@ export function Veilarbportefolje() {
 				tittel="Hent overgangsstønad for alle"
 				beskrivelse="Hent overgangsstønad data for alle oppfølgingsbrukere."
 				request={hentEnsligForsorgerDataBatch}
+			/>
+			<AdminKnappMedInput
+				tittel="Hent tilordningsdato for x antall"
+				beskrivelse="Hent tilordningsdato for x antall brukere som ikke alt har den"
+				inputType="Antall"
+				request={hentTilordningsdatoBatch}
 			/>
 			<AdminCheckboxerMedInput
 				tittel={'Hent valgte data for en bruker'}
