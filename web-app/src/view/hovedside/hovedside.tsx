@@ -38,6 +38,9 @@ function AktorIderVedMergeSplittCard() {
 	const [finnesIVeilarbportefolje, setFinnesIVeilarbportefolje] = useState<boolean | null>(null);
 
 	function handleOnFinnAktorId() {
+		setFinnesIVedtaksstotte(null);
+		setFinnesIVeilarbportefolje(null);
+
 		finnesAktoridIVedtakstabell(aktorId)
 			.then(res => setFinnesIVedtaksstotte(res.data))
 			.catch(e => alert('Klarte ikke å hente aktørid fra vedtaksstabell:\n' + e.toString()));
