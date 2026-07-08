@@ -16,7 +16,8 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 	if (!response.ok) {
 		throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
 	}
-	const data: T = await response.json();
+	const text = await response.text();
+	const data: T = text ? JSON.parse(text) : ('' as T);
 	return { data };
 }
 
@@ -119,7 +120,7 @@ export function slett14avedtak(
 	fnr: string,
 	ansvarligVeileder: string,
 	slettVedtakBestillingId: string
-) {
+): Promise<{ data: string }> {
 	return fetchInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, {
 		journalpostId,
 		fnr,
