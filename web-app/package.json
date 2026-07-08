@@ -38,16 +38,16 @@
     "@tailwindcss/vite": "4.3.0",
     "@types/react-modal": "3.16.3",
     "classnames": "2.5.1",
-    "constate": "3.3.3",
-    "dayjs": "1.11.20",
-    "less": "4.6.4",
+    "dayjs": "1.11.21",
+    "constate": "4.0.0",
+    "less": "4.6.6",
     "prop-types": "15.8.1",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-toastify": "11.1.0",
     "tailwindcss": "4.3.0",
     "typescript": "6.0.3",
-    "vite": "8.0.14"
+    "vite": "8.0.16"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -59,9 +59,9 @@
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "husky": "9.1.7",
-    "lint-staged": "17.0.5",
+    "lint-staged": "17.0.7",
     "msw": "2.14.6",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "typescript-eslint": "^8.0.0"
   },
   "msw": {
