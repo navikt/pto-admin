@@ -106,6 +106,14 @@ export function sjekkHarTilgangTilEgenAnsatt(navIdent: string): Promise<{ data: 
 	return fetchInstance.get(`/api/tilgang/skjermet?navIdent=${navIdent}`);
 }
 
+export function finnesAktoridIVedtakstabell(aktorId: string): Promise<{ data: boolean }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/aktoridSjekk`, { aktorId });
+}
+
+export function finnesAktorIdIVeilarbportefoljeBrukeridTabell(aktorId: string): Promise<{ data: boolean }> {
+	return fetchInstance.post(`/api/admin/veilarbportefolje/aktoridSjekk`, { aktorId });
+}
+
 export function slett14avedtak(
 	journalpostId: string,
 	fnr: string,

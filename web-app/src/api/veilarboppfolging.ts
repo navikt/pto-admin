@@ -59,3 +59,56 @@ export function hentOppfolgingsperioder(payload: {
 		}>(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, graphqlBody(payload.fnr))
 		.then(response => response.data);
 }
+
+const brukerStatusQuery = `
+	query hentBrukerStatus($fnr: String!) {
+		brukerStatus(fnr: $fnr) {
+			manuell {
+				erManuell
+				opprettetTidspunkt
+				begrunnelse
+				endretAvType
+				endretAvIdent
+			}
+			erKontorsperret
+			kontorSperre {
+				kontorId
+			}
+			krr {
+				reservertIKrr
+				kanVarsles
+				registrertIKrr
+			}
+		}
+	}
+`;
+
+export interface BrukerStatusDto {
+	manuell: {
+		erManuell: boolean | null;
+		opprettetTidspunkt: string | null;
+		begrunnelse: string | null;
+		endretAvType: string | null;
+		endretAvIdent: string | null;
+	} | null;
+	erKontorsperret: boolean;
+	kontorSperre: {
+		kontorId: string;
+	} | null;
+	krr: {
+		reservertIKrr: boolean;
+		kanVarsles: boolean;
+		registrertIKrr: boolean;
+	};
+}
+
+export function hentBrukerStatus(fnr: string): Promise<{ data: { brukerStatus: BrukerStatusDto } }> {
+	return fetchInstance
+		.post<{
+			data: { brukerStatus: BrukerStatusDto };
+		}>(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, {
+			query: brukerStatusQuery,
+			variables: { fnr }
+		})
+		.then(response => response.data);
+}
