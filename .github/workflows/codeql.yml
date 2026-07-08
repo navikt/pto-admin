@@ -74,7 +74,7 @@ jobs:
 
       - name: Build Java/Kotlin
         if: matrix.language == 'java-kotlin'
-        run: ./gradlew classes testClasses
+        run: ./gradlew build -x test
 
       - name: Autobuild
         if: matrix.language != 'java-kotlin'
