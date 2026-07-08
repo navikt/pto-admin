@@ -33,23 +33,30 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/gradle' }}
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          cache_dependency_path: web-app/pnpm-lock.yaml
+          cache: true
+          version: 11
+
       - name: Setup node
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # ratchet:actions/setup-node@v6
         with:
           node-version: 24
-          cache: npm
-          cache-dependency-path: web-app/package-lock.json
+          cache: pnpm
+          cache-dependency-path: web-app/pnpm-lock.yaml
           registry-url: "https://npm.pkg.github.com"
 
       - name: Install dependencies
         working-directory: web-app
-        run: npm ci
+        run: pnpm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Build frontend assets
         working-directory: web-app
-        run: npm run build
+        run: pnpm run build
 
       - name: Move frontend assets to public folder
         run: mv ./web-app/build ./api/src/main/resources/public
