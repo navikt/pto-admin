@@ -60,6 +60,7 @@ dependencies {
     testImplementation(libs.no.nav.security.mock.oauth2.server)
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
+    testImplementation(libs.org.springframework.boot.spring.boot.webflux.test.autoconfigure)
     testImplementation(libs.com.squareup.okhttp3.mockwebserver)
     testRuntimeOnly(libs.org.junit.platform.junit.platform.launcher)
 }
