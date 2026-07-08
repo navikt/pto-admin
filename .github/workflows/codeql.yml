@@ -68,12 +68,18 @@ jobs:
       # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
       # If this step fails, then you should remove it and run the build manually (see below)
 
+      - name: Setup Gradle
+        if: matrix.language == 'java-kotlin'
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # ratchet:gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "8.13"
+
+      - name: Build Java/Kotlin
+        if: matrix.language == 'java-kotlin'
+        run: ./gradlew testClasses
 
       - name: Autobuild
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
-
-
+        if: matrix.language != 'java-kotlin'
         uses: github/codeql-action/autobuild@87557b9c84dde89fdd9b10e88954ac2f4248e463 # ratchet:github/codeql-action/autobuild@v4.36.1
       # ℹ️ Command-line programs to run using the OS shell.
 
