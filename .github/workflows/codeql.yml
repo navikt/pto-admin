@@ -71,12 +71,10 @@ jobs:
       - name: Setup Gradle
         if: matrix.language == 'java-kotlin'
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # ratchet:gradle/actions/setup-gradle@v6
-        with:
-          gradle-version: "8.13"
 
       - name: Build Java/Kotlin
         if: matrix.language == 'java-kotlin'
-        run: ./gradlew testClasses
+        run: ./gradlew classes testClasses
 
       - name: Autobuild
         if: matrix.language != 'java-kotlin'
