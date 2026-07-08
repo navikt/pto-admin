@@ -1,4 +1,4 @@
-import { RequestHandler, http, HttpResponse, delay } from 'msw';
+import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
 
@@ -357,5 +357,13 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbvedtaksstotte/aktoridSjekk`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(true);
+	}),
+	http.post(`/api/admin/veilarbportefolje/aktoridSjekk`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(false);
 	})
 ];

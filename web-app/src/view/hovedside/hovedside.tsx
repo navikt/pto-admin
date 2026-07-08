@@ -3,6 +3,8 @@ import { Card } from '../../component/card/card';
 import './hovedside.less';
 import {
 	aktorIdTilFnr,
+	finnesAktoridIVedtakstabell,
+	finnesAktorIdIVeilarbportefoljeBrukeridTabell,
 	fnrTilAktorId,
 	hentIdenter,
 	Ident,
@@ -25,7 +27,42 @@ export function Hovedside() {
 			<HarSkrivetilgangCard />
 			<HarLesetilgangCard />
 			<HarTilgangTilKodeOgSkjermetCard />
+			<AktorIderVedMergeSplittCard />
 		</div>
+	);
+}
+
+function AktorIderVedMergeSplittCard() {
+	const [aktorId, setAktorId] = useState('');
+	const [finnesIVedtaksstotte, setFinnesIVedtaksstotte] = useState<boolean | null>(null);
+	const [finnesIVeilarbportefolje, setFinnesIVeilarbportefolje] = useState<boolean | null>(null);
+
+	function handleOnFinnAktorId() {
+		finnesAktoridIVedtakstabell(aktorId)
+			.then(res => setFinnesIVedtaksstotte(res.data))
+			.catch(e => alert('Klarte ikke å hente aktørid fra vedtaksstabell:\n' + e.toString()));
+		finnesAktorIdIVeilarbportefoljeBrukeridTabell(aktorId)
+			.then(res => setFinnesIVeilarbportefolje(res.data))
+			.catch(e => alert('Klarte ikke å hente aktørid fra veilarbportefolje:\n' + e.toString()));
+	}
+
+	return (
+		<Card
+			title="Finn berørte aktørider ved splitt/merge"
+			className="small-card"
+			innholdClassName="hovedside__card-innhold"
+		>
+			<TextField label="AktørId" value={aktorId} onChange={e => setAktorId(e.target.value)} />
+			<BodyShort spacing={true}>
+				Aktørid finnes i vedtaksstøtte:{' '}
+				<strong>{finnesIVedtaksstotte == null ? '' : finnesIVedtaksstotte.toString()}</strong>
+			</BodyShort>
+			<BodyShort spacing={true}>
+				Aktørid finnes i veilarbportefolje:{' '}
+				<strong>{finnesIVeilarbportefolje == null ? '' : finnesIVeilarbportefolje.toString()}</strong>
+			</BodyShort>
+			<Button onClick={handleOnFinnAktorId}>Finn Aktørid</Button>
+		</Card>
 	);
 }
 
