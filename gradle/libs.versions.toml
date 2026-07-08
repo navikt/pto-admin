@@ -4,7 +4,7 @@
 [versions]
 com-github-ben-manes-caffeine-caffeine = "3.2.4"
 com-squareup-okhttp3 = "5.2.3"
-io-micrometer-micrometer-registry-prometheus = "1.14.14"
+io-micrometer-micrometer-registry-prometheus = "1.17.0"
 # Temporary security override for CVE-2026-42584 / CVE-2026-42581 / CVE-2026-42579.
 # Remove when Spring Boot/Spring Cloud BOM manages Netty at >= 4.2.14.Final.
 io-netty-netty-bom = "4.2.15.Final"
