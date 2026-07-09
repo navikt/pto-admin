@@ -17,8 +17,14 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 		throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
 	}
 	const text = await response.text();
-	const data: T = text ? JSON.parse(text) : ('' as T);
-	return { data };
+	if (!text) {
+		return { data: null as T };
+	}
+	const contentType = response.headers.get('content-type') ?? '';
+	if (contentType.includes('application/json')) {
+		return { data: JSON.parse(text) as T };
+	}
+	return { data: text as T };
 }
 
 export const fetchInstance = {
