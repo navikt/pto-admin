@@ -15,7 +15,6 @@ org-jetbrains-kotlin = "2.3.21"
 org-mockito-kotlin-mockito-kotlin = "5.4.0"
 org-springframework-boot = "4.1.0"
 org-springframework-cloud-spring-cloud-starter-gateway = "5.0.2"
-org-junit-platform-junit-platform-launcher = "6.0.3"
 
 [libraries]
 com-github-ben-manes-caffeine-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "com-github-ben-manes-caffeine-caffeine" }
@@ -35,13 +34,15 @@ no-nav-security-mock-oauth2-server = { module = "no.nav.security:mock-oauth2-ser
 org-jetbrains-kotlin-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "org-jetbrains-kotlin" }
 org-jetbrains-kotlin-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "org-jetbrains-kotlin" }
 org-mockito-kotlin-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "org-mockito-kotlin-mockito-kotlin" }
-org-junit-platform-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "org-junit-platform-junit-platform-launcher" }
+org-junit-platform-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 org-springframework-boot-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-cache = { module = "org.springframework.boot:spring-boot-starter-cache", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-logging = { module = "org.springframework.boot:spring-boot-starter-logging", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-security-oauth2-client = { module = "org.springframework.boot:spring-boot-starter-security-oauth2-client", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "org-springframework-boot" }
+org-springframework-boot-spring-boot-starter-security-test = { module = "org.springframework.boot:spring-boot-starter-security-test", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "org-springframework-boot" }
 org-springframework-boot-spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "org-springframework-boot" }
+org-springframework-boot-spring-boot-starter-webflux-test = { module = "org.springframework.boot:spring-boot-starter-webflux-test", version.ref = "org-springframework-boot" }
 org-springframework-cloud-spring-cloud-starter-gateway = { module = "org.springframework.cloud:spring-cloud-starter-gateway-server-webflux", version.ref = "org-springframework-cloud-spring-cloud-starter-gateway" }

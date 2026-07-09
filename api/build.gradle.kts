@@ -57,8 +57,8 @@ dependencies {
 
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security.oauth2.client)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security)
-    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.1.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.1.0")
+    testImplementation(libs.org.springframework.boot.spring.boot.starter.webflux.test)
+    testImplementation(libs.org.springframework.boot.spring.boot.starter.security.test)
     testImplementation(libs.no.nav.security.mock.oauth2.server)
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
