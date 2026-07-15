@@ -77,7 +77,7 @@ export const VedtaksstotteSladd = () => {
 				value={sladdVedtakBestillingId}
 				onChange={e => setSladdVedtakBestillingId(e.target.value)}
 			/>
-			<Button onClick={handleSladd14aVedtak}>Slett § 14 a-vedtak</Button>
+			<Button onClick={handleSladd14aVedtak}>Sladd § 14 a-vedtak</Button>
 		</Card>
 	);
 };
