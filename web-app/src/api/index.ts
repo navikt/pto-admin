@@ -135,6 +135,20 @@ export function slett14avedtak(
 	});
 }
 
+export function sladdBegrunnelse14avedtak(
+	journalpostId: string,
+	fnr: string,
+	ansvarligVeileder: string,
+	sladdVedtakBestillingId: string
+) {
+	return fetchInstance.put(`/api/admin/veilarbvedtaksstotte/sladd-vedtak`, {
+		journalpostId,
+		fnr,
+		ansvarligVeileder,
+		sladdVedtakBestillingId
+	});
+}
+
 // Republisering vedtaksstøtte
 
 export function republiserSiste14aVedtak(): Promise<{ data: JobId }> {
