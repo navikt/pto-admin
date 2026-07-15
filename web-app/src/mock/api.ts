@@ -76,6 +76,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(200);
 	}),
+	http.put('/api/admin/veilarbvedtaksstotte/sladd-vedtak', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(200);
+	}),
 	http.post('/api/admin/veilarbvedtaksstotte/republiser/siste-14a-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
