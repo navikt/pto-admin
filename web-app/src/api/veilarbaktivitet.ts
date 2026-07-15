@@ -15,6 +15,9 @@ export interface Aktivitet {
 	status: string;
 	historisk: boolean;
 	type: string;
+	eksternAktivitet: {
+		type: string;
+	};
 }
 
 export interface TiltaksAktivitet {
@@ -41,6 +44,9 @@ query hentAktiviteter($fnr: String!) {
 			status
 			historisk
 			type
+			eksternAktivitet {
+				type
+			}
 		}
 	}
 	tiltaksaktiviteter(fnr: $fnr) {

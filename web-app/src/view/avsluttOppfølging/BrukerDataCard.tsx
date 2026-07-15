@@ -189,6 +189,12 @@ export const BrukerDataCard = () => {
 															Historisk: <BooleanTag value={aktivitet.historisk} />
 														</div>
 														<div>Type: {aktivitet.type}</div>
+														{aktivitet.type === 'EKSTERNAKTIVITET' ? (
+															<div>
+																Ekstern aktivitet type:{' '}
+																{aktivitet.eksternAktivitet.type}
+															</div>
+														) : null}
 													</div>
 												}
 											>

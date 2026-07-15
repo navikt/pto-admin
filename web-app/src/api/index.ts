@@ -16,8 +16,15 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 	if (!response.ok) {
 		throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
 	}
-	const data: T = await response.json();
-	return { data };
+	const text = await response.text();
+	if (!text) {
+		return { data: null as T };
+	}
+	const contentType = response.headers.get('content-type') ?? '';
+	if (contentType.includes('application/json')) {
+		return { data: JSON.parse(text) as T };
+	}
+	return { data: text as T };
 }
 
 export const fetchInstance = {
@@ -119,7 +126,7 @@ export function slett14avedtak(
 	fnr: string,
 	ansvarligVeileder: string,
 	slettVedtakBestillingId: string
-) {
+): Promise<{ data: string }> {
 	return fetchInstance.put(`/api/admin/veilarbvedtaksstotte/slett-vedtak`, {
 		journalpostId,
 		fnr,

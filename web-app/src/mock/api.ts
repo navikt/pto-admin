@@ -74,7 +74,7 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.put('/api/admin/veilarbvedtaksstotte/slett-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
+		return HttpResponse.text('', { status: 200 });
 	}),
 	http.put('/api/admin/veilarbvedtaksstotte/sladd-vedtak', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -112,39 +112,39 @@ export const handlers: RequestHandler[] = [
 	}),
 	http.put(`/api/admin/veilarbportefolje/indeks/bruker`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.put(`/api/admin/veilarbportefolje/indeks/bruker/fnr`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/admin/veilarbportefolje/indeks/AlleBrukere`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(123456789);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/admin/veilarbportefolje/indeks/AlleBrukereNyIndex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(987654321);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/admin/veilarbportefolje/opensearch/createindex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(192837465);
+		return HttpResponse.json('index-001');
 	}),
 	http.post(`/api/admin/veilarbportefolje/opensearch/assignAliasToIndex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
+		return HttpResponse.json('success');
 	}),
 	http.post(`/api/admin/veilarbportefolje/opensearch/deleteIndex`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(200);
+		return HttpResponse.json(true);
 	}),
 	http.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(192837465);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(6666333345);
+		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
