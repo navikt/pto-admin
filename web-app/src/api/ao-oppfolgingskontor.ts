@@ -146,12 +146,10 @@ export function hentInternIdent(payload: { ident: string }): Promise<{ data: { i
 	});
 }
 
-export function hentIdenterForInternIdent(payload: { internIdent: number }): Promise<{ data: { aktorId: string | null; fnr: string | null } }> {
+export function hentIdenterForInternIdent(payload: {
+	internIdent: number;
+}): Promise<{ data: { aktorId: string | null; fnr: string | null } }> {
 	return fetchInstance.post(`/api/ao-oppfolgingskontor/admin/identer-for-intern-ident`, {
 		internIdent: payload.internIdent
 	});
-}
-
-export function republiserOppfolgingshendelse(aktorId: string): Promise<void> {
-	return fetchInstance.post(`/api/admin/republiser/oppfolgingshendelse`, aktorId).then(() => {});
 }

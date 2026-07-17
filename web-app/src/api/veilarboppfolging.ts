@@ -112,3 +112,9 @@ export function hentBrukerStatus(fnr: string): Promise<{ data: { brukerStatus: B
 		})
 		.then(response => response.data);
 }
+
+export function republiserOppfolgingshendelse(aktorId: string): Promise<void> {
+	return fetchInstance
+		.post(`/api/veilarboppfolging/api/admin/veilarboppfolging/republiser/oppfolgingshendelse`, aktorId)
+		.then(() => {});
+}
