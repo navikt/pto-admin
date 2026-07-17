@@ -4,20 +4,25 @@ import {
 	hentIdenterForInternIdent,
 	hentInternIdent,
 	republiserForUtvalgteOppfolgingsperioder,
-	republiserOppfolgingshendelse,
 	republiserTombstone,
 	syncArenaKontorForBruker
 } from '../../api/ao-oppfolgingskontor';
 import { Alert, Button, Heading, TextField } from '@navikt/ds-react';
 import { AoKontorFailedMessages } from './AoKontorFailedMessages';
 import { Card } from '../../component/card/card';
+import { republiserOppfolgingshendelse } from '../../api/veilarboppfolging';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [dryRunKontorResult, setDryRunKontorResult] = useState<Record<string, string> | null>(null);
 	const [internIdentResult, setInternIdentResult] = useState<number | null>(null);
-	const [identerForInternIdentResult, setIdenterForInternIdentResult] = useState<{ aktorId: string | null; fnr: string | null } | null>(null);
-	const [republiserOppfolgingshendelseSuccess, setRepubliserOppfolgingshendelseSuccess] = useState<boolean | null>(null);
+	const [identerForInternIdentResult, setIdenterForInternIdentResult] = useState<{
+		aktorId: string | null;
+		fnr: string | null;
+	} | null>(null);
+	const [republiserOppfolgingshendelseSuccess, setRepubliserOppfolgingshendelseSuccess] = useState<boolean | null>(
+		null
+	);
 
 	const fetchKontorData = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -163,17 +168,23 @@ export const AoKontorAdmin = () => {
 			</Card>
 			<Card>
 				<Heading size="medium">Republiser oppfolgingshendelse</Heading>
-				<p>Publiserer til topic: <code>privat-oppfolgingshendelse-v1</code></p>
+				<p>
+					Publiserer til topic: <code>privat-oppfolgingshendelse-v1</code>
+				</p>
 				<form className="space-y-4" onSubmit={sendRepubliserOppfolgingshendelse}>
 					<TextField name="oppfolgingshendelseAktorId" label={'AktørId'} />
 					<Button loading={isLoading} disabled={isLoading}>
 						Republiser
 					</Button>
 					{republiserOppfolgingshendelseSuccess === true && (
-						<Alert variant="success" size="small" inline>Hendelse republisert</Alert>
+						<Alert variant="success" size="small" inline>
+							Hendelse republisert
+						</Alert>
 					)}
 					{republiserOppfolgingshendelseSuccess === false && (
-						<Alert variant="error" size="small" inline>Klarte ikke å republisere hendelse</Alert>
+						<Alert variant="error" size="small" inline>
+							Klarte ikke å republisere hendelse
+						</Alert>
 					)}
 				</form>
 			</Card>
