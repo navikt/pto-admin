@@ -4,10 +4,11 @@ import {
 	hentIdenterForInternIdent,
 	hentInternIdent,
 	republiserForUtvalgteOppfolgingsperioder,
+	republiserOppfolgingshendelse,
 	republiserTombstone,
 	syncArenaKontorForBruker
 } from '../../api/ao-oppfolgingskontor';
-import { Button, Heading, TextField } from '@navikt/ds-react';
+import { Alert, Button, Heading, TextField } from '@navikt/ds-react';
 import { AoKontorFailedMessages } from './AoKontorFailedMessages';
 import { Card } from '../../component/card/card';
 
@@ -16,6 +17,7 @@ export const AoKontorAdmin = () => {
 	const [dryRunKontorResult, setDryRunKontorResult] = useState<Record<string, string> | null>(null);
 	const [internIdentResult, setInternIdentResult] = useState<number | null>(null);
 	const [identerForInternIdentResult, setIdenterForInternIdentResult] = useState<{ aktorId: string | null; fnr: string | null } | null>(null);
+	const [republiserOppfolgingshendelseSuccess, setRepubliserOppfolgingshendelseSuccess] = useState<boolean | null>(null);
 
 	const fetchKontorData = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -72,6 +74,22 @@ export const AoKontorAdmin = () => {
 		const result = await hentIdenterForInternIdent({ internIdent });
 		setIdenterForInternIdentResult(result.data);
 		setIsLoading(false);
+	};
+
+	const sendRepubliserOppfolgingshendelse = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const aktorId = formData.get('oppfolgingshendelseAktorId') as string;
+		setRepubliserOppfolgingshendelseSuccess(null);
+		setIsLoading(true);
+		try {
+			await republiserOppfolgingshendelse(aktorId);
+			setRepubliserOppfolgingshendelseSuccess(true);
+		} catch {
+			setRepubliserOppfolgingshendelseSuccess(false);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -140,6 +158,22 @@ export const AoKontorAdmin = () => {
 							<div>Aktør-ID: {identerForInternIdentResult.aktorId ?? 'Ikke funnet'}</div>
 							<div>Fnr: {identerForInternIdentResult.fnr ?? 'Ikke funnet'}</div>
 						</div>
+					)}
+				</form>
+			</Card>
+			<Card>
+				<Heading size="medium">Republiser oppfolgingshendelse</Heading>
+				<p>Publiserer til topic: <code>privat-oppfolgingshendelse-v1</code></p>
+				<form className="space-y-4" onSubmit={sendRepubliserOppfolgingshendelse}>
+					<TextField name="oppfolgingshendelseAktorId" label={'AktørId'} />
+					<Button loading={isLoading} disabled={isLoading}>
+						Republiser
+					</Button>
+					{republiserOppfolgingshendelseSuccess === true && (
+						<Alert variant="success" size="small" inline>Hendelse republisert</Alert>
+					)}
+					{republiserOppfolgingshendelseSuccess === false && (
+						<Alert variant="error" size="small" inline>Klarte ikke å republisere hendelse</Alert>
 					)}
 				</form>
 			</Card>

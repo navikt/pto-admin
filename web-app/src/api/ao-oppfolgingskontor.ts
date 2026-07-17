@@ -151,3 +151,7 @@ export function hentIdenterForInternIdent(payload: { internIdent: number }): Pro
 		internIdent: payload.internIdent
 	});
 }
+
+export function republiserOppfolgingshendelse(aktorId: string): Promise<void> {
+	return fetchInstance.post(`/api/admin/republiser/oppfolgingshendelse`, aktorId).then(() => {});
+}
