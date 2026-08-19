@@ -70,6 +70,7 @@ val routeIdTokenExchangeMapping = mapOf(
     "veilarbportefolje" to AppName.VEILARBPORTEFOLJE,
     "veilarbvedtaksstotte" to AppName.VEILARBVEDTAKSTOTTE,
     "veilarboppfolging" to AppName.VEILARBOPPFOLGING,
+    "veilarboppfolging-v2" to AppName.VEILARBOPPFOLGING,
     "veilarbarena" to AppName.VEILARBARENA,
     "veilarbdialog" to AppName.VEILARBDIALOG,
     "veilarbdialog-admin" to AppName.VEILARBDIALOG,
