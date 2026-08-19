@@ -37,6 +37,12 @@ spring:
               uri: ${VEILARBVEDTAKSSTOTTE_ADMIN_API_URL}
               predicates:
                 - Path=/api/admin/veilarbvedtaksstotte/**
+            - id: veilarboppfolging-v2
+              uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
+              predicates:
+                - Path=/api/veilarboppfolging/api/v2/admin/veilarboppfolging/**
+              filters:
+                - RewritePath=/api/veilarboppfolging/api/v2/admin/veilarboppfolging/(?<remainingPath>.*), /veilarboppfolging/api/v2/admin/${remainingPath}
             - id: veilarboppfolging
               uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
               predicates:

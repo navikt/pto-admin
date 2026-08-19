@@ -98,6 +98,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),
+	http.post(`/api/v2/admin/veilarboppfolging/republiser/utmeldingskandidat`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
 	http.post(`/api/admin/veilarboppfolging/avsluttBrukere`, async () => {
 		await delay(10000);
 		return HttpResponse.json(antallAvsluttet);

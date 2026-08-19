@@ -11,7 +11,11 @@ import { errorToast, successToast } from '../../utils/toast-utils';
 import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
-import { republiserOppfolgingsperiodeForBruker, republiserTilordnetVeilederUtvalg } from '../../api/veilarboppfolging';
+import {
+	republiserOppfolgingsperiodeForBruker,
+	republiserTilordnetVeilederUtvalg,
+	republiserUtmeldingskandidat
+} from '../../api/veilarboppfolging';
 import { republiserArbeidsoppfolgingskontorendret } from '../../api/ao-oppfolgingskontor';
 import { republiserEndringPaaDialog, republiserEndringPaaDialogForBruker } from '../../api/veilarbdialog';
 
@@ -76,6 +80,13 @@ export function RepubliseringKafka() {
 				inputLabel={'Aktør-IDer (én per linje)'}
 				request={republiserTilordnetVeilederUtvalg}
 				topicNavn={'pto.veileder-tilordnet-v1'}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Republiser kandidat for utmelding"
+				beskrivelse="Republiser kandidat for utmelding til hendelsesfilter-topic for en oppfølgingsperiodeId."
+				inputLabel={'OppfølgingsperiodeId'}
+				request={republiserUtmeldingskandidat}
+				topicNavn={'obo.portefolje-hendelsesfilter-v1'}
 			/>
 		</div>
 	);
