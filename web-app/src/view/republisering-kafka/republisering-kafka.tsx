@@ -12,6 +12,7 @@ import BekreftModal from '../../component/bekreft-modal';
 import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 import {
+	republiserAktiveUtmeldingskandidater,
 	republiserOppfolgingsperiodeForBruker,
 	republiserTilordnetVeilederUtvalg,
 	republiserUtmeldingskandidat
@@ -86,6 +87,12 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser kandidat for utmelding til hendelsesfilter-topic for en oppfølgingsperiodeId."
 				inputLabel={'OppfølgingsperiodeId'}
 				request={republiserUtmeldingskandidat}
+				topicNavn={'obo.portefolje-hendelsesfilter-v1'}
+			/>
+			<RepubliseringsKort
+				tittel="Republiser alle aktive kandidater for utmelding"
+				beskrivelse="Republiser alle aktive kandidater for utmelding til hendelsesfilter-topic."
+				request={republiserAktiveUtmeldingskandidater}
 				topicNavn={'obo.portefolje-hendelsesfilter-v1'}
 			/>
 		</div>
