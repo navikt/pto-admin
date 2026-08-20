@@ -22,6 +22,10 @@ export function republiserUtmeldingskandidat(oppfolgingsperiodeId: string): Prom
 	});
 }
 
+export function republiserAktiveUtmeldingskandidater(): Promise<{ data: JobId }> {
+	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/republiser/utmeldingskandidater/aktive'));
+}
+
 export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): Promise<{ data: JobId }> {
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/avsluttBrukere'), payload);
 }
