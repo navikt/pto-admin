@@ -1,6 +1,7 @@
 import { fetchInstance, JobId } from './index';
 
 const veilarboppfolgingProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/admin/veilarboppfolging${appPath}`;
+const veilarboppfolgingV2ProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/v2/admin/veilarboppfolging${appPath}`;
 const veilarboppfolgingGraphqlUrl = `/api/veilarboppfolging/veilarboppfolging/api/graphql`;
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
@@ -13,6 +14,16 @@ export function republiserTilordnetVeilederUtvalg(ids: string): Promise<{ data: 
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/republiser/tilordnet-veileder/utvalg'), {
 		aktorIder: ids.split(',').map(it => it.trim())
 	});
+}
+
+export function republiserUtmeldingskandidat(oppfolgingsperiodeId: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/republiser/utmeldingskandidat'), {
+		oppfolgingsperiodeId
+	});
+}
+
+export function republiserAktiveUtmeldingskandidater(): Promise<{ data: JobId }> {
+	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/republiser/utmeldingskandidater/aktive'));
 }
 
 export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnelse: string }): Promise<{ data: JobId }> {
