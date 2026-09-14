@@ -46,13 +46,10 @@ jobs:
           node-version: 24
           cache: pnpm
           cache-dependency-path: web-app/pnpm-lock.yaml
-          registry-url: "https://npm.pkg.github.com"
 
       - name: Install dependencies
         working-directory: web-app
         run: pnpm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Build frontend assets
         working-directory: web-app

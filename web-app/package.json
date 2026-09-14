@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "test": "echo \"Tests not yet implemented\"",
+    "test": "vitest run",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "husky": {
@@ -31,38 +31,39 @@
   ],
   "dependencies": {
     "@microlink/react-json-view": "1.31.20",
-    "@navikt/ds-css": "8.14.0",
-    "@navikt/ds-react": "8.14.0",
-    "@navikt/aksel-icons": "8.14.0",
+    "@navikt/aksel-icons": "8.16.2",
+    "@navikt/ds-css": "8.16.2",
+    "@navikt/ds-react": "8.16.2",
     "@navikt/fnrvalidator": "2.2.1",
     "@tailwindcss/vite": "4.3.0",
     "@types/react-modal": "3.16.3",
     "classnames": "2.5.1",
-    "dayjs": "1.11.21",
     "constate": "4.0.0",
-    "less": "4.6.6",
+    "dayjs": "1.11.21",
+    "less": "4.9.1",
     "prop-types": "15.8.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-toastify": "11.1.0",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
-    "vite": "8.0.16"
+    "vite": "8.2.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
     "@types/react": "^19.2.3",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "^6.0.2",
+    "@vitejs/plugin-react": "^6.1.1",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-react": "^7.37.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "9.1.7",
     "lint-staged": "17.4.1",
     "msw": "2.14.6",
     "prettier": "3.8.4",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^5.0.0"
   },
   "msw": {
     "workerDirectory": [
