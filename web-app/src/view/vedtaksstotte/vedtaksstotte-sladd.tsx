@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BodyShort, Button, TextField } from '@navikt/ds-react';
 import { Card } from '../../component/card/card';
 import { errorToast, successToast } from '../../utils/toast-utils';
+import { erGyldigFnr } from '../../utils/fnr-utils';
 import { sladdBegrunnelse14avedtak } from '../../api';
 import './vedtaksstotte.less';
 
@@ -16,8 +17,8 @@ export const VedtaksstotteSladd = () => {
 			errorToast('JournalpostId er ikke fylt inn');
 			return;
 		}
-		if (fnr.length !== 11) {
-			errorToast('Fødselsnummer har ikke 11 tegn');
+		if (!erGyldigFnr(fnr)) {
+			errorToast('Fødselsnummer er ikke gyldig');
 			return;
 		}
 		if (ansvarligVeileder.length !== 7) {
