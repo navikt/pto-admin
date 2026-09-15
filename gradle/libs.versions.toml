@@ -5,9 +5,9 @@
 com-github-ben-manes-caffeine-caffeine = "3.2.4"
 com-squareup-okhttp3 = "5.2.3"
 io-micrometer-micrometer-registry-prometheus = "1.17.0"
-# Temporary security override for CVE-2026-42584 / CVE-2026-42581 / CVE-2026-42579.
-# Remove when Spring Boot/Spring Cloud BOM manages Netty at >= 4.2.15.Final.
-io-netty-netty-bom = "4.2.16.Final"
+# Temporary security override for CVE-2026-42584 / CVE-2026-42581 / CVE-2026-42579 / CVE-2026-75595.
+# Remove when Spring Boot/Spring Cloud BOM manages Netty at >= 4.2.18.Final (currently 4.2.15.Final in Spring Boot 4.1.0).
+io-netty-netty-bom = "4.2.18.Final"
 no-nav-common = "4.2026.08.10_07.01-38289b000bb0"
 no-nav-poao-tilgang-client = "4.2026.08.10_08.30-d5e29542d5bf"
 no-nav-security-mock-oauth2-server = "3.0.3"
