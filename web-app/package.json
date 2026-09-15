@@ -40,7 +40,7 @@
     "classnames": "2.5.1",
     "dayjs": "1.11.21",
     "constate": "4.0.0",
-    "less": "4.6.6",
+    "less": "4.9.1",
     "prop-types": "15.8.1",
     "react": "19.2.7",
     "react-dom": "19.2.7",
