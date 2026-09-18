@@ -1,6 +1,6 @@
-export const graphqlPayload = <TVariables extends Record<string, unknown>>(query: string, variables: TVariables) => {
+export const graphqlPayload = (query: string, variables: string | Record<string, unknown>) => {
 	return {
 		query,
-		variables
+		variables: typeof variables === 'string' ? { fnr: variables } : variables
 	}
 }
