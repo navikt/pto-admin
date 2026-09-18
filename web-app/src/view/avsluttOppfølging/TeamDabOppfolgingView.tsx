@@ -279,6 +279,8 @@ function AktivitetArenaAclCard() {
 
 function DeltakerAktivitetMappingCard() {
 	const [deltakerId, setDeltakerId] = useState('');
+	const [funksjonellId, setFunksjonellId] = useState('');
+	const [oppfolgingsperiodeId, setOppfolgingsperiodeId] = useState('');
 	const [data, setData] = useState<AdminDeltakerAktivitetMappingDto[] | null>(null);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState(false);
@@ -288,7 +290,11 @@ function DeltakerAktivitetMappingCard() {
 		try {
 			setError(undefined);
 			setIsLoading(true);
-			const response = await hentDeltakerAktivitetMapping(Number(deltakerId));
+			const response = await hentDeltakerAktivitetMapping({
+				deltakerId: Number(deltakerId),
+				funksjonellId: funksjonellId || undefined,
+				oppfolgingsperiodeId: oppfolgingsperiodeId || undefined
+			});
 			setData(response.data);
 		} catch (e: any) {
 			setError(e?.toString());
@@ -303,6 +309,18 @@ function DeltakerAktivitetMappingCard() {
 			<Heading size="medium">Deltaker aktivitet mapping</Heading>
 			<form className="space-y-4" onSubmit={handleSubmit}>
 				<TextField label="Deltaker id" value={deltakerId} onChange={e => setDeltakerId(e.target.value)} disabled={isLoading} />
+				<TextField
+					label="Funksjonell id"
+					value={funksjonellId}
+					onChange={e => setFunksjonellId(e.target.value)}
+					disabled={isLoading}
+				/>
+				<TextField
+					label="Oppfølgingsperiode id"
+					value={oppfolgingsperiodeId}
+					onChange={e => setOppfolgingsperiodeId(e.target.value)}
+					disabled={isLoading}
+				/>
 				{error && <div className="error-message">{error}</div>}
 				<Button type="submit" disabled={isLoading}>
 					Hent mapping

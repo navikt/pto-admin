@@ -28,10 +28,24 @@ export interface AdminArenaDataDto {
 	note: string | null;
 }
 
+export interface HentDeltakerAktivitetMappingRequest {
+	deltakerId: number;
+	funksjonellId?: string;
+	oppfolgingsperiodeId?: string;
+}
+
 export function hentDeltakerAktivitetMapping(
-	deltakerId: number
+	request: HentDeltakerAktivitetMappingRequest
 ): Promise<{ data: AdminDeltakerAktivitetMappingDto[] }> {
-	return getJson<AdminDeltakerAktivitetMappingDto[]>(`/deltaker/${deltakerId}/mapping`);
+	const queryParams = new URLSearchParams();
+	if (request.funksjonellId) {
+		queryParams.set('funksjonellId', request.funksjonellId);
+	}
+	if (request.oppfolgingsperiodeId) {
+		queryParams.set('oppfolgingsperiodeId', request.oppfolgingsperiodeId);
+	}
+	const suffix = queryParams.toString() ? `?${queryParams.toString()}` : '';
+	return getJson<AdminDeltakerAktivitetMappingDto[]>(`/deltaker/${request.deltakerId}/mapping${suffix}`);
 }
 
 export function hentArenaData(arenaId: string): Promise<{ data: AdminArenaDataDto[] }> {
