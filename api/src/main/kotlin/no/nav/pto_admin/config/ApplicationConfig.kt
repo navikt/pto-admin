@@ -77,6 +77,12 @@ class ApplicationConfig {
                 if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
             ), token)
         }
+        val aktivitetArenaAclTokenProvider: (token: String) -> String = { token ->
+            oboClient.exchangeOnBehalfOfToken(String.format(
+                "api://%s-gcp.dab.aktivitet-arena-acl/.default",
+                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+            ), token)
+        }
         val veilarbarenaTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(String.format(
                 "api://%s-fss.pto.veilarbarena/.default",
@@ -92,7 +98,8 @@ class ApplicationConfig {
                 AppName.VEILARBDIALOG to veilarbdialogTokenProvider,
                 AppName.VEILARBVEDTAKSTOTTE to veilarbvedtaksstotteTokenProvider,
                 AppName.VEILARBAKTIVITET to veilarbaktivitetTokenProvider,
-                AppName.AO_OPPFOLGINGSKONTOR to aoKontorTokenProvider)
+                AppName.AO_OPPFOLGINGSKONTOR to aoKontorTokenProvider,
+                AppName.AKTIVITET_ARENA_ACL to aktivitetArenaAclTokenProvider)
         return AzureOboTokenProvider(oboTokenSuppliers)
     }
 
