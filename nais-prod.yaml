@@ -78,6 +78,8 @@ spec:
           cluster: prod-fss
         - application: ao-oppfolgingskontor
           namespace: dab
+        - application: aktivitet-arena-acl
+          namespace: poao
 
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
@@ -92,6 +94,8 @@ spec:
       value: http://veilarbaktivitet.dab
     - name: VEILARBPORTEFOLJE_ADMIN_API_URL
       value: http://veilarbportefolje.obo
+    - name: AKTIVITET_ARENA_ACL_API_URL
+      value: http://aktivitet-arena-acl.poao
     - name: POAO_TILGANG_URL
       value: http://poao-tilgang.poao
     - name: POAO_TILGANG_SCOPE
