@@ -48,7 +48,7 @@ export function hentDeltakerAktivitetMapping(
 		queryParams.set('oppfolgingsperiodeId', request.oppfolgingsperiodeId);
 	}
 	const suffix = queryParams.toString() ? `?${queryParams.toString()}` : '';
-	return getJson<AdminDeltakerAktivitetMappingDto[]>(`/deltaker/${request.deltakerId}/mapping${suffix}`);
+	return getJson<AdminDeltakerAktivitetMappingDto[]>(`/deltaker/mapping${suffix}`);
 }
 
 export function hentArenaData(arenaId: string): Promise<{ data: AdminArenaDataDto[] }> {
