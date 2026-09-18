@@ -159,6 +159,13 @@ export function republiserVedtak14aFattetDvh(): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-14a-fattet-dvh`);
 }
 
+export function republiserVedtaksIderPaKafkaTopic(request: {
+	vedtaksIDer: string[];
+	kafkaTopic: string;
+}): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-kafka-topic`, request);
+}
+
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {
