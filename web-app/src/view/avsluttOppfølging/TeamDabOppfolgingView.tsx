@@ -4,6 +4,7 @@ import { BodyShort, Button, Heading, Tabs, Textarea, TextField, Tag } from '@nav
 import {
 	avsluttOppfolgingsperiode,
 	batchAvsluttOppfolging,
+	hentAvslutningStatusForOppfolgingsperioder,
 	hentUtmeldingskandidat,
 	UtmeldingskandidatDto
 } from '../../api/veilarboppfolging';
@@ -33,6 +34,7 @@ export function TeamDabOppfolgingView() {
 				<Tabs value={tab} onChange={value => setTab(value as TabKey)}>
 					<Tabs.List>
 						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
+						<Tabs.Tab value={TabKey.hentAvslutningsstatus} label={'Hent avslutningsstatus'} />
 						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
 						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
 						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
@@ -46,6 +48,9 @@ export function TeamDabOppfolgingView() {
 							<AvsluttOppfolgingForMangeBrukereCard />
 							<AvsluttOppfolgingsperiode />
 						</div>
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey.hentAvslutningsstatus}>
+						<HentAvslutningsstatusCard />
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey.aktiviteter}>
 						<BrukerDataCard />
@@ -71,6 +76,64 @@ export function TeamDabOppfolgingView() {
 				</Tabs>
 			</div>
 		</div>
+	);
+}
+
+function HentAvslutningsstatusCard() {
+	const [oppfolgingsperiodeIder, setOppfolgingsperiodeIder] = useState('');
+	const [data, setData] = useState<Record<string, unknown>[] | null>(null);
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [isLoading, setIsLoading] = useState(false);
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		try {
+			setError(undefined);
+			setIsLoading(true);
+			const response = await hentAvslutningStatusForOppfolgingsperioder({
+				oppfolgingsperiodeIder: oppfolgingsperiodeIder
+					.split(',')
+					.map(id => id.trim())
+					.filter(Boolean)
+			});
+			setData(response.data);
+		} catch (e: any) {
+			setError(e?.toString());
+			setData(null);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
+	return (
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+			<Heading size="medium">Hent avslutningsstatus</Heading>
+			<form className="space-y-4" onSubmit={handleSubmit}>
+				<Textarea
+					label="Oppfølgingsperiode IDer (kommaseparert)"
+					value={oppfolgingsperiodeIder}
+					onChange={e => setOppfolgingsperiodeIder(e.target.value)}
+					disabled={isLoading}
+				/>
+				{error && <div className="error-message">{error}</div>}
+				<Button type="submit" disabled={isLoading}>
+					Hent avslutningsstatus
+				</Button>
+			</form>
+			{data && (
+				<div className="mt-4 space-y-3">
+					{data.length ? (
+						data.map((item, index) => (
+							<div key={index} className="border rounded p-3">
+								<BodyShort>{JSON.stringify(item)}</BodyShort>
+							</div>
+						))
+					) : (
+						<BodyShort>Ingen treff</BodyShort>
+					)}
+				</div>
+			)}
+		</Card>
 	);
 }
 
@@ -173,6 +236,7 @@ function AvsluttOppfolgingsperiode() {
 
 enum TabKey {
 	'avsluttBrukere' = 'avsluttBrukere',
+	'hentAvslutningsstatus' = 'hentAvslutningsstatus',
 	'kontor' = 'kontor',
 	'ao-kontor-admin' = 'ao-kontor-admin',
 	'kontor-merge' = 'kontor-merge',
