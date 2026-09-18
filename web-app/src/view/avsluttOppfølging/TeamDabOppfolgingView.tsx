@@ -332,6 +332,7 @@ function DeltakerAktivitetMappingCard() {
 			<Heading size="medium">Deltaker aktivitet mapping</Heading>
 			<form className="space-y-4" onSubmit={handleLookupFunksjonellId}>
 				<TextField
+					name="aktivitetId"
 					label="Aktivitet id"
 					value={aktivitetId}
 					onChange={e => setAktivitetId(e.target.value)}
@@ -343,14 +344,22 @@ function DeltakerAktivitetMappingCard() {
 				</Button>
 			</form>
 			<form className="space-y-4 mt-4" onSubmit={handleSubmit}>
-				<TextField label="Deltaker id" value={deltakerId} onChange={e => setDeltakerId(e.target.value)} disabled={isLoading} />
 				<TextField
+					name="deltakerId"
+					label="Deltaker id (path)"
+					value={deltakerId}
+					onChange={e => setDeltakerId(e.target.value)}
+					disabled={isLoading}
+				/>
+				<TextField
+					name="funksjonellId"
 					label="Funksjonell id"
 					value={funksjonellId}
 					onChange={e => setFunksjonellId(e.target.value)}
 					disabled={isLoading}
 				/>
 				<TextField
+					name="oppfolgingsperiodeId"
 					label="Oppfølgingsperiode id"
 					value={oppfolgingsperiodeId}
 					onChange={e => setOppfolgingsperiodeId(e.target.value)}
