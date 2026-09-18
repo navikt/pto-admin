@@ -5,11 +5,12 @@ import {
 	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
-	republiserVedtak14aFattetDvh
+	republiserVedtak14aFattetDvh,
+	republiserVedtaksIderPaKafkaTopic
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import BekreftModal from '../../component/bekreft-modal';
-import { Alert, BodyShort, Button, TextField } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Select, Textarea, TextField } from '@navikt/ds-react';
 import './republisering-kafka.less';
 import {
 	republiserAktiveUtmeldingskandidater,
@@ -34,6 +35,13 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiser alle fattede 14a vedtak i veilarbvedtaksstotte på topic for DVH."
 				request={republiserVedtak14aFattetDvh}
 				topicNavn={'<ukjent topic>'}
+			/>
+			<RepubliseringsKortMedDropdownOgTextfield
+				tittel="Republiser vedtaksIDer på Kafka-topic i veilarbvedtaksstotte"
+				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på valgt Kafka-topic i veilarbvedtaksstotte."
+				inputLabel="VedtaksIDer"
+				request={republiserVedtaksIderPaKafkaTopic}
+				options={['pto.siste-14a-vedtak-v1', 'pto.vedtak-sendt-v1']}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
@@ -112,6 +120,84 @@ interface RepubliseringsKortMedInputProps {
 	topicNavn: string;
 	inputLabel: string;
 	request: (input: string) => Promise<{ data: JobId }>;
+}
+
+interface RepubliseringsKortMedDropdownOgTextfieldProps {
+	tittel: string;
+	beskrivelse: string;
+	inputLabel: string;
+	options: string[];
+	request: (input: { vedtaksIDer: string[]; kafkaTopic: string }) => Promise<{ data: JobId }>;
+}
+
+function RepubliseringsKortMedDropdownOgTextfield({
+	tittel,
+	beskrivelse,
+	inputLabel,
+	request,
+	options
+}: RepubliseringsKortMedDropdownOgTextfieldProps) {
+	const [jobId, setJobId] = useState<string | undefined>(undefined);
+	const [isOpen, setOpen] = useState(false);
+	const [input, setInput] = useState<{ vedtaksIDer: string[]; kafkaTopic: string }>({
+		vedtaksIDer: [],
+		kafkaTopic: ''
+	});
+
+	const handleRepubliseringsResponse = () => {
+		request({ vedtaksIDer: input.vedtaksIDer, kafkaTopic: input.kafkaTopic })
+			.then(resp => {
+				setJobId(resp.data);
+				successToast(`${tittel} er startet`);
+			})
+			.catch(() => errorToast(`Klarte ikke å starte republisering av ${tittel}`));
+	};
+
+	return (
+		<>
+			<Card title={tittel} className="large-card" innholdClassName="republisering-kafka-kort__innhold">
+				<BodyShort className="blokk-xxs">{beskrivelse}</BodyShort>
+				<Textarea
+					label={inputLabel}
+					value={input.vedtaksIDer.join('\n')}
+					onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+						setInput({ ...input, vedtaksIDer: e.target.value.split('\n') })
+					}
+				/>
+				{jobId && (
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
+				)}
+				<div>
+					<Select
+						label="Velg en topic"
+						value={input.kafkaTopic}
+						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+							setInput({ ...input, kafkaTopic: e.target.value })
+						}
+					>
+						<option value="">- Velg en topic -</option>
+						{options.map(option => (
+							<option key={option} value={option}>
+								{option}
+							</option>
+						))}
+					</Select>
+				</div>
+				<div>
+					<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+				</div>
+			</Card>
+
+			<BekreftModal
+				action={handleRepubliseringsResponse}
+				isOpen={isOpen}
+				setOpen={setOpen}
+				description={tittel}
+			/>
+		</>
+	);
 }
 
 function RepubliseringsKortMedInput({
