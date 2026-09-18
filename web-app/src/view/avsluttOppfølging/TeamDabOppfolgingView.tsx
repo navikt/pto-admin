@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Button, Heading, Tabs, Textarea, TextField } from '@navikt/ds-react';
-import { avsluttOppfolgingsperiode, batchAvsluttOppfolging } from '../../api/veilarboppfolging';
+import { BodyShort, Button, Heading, Tabs, Textarea, TextField, Tag } from '@navikt/ds-react';
+import {
+	avsluttOppfolgingsperiode,
+	batchAvsluttOppfolging,
+	hentUtmeldingskandidat,
+	UtmeldingskandidatDto
+} from '../../api/veilarboppfolging';
 import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
 import { AoKontorAdmin } from './AoKontorAdmin';
@@ -26,6 +31,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
 						<Tabs.Tab value={TabKey['kontor-merge']} label={'Kontorsammenslåing'} />
 						<Tabs.Tab value={TabKey['bruker-status']} label={'Brukerstatus'} />
+						<Tabs.Tab value={TabKey.utmeldingskandidater} label={'Utmeldingskandidater'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
@@ -47,6 +53,9 @@ export function TeamDabOppfolgingView() {
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey['bruker-status']}>
 						<BrukerStatusCard />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey.utmeldingskandidater}>
+						<UtmeldingskandidaterCard />
 					</Tabs.Panel>
 				</Tabs>
 			</div>
@@ -157,7 +166,8 @@ enum TabKey {
 	'ao-kontor-admin' = 'ao-kontor-admin',
 	'kontor-merge' = 'kontor-merge',
 	'aktiviteter' = 'aktiviteter',
-	'bruker-status' = 'bruker-status'
+	'bruker-status' = 'bruker-status',
+	'utmeldingskandidater' = 'utmeldingskandidater'
 }
 
 const tabKey = 'last-selected-tab';
@@ -171,3 +181,78 @@ const getTabFromLocalStorage = (): TabKey => {
 const setTabInLocalStorage = (view: TabKey) => {
 	localStorage.setItem(tabKey, view);
 };
+
+function UtmeldingskandidaterCard() {
+	const [fnr, setFnr] = useState('');
+	const [data, setData] = useState<UtmeldingskandidatDto | null>(null);
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [isLoading, setIsLoading] = useState(false);
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		try {
+			setError(undefined);
+			setIsLoading(true);
+			const response = await hentUtmeldingskandidat(fnr);
+			setData(response.data.utmeldingskandidat);
+		} catch (e: any) {
+			setError(e?.toString());
+			setData(null);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
+	return (
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+			<Heading size="medium">Utmeldingskandidater</Heading>
+			<form className="space-y-4" onSubmit={handleSubmit}>
+				<TextField label="Fødselsnummer" value={fnr} onChange={e => setFnr(e.target.value)} disabled={isLoading} />
+				{error && <div className="error-message">{error}</div>}
+				<Button type="submit" disabled={isLoading}>
+					Hent utmeldingskandidat
+				</Button>
+			</form>
+			{data && (
+				<div className="mt-6 space-y-4">
+					<BodyShort>
+						<Tag size="small" variant="success-moderate">
+							{data.tag ?? 'Ingen tag'}
+						</Tag>
+					</BodyShort>
+					<div>
+						<Heading size="small">Aktiv forlengelse</Heading>
+						{data.aktivForlengelse ? (
+							<div className="space-y-1">
+								<BodyShort>Utfort av type: {data.aktivForlengelse.utfortAvType}</BodyShort>
+								<BodyShort>Utfort av: {data.aktivForlengelse.utfortAv ?? '-'}</BodyShort>
+								<BodyShort>Hendelse tidspunkt: {data.aktivForlengelse.hendelseTidspunkt}</BodyShort>
+								<BodyShort>Forlenget til: {data.aktivForlengelse.forlengetTil ?? '-'}</BodyShort>
+							</div>
+						) : (
+							<BodyShort>Ingen aktiv forlengelse</BodyShort>
+						)}
+					</div>
+					<div>
+						<Heading size="small">Hendelser</Heading>
+						{data.utmeldingskandidatHendelser?.length ? (
+							<div className="space-y-2">
+								{data.utmeldingskandidatHendelser.map((hendelse, index) => (
+									<div key={`${hendelse.hendelseTidspunkt}-${index}`} className="border rounded p-3">
+										<BodyShort>Type: {hendelse.type}</BodyShort>
+										<BodyShort>Utført av type: {hendelse.utfortAvType}</BodyShort>
+										<BodyShort>Utført av: {hendelse.utfortAv ?? '-'}</BodyShort>
+										<BodyShort>Tidspunkt: {hendelse.hendelseTidspunkt}</BodyShort>
+										<BodyShort>Forlenget til: {hendelse.forlengetTil ?? '-'}</BodyShort>
+									</div>
+								))}
+							</div>
+						) : (
+							<BodyShort>Ingen hendelser</BodyShort>
+						)}
+					</div>
+				</div>
+			)}
+		</Card>
+	);
+}

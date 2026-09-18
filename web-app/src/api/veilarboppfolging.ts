@@ -1,4 +1,5 @@
 import { fetchInstance, JobId } from './index';
+import { graphqlPayload } from './graphql';
 
 const veilarboppfolgingProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/admin/veilarboppfolging${appPath}`;
 const veilarboppfolgingV2ProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/v2/admin/veilarboppfolging${appPath}`;
@@ -49,11 +50,6 @@ const graphqlQuery = `
 	}
 `;
 
-const graphqlBody = (fnr: string) => ({
-	query: graphqlQuery,
-	variables: { fnr }
-});
-
 interface OppfolgingsPeriode {
 	startTidspunkt: string;
 	sluttTidspunkt: string;
@@ -67,7 +63,7 @@ export function hentOppfolgingsperioder(payload: {
 	return fetchInstance
 		.post<{
 			data: { oppfolgingsPerioder: OppfolgingsPeriode[] };
-		}>(veilarboppfolgingGraphqlUrl, graphqlBody(payload.fnr))
+		}>(veilarboppfolgingGraphqlUrl, graphqlPayload(graphqlQuery, payload.fnr))
 		.then(response => response.data);
 }
 
@@ -121,6 +117,52 @@ export function hentBrukerStatus(fnr: string): Promise<{ data: { brukerStatus: B
 			query: brukerStatusQuery,
 			variables: { fnr }
 		})
+		.then(response => response.data);
+}
+
+const utmeldingskandidatQuery = `
+	query hentUtmeldingskandidat($fnr: String!) {
+		utmeldingskandidat(fnr: $fnr) {
+			tag
+			utmeldingskandidatHendelser {
+				utfortAvType
+				utfortAv
+				hendelseTidspunkt
+				type
+				forlengetTil
+			}
+			aktivForlengelse {
+				utfortAvType
+				utfortAv
+				hendelseTidspunkt
+				forlengetTil
+			}
+		}
+	}
+`;
+
+export interface UtmeldingskandidatDto {
+	tag: string | null;
+	utmeldingskandidatHendelser: {
+		utfortAvType: string;
+		utfortAv: string | null;
+		hendelseTidspunkt: string;
+		type: string;
+		forlengetTil: string | null;
+	}[] | null;
+	aktivForlengelse: {
+		utfortAvType: string;
+		utfortAv: string | null;
+		hendelseTidspunkt: string;
+		forlengetTil: string | null;
+	} | null;
+}
+
+export function hentUtmeldingskandidat(fnr: string): Promise<{ data: { utmeldingskandidat: UtmeldingskandidatDto | null } }> {
+	return fetchInstance
+		.post<{
+			data: { utmeldingskandidat: UtmeldingskandidatDto | null };
+		}>(veilarboppfolgingGraphqlUrl, graphqlPayload(utmeldingskandidatQuery, fnr))
 		.then(response => response.data);
 }
 
