@@ -79,7 +79,7 @@ spec:
         - application: ao-oppfolgingskontor
           namespace: dab
         - application: aktivitet-arena-acl
-          namespace: poao
+          namespace: dab
 
   env:
     - name: VEILARBVEDTAKSSTOTTE_ADMIN_API_URL
