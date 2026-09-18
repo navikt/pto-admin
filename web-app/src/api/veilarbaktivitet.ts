@@ -20,6 +20,10 @@ export interface Aktivitet {
 	};
 }
 
+export interface AktivitetDto {
+	funksjonellId: string | null;
+}
+
 export interface TiltaksAktivitet {
 	id: string;
 	status: string;
@@ -62,6 +66,14 @@ query hentAktiviteter($fnr: String!) {
 }
 `;
 
+const aktivitetQuery = `
+query hentAktivitet($aktivitetId: String!, $versjon: String) {
+	aktivitet(aktivitetId: $aktivitetId, versjon: $versjon) {
+		funksjonellId
+	}
+}
+`;
+
 export function hentAktiviteter(payload: {
 	fnr: string;
 }): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
@@ -69,5 +81,22 @@ export function hentAktiviteter(payload: {
 		.post<{
 			data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] };
 		}>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
+		.then(response => response.data);
+}
+
+export function hentAktivitet(payload: {
+	aktivitetId: string;
+	versjon?: string;
+}): Promise<{ data: { aktivitet: AktivitetDto | null } }> {
+	return fetchInstance
+		.post<{
+			data: { aktivitet: AktivitetDto | null };
+		}>(
+			`/api/veilarbaktivitet/veilarbaktivitet/graphql`,
+			graphqlPayload(aktivitetQuery, {
+				aktivitetId: payload.aktivitetId,
+				versjon: payload.versjon ?? null
+			})
+		)
 		.then(response => response.data);
 }

@@ -7,6 +7,7 @@ import {
 	hentUtmeldingskandidat,
 	UtmeldingskandidatDto
 } from '../../api/veilarboppfolging';
+import { hentAktivitet } from '../../api/veilarbaktivitet';
 import {
 	hentArenaData,
 	hentDeltakerAktivitetMapping,
@@ -279,11 +280,33 @@ function AktivitetArenaAclCard() {
 
 function DeltakerAktivitetMappingCard() {
 	const [deltakerId, setDeltakerId] = useState('');
+	const [aktivitetId, setAktivitetId] = useState('');
 	const [funksjonellId, setFunksjonellId] = useState('');
 	const [oppfolgingsperiodeId, setOppfolgingsperiodeId] = useState('');
 	const [data, setData] = useState<AdminDeltakerAktivitetMappingDto[] | null>(null);
 	const [error, setError] = useState<string | undefined>(undefined);
+	const [lookupError, setLookupError] = useState<string | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLookupLoading, setIsLookupLoading] = useState(false);
+
+	async function handleLookupFunksjonellId(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		try {
+			setLookupError(undefined);
+			setIsLookupLoading(true);
+			const response = await hentAktivitet({ aktivitetId });
+			const foundFunksjonellId = response.data.aktivitet?.funksjonellId;
+			if (!foundFunksjonellId) {
+				setLookupError('Fant ingen funksjonellId på aktiviteten');
+				return;
+			}
+			setFunksjonellId(foundFunksjonellId);
+		} catch (e: any) {
+			setLookupError(e?.toString());
+		} finally {
+			setIsLookupLoading(false);
+		}
+	}
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -307,7 +330,19 @@ function DeltakerAktivitetMappingCard() {
 	return (
 		<Card className="small-card" innholdClassName="hovedside__card-innhold">
 			<Heading size="medium">Deltaker aktivitet mapping</Heading>
-			<form className="space-y-4" onSubmit={handleSubmit}>
+			<form className="space-y-4" onSubmit={handleLookupFunksjonellId}>
+				<TextField
+					label="Aktivitet id"
+					value={aktivitetId}
+					onChange={e => setAktivitetId(e.target.value)}
+					disabled={isLookupLoading}
+				/>
+				{lookupError && <div className="error-message">{lookupError}</div>}
+				<Button type="submit" disabled={isLookupLoading || !aktivitetId}>
+					Hent funksjonell id fra aktivitet
+				</Button>
+			</form>
+			<form className="space-y-4 mt-4" onSubmit={handleSubmit}>
 				<TextField label="Deltaker id" value={deltakerId} onChange={e => setDeltakerId(e.target.value)} disabled={isLoading} />
 				<TextField
 					label="Funksjonell id"
