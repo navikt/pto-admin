@@ -20,6 +20,7 @@ import KontorCard from './KontorCard';
 import { AoKontorAdmin } from './AoKontorAdmin';
 import { KontorMerge } from './KontorMerge';
 import { BrukerStatusCard } from './BrukerStatusCard';
+import { StartOppfolging } from './StartOppfolging';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -42,6 +43,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey['bruker-status']} label={'Brukerstatus'} />
 						<Tabs.Tab value={TabKey.utmeldingskandidater} label={'Utmeldingskandidater'} />
 						<Tabs.Tab value={TabKey['aktivitet-arena-acl']} label={'Aktivitet Arena ACL'} />
+						<Tabs.Tab value={TabKey['start-oppfolging']} label={'Start Oppfølging'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
@@ -72,6 +74,9 @@ export function TeamDabOppfolgingView() {
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey['aktivitet-arena-acl']}>
 						<AktivitetArenaAclCard />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey['start-oppfolging']}>
+						<StartOppfolging />
 					</Tabs.Panel>
 				</Tabs>
 			</div>
