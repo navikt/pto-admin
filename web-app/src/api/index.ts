@@ -166,6 +166,10 @@ export function republiserVedtaksIderPaKafkaTopic(request: {
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-kafka-topic`, request);
 }
 
+export function republiserVedtaksIderPaBigQuery(request: { vedtaksIDer: string[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-bigquery`, request);
+}
+
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {

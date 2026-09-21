@@ -6,7 +6,8 @@ import {
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh,
-	republiserVedtaksIderPaKafkaTopic
+	republiserVedtaksIderPaKafkaTopic,
+	republiserVedtaksIderPaBigQuery
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import BekreftModal from '../../component/bekreft-modal';
@@ -42,6 +43,12 @@ export function RepubliseringKafka() {
 				inputLabel="VedtaksIDer"
 				request={republiserVedtaksIderPaKafkaTopic}
 				options={['pto.siste-14a-vedtak-v1', 'pto.vedtak-sendt-v1']}
+			/>
+			<RepubliseringsKortMedDropdownOgTextfield
+				tittel="Republiser vedtaksIDer på BigQuery i veilarbvedtaksstotte"
+				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på BigQuery i veilarbvedtaksstotte."
+				inputLabel="VedtaksIDer"
+				request={republiserVedtaksIderPaBigQuery}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
@@ -126,7 +133,7 @@ interface RepubliseringsKortMedDropdownOgTextfieldProps {
 	tittel: string;
 	beskrivelse: string;
 	inputLabel: string;
-	options: string[];
+	options?: string[];
 	request: (input: { vedtaksIDer: string[]; kafkaTopic: string }) => Promise<{ data: JobId }>;
 }
 
@@ -169,22 +176,24 @@ function RepubliseringsKortMedDropdownOgTextfield({
 						Jobb startet med jobId: {jobId}
 					</Alert>
 				)}
-				<div>
-					<Select
-						label="Velg en topic"
-						value={input.kafkaTopic}
-						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-							setInput({ ...input, kafkaTopic: e.target.value })
-						}
-					>
-						<option value="">- Velg en topic -</option>
-						{options.map(option => (
-							<option key={option} value={option}>
-								{option}
-							</option>
-						))}
-					</Select>
-				</div>
+				{options && (
+					<div>
+						<Select
+							label="Velg en topic"
+							value={input.kafkaTopic}
+							onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+								setInput({ ...input, kafkaTopic: e.target.value })
+							}
+						>
+							<option value="">- Velg en topic -</option>
+							{options.map(option => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</Select>
+					</div>
+				)}
 				<div>
 					<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
 				</div>
