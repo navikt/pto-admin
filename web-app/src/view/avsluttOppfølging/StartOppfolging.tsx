@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {batchStartOppfolgingMedForrigeAoKontor} from "../../api/veilarboppfolging";
 import {Card} from "../../component/card/card";
-import {Button, Heading, TextField} from "@navikt/ds-react";
+import { Button, Heading, Textarea, TextField } from '@navikt/ds-react';
 
 
 export const StartOppfolging = () => {
@@ -21,7 +21,7 @@ export const StartOppfolging = () => {
 			<Card>
 				<Heading size="medium">Batch start oppfølging med forrige ao-kontor</Heading>
 				<form className="space-y-4" onSubmit={postStartOppfolging}>
-					<TextField name="fnrList" label={'FNR (kommaseparert)'} />
+					<Textarea name="fnrList" label={'FNR (kommaseparert)'} />
 					<Button loading={isLoading} disabled={isLoading}>
 						Send
 					</Button>
