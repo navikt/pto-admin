@@ -264,6 +264,15 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
+	http.post(`/api/veilarbaktivitet/veilarbaktivitet/bulk/flytt-aktiviteter-til-siste-periode`, async ({ request }) => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		const body = (await request.json()) as { aktorIds?: string[] };
+		const aktorIds = body.aktorIds ?? [];
+		const response = Object.fromEntries(
+			aktorIds.map((aktorId, index) => [aktorId, index + 1])
+		);
+		return HttpResponse.json(response);
+	}),
 	http.post(`/api/ao-oppfolgingskontor/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({

@@ -15,6 +15,7 @@ import {
 	AdminArenaDataDto,
 	AdminDeltakerAktivitetMappingDto
 } from '../../api/aktivitet-arena-acl';
+import { flyttAktiviteterTilSistePeriode } from '../../api/veilarbaktivitet';
 import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
 import { AoKontorAdmin } from './AoKontorAdmin';
@@ -44,6 +45,7 @@ export function TeamDabOppfolgingView() {
 						<Tabs.Tab value={TabKey.utmeldingskandidater} label={'Utmeldingskandidater'} />
 						<Tabs.Tab value={TabKey['aktivitet-arena-acl']} label={'Aktivitet Arena ACL'} />
 						<Tabs.Tab value={TabKey['start-oppfolging']} label={'Start Oppfølging'} />
+						<Tabs.Tab value={TabKey['flytt-aktiviteter']} label={'Flytt aktiviteter'} />
 					</Tabs.List>
 					<Tabs.Panel value={TabKey.avsluttBrukere}>
 						<div className="flex flex-row flex-wrap gap-4">
@@ -77,6 +79,9 @@ export function TeamDabOppfolgingView() {
 					</Tabs.Panel>
 					<Tabs.Panel value={TabKey['start-oppfolging']}>
 						<StartOppfolging />
+					</Tabs.Panel>
+					<Tabs.Panel value={TabKey['flytt-aktiviteter']}>
+						<FlyttAktiviteterTilSistePeriodeCard />
 					</Tabs.Panel>
 				</Tabs>
 			</div>
@@ -239,6 +244,94 @@ function AvsluttOppfolgingsperiode() {
 	);
 }
 
+function FlyttAktiviteterTilSistePeriodeCard() {
+	const [aktorIds, setAktorIds] = useState('');
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [isLoading, setIsLoading] = useState(false);
+	const [resultat, setResultat] = useState<Array<{ aktorId: string; antallAktiviteter: number }> | null>(null);
+
+	function parseAktorIds(input: string): string[] {
+		return input
+			.split(',')
+			.map(id => id.trim())
+			.filter(Boolean);
+	}
+
+	function validateAktorIds(ids: string[]): string | undefined {
+		if (!ids.length) {
+			return 'Du må legge inn minst én aktørId.';
+		}
+		const ugyldige = ids.filter(id => !/^\d{13}$/.test(id));
+		if (ugyldige.length) {
+			return `Ugyldig aktørId: ${ugyldige.join(', ')}. Alle aktørId-er må være 13 sifre.`;
+		}
+		return undefined;
+	}
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const ids = parseAktorIds(aktorIds);
+		const validationError = validateAktorIds(ids);
+		if (validationError) {
+			setError(validationError);
+			setResultat(null);
+			return;
+		}
+
+		try {
+			setError(undefined);
+			setResultat(null);
+			setIsLoading(true);
+			const response = await flyttAktiviteterTilSistePeriode({ aktorIds: ids });
+			setResultat(
+				Object.entries(response.data).map(([aktorId, antallAktiviteter]) => ({
+					aktorId,
+					antallAktiviteter
+				}))
+			);
+		} catch (e: any) {
+			setError(e?.toString() ?? 'Noe gikk galt ved flytting av aktiviteter.');
+			setResultat(null);
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
+	const totaltAntallAktiviteter =
+		resultat?.reduce((sum, entry) => sum + entry.antallAktiviteter, 0) ?? 0;
+
+	return (
+		<Card className="small-card" innholdClassName="hovedside__card-innhold">
+			<Heading size="medium">Flytt aktiviteter til siste periode</Heading>
+			<form className="space-y-4" onSubmit={handleSubmit}>
+				<Textarea
+					label="AktørId-er (kommaseparert)"
+					value={aktorIds}
+					onChange={e => setAktorIds(e.target.value)}
+					disabled={isLoading}
+				/>
+				<BodyShort className="text-gray-600">Alle aktørId-er må være 13 sifre.</BodyShort>
+				{error && <div className="error-message">{error}</div>}
+				<Button type="submit" loading={isLoading} disabled={isLoading}>
+					Flytt aktiviteter
+				</Button>
+			</form>
+			{resultat && (
+				<div className="mt-4 space-y-2">
+					<Heading size="small">Resultat</Heading>
+					<div className="font-medium">Totalt flyttet: {totaltAntallAktiviteter}</div>
+					{resultat.map(({ aktorId, antallAktiviteter }) => (
+						<div key={aktorId} className="border rounded p-3">
+							<BodyShort>{aktorId}</BodyShort>
+							<BodyShort>{antallAktiviteter} aktiviteter</BodyShort>
+						</div>
+					))}
+				</div>
+			)}
+		</Card>
+	);
+}
+
 enum TabKey {
 	'avsluttBrukere' = 'avsluttBrukere',
 	'hentAvslutningsstatus' = 'hentAvslutningsstatus',
@@ -249,7 +342,8 @@ enum TabKey {
 	'bruker-status' = 'bruker-status',
 	'utmeldingskandidater' = 'utmeldingskandidater',
 	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
-	'start-oppfolging' = 'start-oppfolging'
+	'start-oppfolging' = 'start-oppfolging',
+	'flytt-aktiviteter' = 'flytt-aktiviteter'
 }
 
 const tabKey = 'last-selected-tab';

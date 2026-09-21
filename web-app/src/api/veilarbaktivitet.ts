@@ -100,3 +100,14 @@ export function hentAktivitet(payload: {
 		)
 		.then(response => response.data);
 }
+
+export function flyttAktiviteterTilSistePeriode(payload: {
+	aktorIds: string[];
+}): Promise<{ data: Record<string, number> }> {
+	return fetchInstance
+		.post<{ data: Record<string, number> }>(
+			`/api/veilarbaktivitet/veilarbaktivitet/bulk/flytt-aktiviteter-til-siste-periode`,
+			payload
+		)
+		.then(response => response.data);
+}
