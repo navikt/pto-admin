@@ -1,5 +1,7 @@
 import React, {useState} from "react";
-import {syncArenaKontorForBruker} from "../../api/ao-oppfolgingskontor";
+import {batchStartOppfolgingMedForrigeAoKontor} from "../../api/veilarboppfolging";
+import {Card} from "../../component/card/card";
+import {Button, Heading, TextField} from "@navikt/ds-react";
 
 
 export const StartOppfolging = () => {
@@ -8,14 +10,24 @@ export const StartOppfolging = () => {
     const postStartOppfolging = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const identer = formData.get('identer') as string;
+        const fnrList = formData.get('fnrList') as string;
         setIsLoading(true);
-        await syncArenaKontorForBruker({ identer });
+        await batchStartOppfolgingMedForrigeAoKontor({ fnrList: fnrList.split(',').map(it => it.trim()) });
         setIsLoading(false);
     };
 
     return (
-        <div className="p-4 bg-gray-white"></div>
-    )
+		<div className="p-4 bg-gray-white">
+			<Card>
+				<Heading size="medium">Batch start oppfølging med forrige ao-kontor</Heading>
+				<form className="space-y-4" onSubmit={postStartOppfolging}>
+					<TextField name="fnrList" label={'FNR (kommaseparert)'} />
+					<Button loading={isLoading} disabled={isLoading}>
+						Send
+					</Button>
+				</form>
+			</Card>
+		</div>
+	);
 
 }

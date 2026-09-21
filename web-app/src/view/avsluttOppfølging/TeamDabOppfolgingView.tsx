@@ -248,7 +248,8 @@ enum TabKey {
 	'aktiviteter' = 'aktiviteter',
 	'bruker-status' = 'bruker-status',
 	'utmeldingskandidater' = 'utmeldingskandidater',
-	'aktivitet-arena-acl' = 'aktivitet-arena-acl'
+	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
+	'start-oppfolging' = 'start-oppfolging'
 }
 
 const tabKey = 'last-selected-tab';
