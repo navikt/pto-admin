@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '../../component/card/card';
-import { BodyShort, Button, Heading, Tabs, Textarea, TextField, Tag } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, Textarea, TextField, Tag } from '@navikt/ds-react';
 import {
 	avsluttOppfolgingsperiode,
 	batchAvsluttOppfolging,
@@ -31,62 +31,103 @@ export function TeamDabOppfolgingView() {
 	}, [tab]);
 
 	return (
-		<div className="flex p-4 justify-center">
-			<div className="border rounded-t-lg bg-white border-gray-300 flex-1 max-w-[1200px]">
-				<Tabs value={tab} onChange={value => setTab(value as TabKey)}>
-					<Tabs.List>
-						<Tabs.Tab value={TabKey.avsluttBrukere} label={'Avslutt brukere'} />
-						<Tabs.Tab value={TabKey.hentAvslutningsstatus} label={'Hent avslutningsstatus'} />
-						<Tabs.Tab value={TabKey.aktiviteter} label={'Dialog og aktiviteter'} />
-						<Tabs.Tab value={TabKey.kontor} label={'Kontor'} />
-						<Tabs.Tab value={TabKey['ao-kontor-admin']} label={'AO Kontor Admin'} />
-						<Tabs.Tab value={TabKey['kontor-merge']} label={'Kontorsammenslåing'} />
-						<Tabs.Tab value={TabKey['bruker-status']} label={'Brukerstatus'} />
-						<Tabs.Tab value={TabKey.utmeldingskandidater} label={'Utmeldingskandidater'} />
-						<Tabs.Tab value={TabKey['aktivitet-arena-acl']} label={'Aktivitet Arena ACL'} />
-						<Tabs.Tab value={TabKey['start-oppfolging']} label={'Start Oppfølging'} />
-						<Tabs.Tab value={TabKey['flytt-aktiviteter']} label={'Flytt aktiviteter'} />
-					</Tabs.List>
-					<Tabs.Panel value={TabKey.avsluttBrukere}>
-						<div className="flex flex-row flex-wrap gap-4">
-							<AvsluttOppfolgingForMangeBrukereCard />
-							<AvsluttOppfolgingsperiode />
+		<div className="flex justify-center p-2">
+			<div className="border rounded-lg bg-white border-gray-300 flex-1 max-w-[1600px] p-2">
+				<div className="flex flex-col gap-3 lg:flex-row">
+					<aside className="w-full lg:w-72 shrink-0">
+						<div className="rounded-lg border border-gray-200 bg-gray-50 p-2">
+							<Heading size="small" spacing>
+								Team DAB
+							</Heading>
+							<nav className="flex flex-col gap-1" aria-label="Team DAB meny">
+								{menuItems.map(item => {
+									const isSelected = tab === item.value;
+									return (
+										<button
+											key={item.value}
+											type="button"
+											onClick={() => setTab(item.value)}
+											aria-current={isSelected ? 'page' : undefined}
+											className={`flex w-full items-center rounded-md border px-3 py-2 text-left text-sm transition ${
+												isSelected
+													? 'border-blue-500 bg-blue-50 font-semibold text-blue-900 shadow-sm'
+													: 'border-transparent hover:border-gray-200 hover:bg-white'
+											}`}
+										>
+											{item.label}
+										</button>
+									);
+								})}
+							</nav>
 						</div>
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey.hentAvslutningsstatus}>
-						<HentAvslutningsstatusCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey.aktiviteter}>
-						<BrukerDataCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey.kontor}>
-						<KontorCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['ao-kontor-admin']}>
-						<AoKontorAdmin />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['kontor-merge']}>
-						<KontorMerge />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['bruker-status']}>
-						<BrukerStatusCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey.utmeldingskandidater}>
-						<UtmeldingskandidaterCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['aktivitet-arena-acl']}>
-						<AktivitetArenaAclCard />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['start-oppfolging']}>
-						<StartOppfolging />
-					</Tabs.Panel>
-					<Tabs.Panel value={TabKey['flytt-aktiviteter']}>
-						<FlyttAktiviteterTilSistePeriodeCard />
-					</Tabs.Panel>
-				</Tabs>
+					</aside>
+					<section className="min-w-0 flex-1 p-1 lg:p-2">{renderTabContent(tab)}</section>
+				</div>
 			</div>
 		</div>
 	);
+}
+
+enum TabKey {
+	'avsluttBrukere' = 'avsluttBrukere',
+	'hentAvslutningsstatus' = 'hentAvslutningsstatus',
+	'kontor' = 'kontor',
+	'ao-kontor-admin' = 'ao-kontor-admin',
+	'kontor-merge' = 'kontor-merge',
+	'aktiviteter' = 'aktiviteter',
+	'bruker-status' = 'bruker-status',
+	'utmeldingskandidater' = 'utmeldingskandidater',
+	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
+	'start-oppfolging' = 'start-oppfolging',
+	'flytt-aktiviteter' = 'flytt-aktiviteter'
+}
+
+const menuItems: Array<{ value: TabKey; label: string }> = [
+	{ value: TabKey.avsluttBrukere, label: 'Avslutt brukere' },
+	{ value: TabKey.hentAvslutningsstatus, label: 'Hent avslutningsstatus' },
+	{ value: TabKey.aktiviteter, label: 'Dialog og aktiviteter' },
+	{ value: TabKey.kontor, label: 'Kontor' },
+	{ value: TabKey['ao-kontor-admin'], label: 'AO Kontor Admin' },
+	{ value: TabKey['kontor-merge'], label: 'Kontorsammenslåing' },
+	{ value: TabKey['bruker-status'], label: 'Brukerstatus' },
+	{ value: TabKey.utmeldingskandidater, label: 'Utmeldingskandidater' },
+	{ value: TabKey['aktivitet-arena-acl'], label: 'Aktivitet Arena ACL' },
+	{ value: TabKey['start-oppfolging'], label: 'Start Oppfølging' },
+	{ value: TabKey['flytt-aktiviteter'], label: 'Flytt aktiviteter' }
+];
+
+function renderTabContent(tab: TabKey) {
+	switch (tab) {
+		case TabKey.avsluttBrukere:
+			return (
+				<div className="flex flex-row flex-wrap gap-4">
+					<AvsluttOppfolgingForMangeBrukereCard />
+					<AvsluttOppfolgingsperiode />
+				</div>
+			);
+		case TabKey.hentAvslutningsstatus:
+			return <HentAvslutningsstatusCard />;
+		case TabKey.aktiviteter:
+			return <BrukerDataCard />;
+		case TabKey.kontor:
+			return <KontorCard />;
+		case TabKey['ao-kontor-admin']:
+			return <AoKontorAdmin />;
+		case TabKey['kontor-merge']:
+			return <KontorMerge />;
+		case TabKey['bruker-status']:
+			return <BrukerStatusCard />;
+		case TabKey.utmeldingskandidater:
+			return <UtmeldingskandidaterCard />;
+		case TabKey['aktivitet-arena-acl']:
+			return <AktivitetArenaAclCard />;
+		case TabKey['start-oppfolging']:
+			return <StartOppfolging />;
+		case TabKey['flytt-aktiviteter']:
+			return <FlyttAktiviteterTilSistePeriodeCard />;
+		default:
+			return <BrukerDataCard />;
+	}
 }
 
 function HentAvslutningsstatusCard() {
@@ -330,20 +371,6 @@ function FlyttAktiviteterTilSistePeriodeCard() {
 			)}
 		</Card>
 	);
-}
-
-enum TabKey {
-	'avsluttBrukere' = 'avsluttBrukere',
-	'hentAvslutningsstatus' = 'hentAvslutningsstatus',
-	'kontor' = 'kontor',
-	'ao-kontor-admin' = 'ao-kontor-admin',
-	'kontor-merge' = 'kontor-merge',
-	'aktiviteter' = 'aktiviteter',
-	'bruker-status' = 'bruker-status',
-	'utmeldingskandidater' = 'utmeldingskandidater',
-	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
-	'start-oppfolging' = 'start-oppfolging',
-	'flytt-aktiviteter' = 'flytt-aktiviteter'
 }
 
 const tabKey = 'last-selected-tab';
