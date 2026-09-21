@@ -31,6 +31,10 @@ export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnels
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/avsluttBrukere'), payload);
 }
 
+export function batchStartOppfolgingMedForrigeAoKontor(input: { fnrList: string[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(veilarboppfolgingProxyUrl('/batch/start-oppfolging-med-forrige-kontor'), input);
+}
+
 export interface AvslutningsStatusDto {
 	// Keep this loose until the backend contract is shared in the client.
 	[key: string]: unknown;
