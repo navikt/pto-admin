@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Card } from '../../component/card/card';
-import { Button, Heading, Textarea, BodyShort } from '@navikt/ds-react';
+import { Button, Heading, Textarea, BodyShort, Table } from '@navikt/ds-react';
 import { AvslutningsStatusDto, hentAvslutningStatusForOppfolgingsperioder } from '../../api/veilarboppfolging';
+import { BooleanTag } from '../../component/BooleanTag';
+import { IdWithCopy } from '../../component/IdWithCopy';
 
 export function HentAvslutningsstatusCard() {
 	const [oppfolgingsperiodeIder, setOppfolgingsperiodeIder] = useState('');
@@ -20,7 +22,7 @@ export function HentAvslutningsstatusCard() {
 					.map(id => id.trim())
 					.filter(Boolean)
 			});
-			setData(response.data);
+			setData(response);
 		} catch (e: any) {
 			setError(e?.toString());
 			setData(null);
@@ -47,9 +49,71 @@ export function HentAvslutningsstatusCard() {
 			{data && (
 				<div className="mt-4 space-y-3">
 					{Object.keys(data).length ? (
-						Object.entries(data).map(([key, item]) => (
-							<div key={key} className="border rounded p-3">
-								<BodyShort>{JSON.stringify(item)}</BodyShort>
+						Object.entries(data).map(([periodeId, item]) => (
+							<div key={periodeId} className="border rounded p-3">
+								<IdWithCopy id={periodeId} />
+								{
+									<Table size="small">
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell scope="col">Sjekk</Table.HeaderCell>
+												<Table.HeaderCell scope="col">Status</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+										<Table.Body>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Kan avslutte</Table.DataCell>
+												<Table.DataCell>
+													{<BooleanTag value={item?.kanAvslutte} />}
+												</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Under oppfølging</Table.DataCell>
+												<Table.DataCell>
+													{<BooleanTag value={item?.underOppfolging} />}
+												</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Er arbeidssøker</Table.DataCell>
+												<Table.DataCell>
+													{<BooleanTag value={item?.erArbeidssoeker} />}
+												</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Har AAP</Table.DataCell>
+												<Table.DataCell>{<BooleanTag value={item?.harAap} />}</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Er ISERV</Table.DataCell>
+												<Table.DataCell>{<BooleanTag value={item?.erIserv} />}</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">
+													Er deltaker i ungdomsprogrammet
+												</Table.DataCell>
+												<Table.DataCell>
+													{<BooleanTag value={item?.erDeltakerIUngdomsprogrammet} />}
+												</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Under KVP</Table.DataCell>
+												<Table.DataCell>{<BooleanTag value={item?.underKvp} />}</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">
+													Har aktive tiltaksdeltakelser
+												</Table.DataCell>
+												<Table.DataCell>
+													{<BooleanTag value={item?.harAktiveTiltaksdeltakelser} />}
+												</Table.DataCell>
+											</Table.Row>
+											<Table.Row key={periodeId}>
+												<Table.DataCell scope="row">Inaktiveringsdato</Table.DataCell>
+												<Table.DataCell>{item?.inaktiveringsDato || 'null'}</Table.DataCell>
+											</Table.Row>
+										</Table.Body>
+									</Table>
+								}
 							</div>
 						))
 					) : (

@@ -1,6 +1,7 @@
 import { delay, http, HttpResponse, RequestHandler } from 'msw';
 import { DEFAULT_DELAY_MILLISECONDS } from './index';
 import { Dialog } from '../api/veilarbdialog';
+import { AvslutningsStatusDto } from '../api/veilarboppfolging';
 
 const antallAvsluttet = {
 	antallAvsluttet: 500,
@@ -109,6 +110,33 @@ export const handlers: RequestHandler[] = [
 	http.post(`/api/admin/veilarboppfolging/avsluttBrukere`, async () => {
 		await delay(10000);
 		return HttpResponse.json(antallAvsluttet);
+	}),
+	http.post(`/api/veilarboppfolging/api/v2/admin/veilarboppfolging/avslutning-status`, async () => {
+		await delay(100);
+		return HttpResponse.json({
+			[window.crypto.randomUUID()]: {
+				erArbeidssoeker: true,
+				erDeltakerIUngdomsprogrammet: false,
+				erIserv: false,
+				harAap: false,
+				harAktiveTiltaksdeltakelser: false,
+				inaktiveringsDato: '12-12-12',
+				kanAvslutte: false,
+				underKvp: false,
+				underOppfolging: false
+			} as AvslutningsStatusDto,
+			[window.crypto.randomUUID()]: {
+				erArbeidssoeker: false,
+				erDeltakerIUngdomsprogrammet: false,
+				erIserv: false,
+				harAap: true,
+				harAktiveTiltaksdeltakelser: false,
+				inaktiveringsDato: null,
+				kanAvslutte: false,
+				underKvp: false,
+				underOppfolging: true
+			} as AvslutningsStatusDto
+		});
 	}),
 	http.post(`/api/admin/veilarbdialog/republiser/endring-paa-dialog`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -264,15 +292,16 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
-	http.post(`/api/veilarbaktivitet/veilarbaktivitet/bulk/flytt-aktiviteter-til-siste-periode`, async ({ request }) => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		const body = (await request.json()) as { aktorIds?: string[] };
-		const aktorIds = body.aktorIds ?? [];
-		const response = Object.fromEntries(
-			aktorIds.map((aktorId, index) => [aktorId, index + 1])
-		);
-		return HttpResponse.json(response);
-	}),
+	http.post(
+		`/api/veilarbaktivitet/veilarbaktivitet/bulk/flytt-aktiviteter-til-siste-periode`,
+		async ({ request }) => {
+			await delay(DEFAULT_DELAY_MILLISECONDS);
+			const body = (await request.json()) as { aktorIds?: string[] };
+			const aktorIds = body.aktorIds ?? [];
+			const response = Object.fromEntries(aktorIds.map((aktorId, index) => [aktorId, index + 1]));
+			return HttpResponse.json(response);
+		}
+	),
 	http.post(`/api/ao-oppfolgingskontor/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({
