@@ -21,7 +21,7 @@ export const StartOppfolging = () => {
 			<Card>
 				<Heading size="medium">Batch start oppfølging med forrige ao-kontor</Heading>
 				<form className="space-y-4" onSubmit={postStartOppfolging}>
-					<Textarea name="fnrList" label={'FNR (kommaseparert)'} />
+					<Textarea name="fnrList" label={'AktorId (kommaseparert)'} />
 					<Button loading={isLoading} disabled={isLoading}>
 						Send
 					</Button>
