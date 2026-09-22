@@ -10,9 +10,9 @@ export const StartOppfolging = () => {
     const postStartOppfolging = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const fnrList = formData.get('fnrList') as string;
+        const aktorIdList = formData.get('aktorIdList') as string;
         setIsLoading(true);
-        await batchStartOppfolgingMedForrigeAoKontor({ fnrList: fnrList.split(',').map(it => it.trim()) });
+        await batchStartOppfolgingMedForrigeAoKontor({ aktorIdList: aktorIdList.split(',').map(it => it.trim()) });
         setIsLoading(false);
     };
 
@@ -21,7 +21,7 @@ export const StartOppfolging = () => {
 			<Card>
 				<Heading size="medium">Batch start oppfølging med forrige ao-kontor</Heading>
 				<form className="space-y-4" onSubmit={postStartOppfolging}>
-					<Textarea name="fnrList" label={'AktorId (kommaseparert)'} />
+					<Textarea name="aktorIdList" label={'AktorId (kommaseparert)'} />
 					<Button loading={isLoading} disabled={isLoading}>
 						Send
 					</Button>

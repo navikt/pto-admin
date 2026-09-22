@@ -32,7 +32,7 @@ export function batchAvsluttOppfolging(payload: { aktorIds: string[]; begrunnels
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/avsluttBrukere'), payload);
 }
 
-export function batchStartOppfolgingMedForrigeAoKontor(input: { fnrList: string[] }): Promise<{ data: JobId }> {
+export function batchStartOppfolgingMedForrigeAoKontor(input: { aktorIdList: string[] }): Promise<{ data: JobId }> {
 	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/batch/start-oppfolging-med-forrige-kontor'), input);
 }
 
