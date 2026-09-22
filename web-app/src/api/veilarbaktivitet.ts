@@ -106,7 +106,7 @@ export function flyttAktiviteterTilSistePeriode(payload: {
 }): Promise<{ data: Record<string, number> }> {
 	return fetchInstance
 		.post<{ data: Record<string, number> }>(
-			`/api/veilarbaktivitet/veilarbaktivitet/bulk/flytt-aktiviteter-til-siste-periode`,
+			`/api/veilarbaktivitet/veilarbaktivitet/admin/flytt-aktiviteter-til-siste-periode`,
 			payload
 		)
 		.then(response => response.data);
