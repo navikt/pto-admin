@@ -39,25 +39,34 @@ export function TeamDabOppfolgingView() {
 							<Heading size="small" spacing>
 								Team DAB
 							</Heading>
-							<nav className="flex flex-col gap-1" aria-label="Team DAB meny">
-								{menuItems.map(item => {
-									const isSelected = tab === item.value;
-									return (
-										<button
-											key={item.value}
-											type="button"
-											onClick={() => setTab(item.value)}
-											aria-current={isSelected ? 'page' : undefined}
-											className={`flex w-full items-center rounded-md border px-3 py-2 text-left text-sm transition ${
-												isSelected
-													? 'border-blue-500 bg-blue-50 font-semibold text-blue-900 shadow-sm'
-													: 'border-transparent hover:border-gray-200 hover:bg-white'
-											}`}
-										>
-											{item.label}
-										</button>
-									);
-								})}
+							<nav className="flex flex-col gap-4" aria-label="Team DAB meny">
+								{menuGroups.map(group => (
+									<div key={group.label} className="space-y-1">
+										<Heading size="xsmall" className="px-1 py-3 text-orange-900 tracking-wide">
+											{group.label}
+										</Heading>
+										<div className="flex flex-col gap-1">
+											{group.items.map(item => {
+												const isSelected = tab === item.value;
+												return (
+													<button
+														key={item.value}
+														type="button"
+														onClick={() => setTab(item.value)}
+														aria-current={isSelected ? 'page' : undefined}
+														className={`flex w-full items-center rounded-md border px-3 py-2 text-left text-sm transition ${
+															isSelected
+																? 'border-blue-500 bg-blue-50 font-semibold text-blue-900 shadow-sm'
+																: 'border-transparent hover:border-gray-200 hover:bg-white'
+														}`}
+													>
+														{item.label}
+													</button>
+												);
+											})}
+										</div>
+									</div>
+								))}
 							</nav>
 						</div>
 					</aside>
@@ -82,18 +91,36 @@ enum TabKey {
 	'flytt-aktiviteter' = 'flytt-aktiviteter'
 }
 
-const menuItems: Array<{ value: TabKey; label: string }> = [
-	{ value: TabKey.avsluttBrukere, label: 'Avslutt brukere' },
-	{ value: TabKey.hentAvslutningsstatus, label: 'Hent avslutningsstatus' },
-	{ value: TabKey.aktiviteter, label: 'Dialog og aktiviteter' },
-	{ value: TabKey.kontor, label: 'Kontor' },
-	{ value: TabKey['ao-kontor-admin'], label: 'AO Kontor Admin' },
-	{ value: TabKey['kontor-merge'], label: 'Kontorsammenslåing' },
-	{ value: TabKey['bruker-status'], label: 'Brukerstatus' },
-	{ value: TabKey.utmeldingskandidater, label: 'Utmeldingskandidater' },
-	{ value: TabKey['aktivitet-arena-acl'], label: 'Aktivitet Arena ACL' },
-	{ value: TabKey['start-oppfolging'], label: 'Start Oppfølging' },
-	{ value: TabKey['flytt-aktiviteter'], label: 'Flytt aktiviteter' }
+const menuGroups: Array<{
+	label: string;
+	items: Array<{ value: TabKey; label: string }>;
+}> = [
+	{
+		label: 'Oppfølging',
+		items: [
+			{ value: TabKey['start-oppfolging'], label: 'Start Oppfølging' },
+			{ value: TabKey.avsluttBrukere, label: 'Avslutt oppfølging' },
+			{ value: TabKey.hentAvslutningsstatus, label: 'Hent avslutningsstatus' },
+			{ value: TabKey['bruker-status'], label: 'Brukerstatus' },
+			{ value: TabKey.utmeldingskandidater, label: 'Utmeldingskandidater' }
+		]
+	},
+	{
+		label: 'Kontor',
+		items: [
+			{ value: TabKey.kontor, label: 'Kontorhistorikk' },
+			{ value: TabKey['ao-kontor-admin'], label: 'AO Kontor Admin' },
+			{ value: TabKey['kontor-merge'], label: 'Kontorsammenslåing' }
+		]
+	},
+	{
+		label: 'Data',
+		items: [
+			{ value: TabKey.aktiviteter, label: 'Dialog og aktiviteter' },
+			{ value: TabKey['flytt-aktiviteter'], label: 'Flytt aktiviteter' },
+			{ value: TabKey['aktivitet-arena-acl'], label: 'Aktivitet Arena ACL' }
+		]
+	}
 ];
 
 function renderTabContent(tab: TabKey) {
