@@ -50,11 +50,9 @@ export interface AvslutningsStatusDto {
 
 export function hentAvslutningStatusForOppfolgingsperioder(payload: {
 	oppfolgingsperiodeIder: string[];
-}): Promise<{ data: Record<string, AvslutningsStatusDto | undefined> }> {
+}): Promise<Record<string, AvslutningsStatusDto | undefined>> {
 	return fetchInstance
-		.post<{
-			data: Record<string, AvslutningsStatusDto | undefined>;
-		}>(veilarboppfolgingV2ProxyUrl('/avslutning-status'), {
+		.post<Record<string, AvslutningsStatusDto | undefined>>(veilarboppfolgingV2ProxyUrl('/avslutning-status'), {
 			oppfolgingsperiodeIder: payload.oppfolgingsperiodeIder
 		})
 		.then(response => response.data);
