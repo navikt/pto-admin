@@ -2,7 +2,8 @@ import { fetchInstance, JobId } from './index';
 import { graphqlPayload } from './graphql';
 
 const veilarboppfolgingProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/admin/veilarboppfolging${appPath}`;
-const veilarboppfolgingV2ProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/v2/admin/veilarboppfolging${appPath}`;
+const veilarboppfolgingV2ProxyUrl = (appPath: string) =>
+	`/api/veilarboppfolging/api/v2/admin/veilarboppfolging${appPath}`;
 const veilarboppfolgingGraphqlUrl = `/api/veilarboppfolging/veilarboppfolging/api/graphql`;
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
@@ -36,18 +37,26 @@ export function batchStartOppfolgingMedForrigeAoKontor(input: { fnrList: string[
 }
 
 export interface AvslutningsStatusDto {
-	// Keep this loose until the backend contract is shared in the client.
-	[key: string]: unknown;
+	erArbeidssoeker: boolean;
+	erDeltakerIUngdomsprogrammet: boolean;
+	erIserv: boolean;
+	harAap: boolean;
+	harAktiveTiltaksdeltakelser: boolean;
+	inaktiveringsDato: string | null;
+	kanAvslutte: boolean;
+	underKvp: boolean;
+	underOppfolging: boolean;
 }
 
 export function hentAvslutningStatusForOppfolgingsperioder(payload: {
 	oppfolgingsperiodeIder: string[];
-}): Promise<{ data: AvslutningsStatusDto[] }> {
+}): Promise<{ data: Record<string, AvslutningsStatusDto | undefined> }> {
 	return fetchInstance
-		.post<{ data: AvslutningsStatusDto[] }>(
-			veilarboppfolgingV2ProxyUrl('/avslutning-status'),
-			{ oppfolgingsperiodeIder: payload.oppfolgingsperiodeIder }
-		)
+		.post<{
+			data: Record<string, AvslutningsStatusDto | undefined>;
+		}>(veilarboppfolgingV2ProxyUrl('/avslutning-status'), {
+			oppfolgingsperiodeIder: payload.oppfolgingsperiodeIder
+		})
 		.then(response => response.data);
 }
 
@@ -163,13 +172,15 @@ const utmeldingskandidatQuery = `
 
 export interface UtmeldingskandidatDto {
 	tag: string | null;
-	utmeldingskandidatHendelser: {
-		utfortAvType: string;
-		utfortAv: string | null;
-		hendelseTidspunkt: string;
-		type: string;
-		forlengetTil: string | null;
-	}[] | null;
+	utmeldingskandidatHendelser:
+		| {
+				utfortAvType: string;
+				utfortAv: string | null;
+				hendelseTidspunkt: string;
+				type: string;
+				forlengetTil: string | null;
+		  }[]
+		| null;
 	aktivForlengelse: {
 		utfortAvType: string;
 		utfortAv: string | null;
@@ -178,7 +189,9 @@ export interface UtmeldingskandidatDto {
 	} | null;
 }
 
-export function hentUtmeldingskandidat(fnr: string): Promise<{ data: { utmeldingskandidat: UtmeldingskandidatDto | null } }> {
+export function hentUtmeldingskandidat(
+	fnr: string
+): Promise<{ data: { utmeldingskandidat: UtmeldingskandidatDto | null } }> {
 	return fetchInstance
 		.post<{
 			data: { utmeldingskandidat: UtmeldingskandidatDto | null };

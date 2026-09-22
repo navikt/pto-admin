@@ -42,13 +42,13 @@ export function FlyttAktiviteterTilSistePeriodeCard() {
 			setResultat(null);
 			setIsLoading(true);
 			const response = await flyttAktiviteterTilSistePeriode({ aktorIds: ids });
-			if (!response.data) {
-				setError('reponse.data var null');
+			if (!response) {
+				setError('response var null');
 				return;
 			}
-			console.log(response.data);
+			console.log(response);
 			setResultat(
-				Object.entries(response.data).map(([aktorId, antallAktiviteter]) => ({
+				Object.entries(response).map(([aktorId, antallAktiviteter]) => ({
 					aktorId,
 					antallAktiviteter
 				}))
@@ -74,7 +74,7 @@ export function FlyttAktiviteterTilSistePeriodeCard() {
 					disabled={isLoading}
 				/>
 				<BodyShort className="text-gray-600">Alle aktørId-er må være 13 sifre.</BodyShort>
-				{error && <div className="error-message">{error}</div>}
+				{error && <div className="border border-red-800 p-2 rounded-2xl">{error}</div>}
 				<Button type="submit" loading={isLoading} disabled={isLoading}>
 					Flytt aktiviteter
 				</Button>

@@ -4,7 +4,6 @@ import { BodyShort, Button, Heading, Textarea, TextField, Tag } from '@navikt/ds
 import {
 	avsluttOppfolgingsperiode,
 	batchAvsluttOppfolging,
-	hentAvslutningStatusForOppfolgingsperioder,
 	hentUtmeldingskandidat,
 	UtmeldingskandidatDto
 } from '../../api/veilarboppfolging';
@@ -15,7 +14,6 @@ import {
 	AdminArenaDataDto,
 	AdminDeltakerAktivitetMappingDto
 } from '../../api/aktivitet-arena-acl';
-import { flyttAktiviteterTilSistePeriode } from '../../api/veilarbaktivitet';
 import { BrukerDataCard } from './BrukerDataCard';
 import KontorCard from './KontorCard';
 import { AoKontorAdmin } from './AoKontorAdmin';
@@ -23,6 +21,7 @@ import { KontorMerge } from './KontorMerge';
 import { BrukerStatusCard } from './BrukerStatusCard';
 import { StartOppfolging } from './StartOppfolging';
 import { FlyttAktiviteterTilSistePeriodeCard } from './FlyttAktiviteterTilSistePeriodeCard';
+import { HentAvslutningsstatusCard } from './HentAvslutningsCard';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -129,64 +128,6 @@ function renderTabContent(tab: TabKey) {
 		default:
 			return <BrukerDataCard />;
 	}
-}
-
-function HentAvslutningsstatusCard() {
-	const [oppfolgingsperiodeIder, setOppfolgingsperiodeIder] = useState('');
-	const [data, setData] = useState<Record<string, unknown>[] | null>(null);
-	const [error, setError] = useState<string | undefined>(undefined);
-	const [isLoading, setIsLoading] = useState(false);
-
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-		try {
-			setError(undefined);
-			setIsLoading(true);
-			const response = await hentAvslutningStatusForOppfolgingsperioder({
-				oppfolgingsperiodeIder: oppfolgingsperiodeIder
-					.split(',')
-					.map(id => id.trim())
-					.filter(Boolean)
-			});
-			setData(response.data);
-		} catch (e: any) {
-			setError(e?.toString());
-			setData(null);
-		} finally {
-			setIsLoading(false);
-		}
-	}
-
-	return (
-		<Card className="small-card" innholdClassName="hovedside__card-innhold">
-			<Heading size="medium">Hent avslutningsstatus</Heading>
-			<form className="space-y-4" onSubmit={handleSubmit}>
-				<Textarea
-					label="Oppfølgingsperiode IDer (kommaseparert)"
-					value={oppfolgingsperiodeIder}
-					onChange={e => setOppfolgingsperiodeIder(e.target.value)}
-					disabled={isLoading}
-				/>
-				{error && <div className="error-message">{error}</div>}
-				<Button type="submit" disabled={isLoading}>
-					Hent avslutningsstatus
-				</Button>
-			</form>
-			{data && (
-				<div className="mt-4 space-y-3">
-					{data.length ? (
-						data.map((item, index) => (
-							<div key={index} className="border rounded p-3">
-								<BodyShort>{JSON.stringify(item)}</BodyShort>
-							</div>
-						))
-					) : (
-						<BodyShort>Ingen treff</BodyShort>
-					)}
-				</div>
-			)}
-		</Card>
-	);
 }
 
 function AvsluttOppfolgingForMangeBrukereCard() {

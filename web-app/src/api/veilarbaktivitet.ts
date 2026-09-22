@@ -101,13 +101,10 @@ export function hentAktivitet(payload: {
 		.then(response => response.data);
 }
 
-export function flyttAktiviteterTilSistePeriode(payload: {
-	aktorIds: string[];
-}): Promise<{ data: Record<string, number> }> {
+export function flyttAktiviteterTilSistePeriode(payload: { aktorIds: string[] }): Promise<Record<string, number>> {
 	return fetchInstance
-		.post<{ data: Record<string, number> }>(
-			`/api/veilarbaktivitet/veilarbaktivitet/admin/flytt-aktiviteter-til-siste-periode`,
-			payload
-		)
+		.post<
+			Record<string, number>
+		>(`/api/veilarbaktivitet/veilarbaktivitet/admin/flytt-aktiviteter-til-siste-periode`, payload)
 		.then(response => response.data);
 }
