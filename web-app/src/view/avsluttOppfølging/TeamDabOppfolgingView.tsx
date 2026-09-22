@@ -3,7 +3,7 @@ import { Card } from '../../component/card/card';
 import { BodyShort, Button, Heading, Textarea, TextField, Tag } from '@navikt/ds-react';
 import {
 	avsluttOppfolgingsperiode,
-	batchAvsluttOppfolging,
+	batchAvsluttOppfolging, batchKandidatForUtmelding, batchStartOppfolgingMedForrigeAoKontor,
 	hentUtmeldingskandidat,
 	UtmeldingskandidatDto
 } from '../../api/veilarboppfolging';
@@ -259,6 +259,15 @@ function UtmeldingskandidaterCard() {
 			setIsLoading(false);
 		}
 	}
+
+	const postUtmeldingskandidat = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const oppfolgingsperiodeIder = formData.get('oppfolgingsperiodeIder') as string;
+		setIsLoading(true);
+		await batchKandidatForUtmelding({ oppfolgingsperiodeIder: oppfolgingsperiodeIder.split(',').map(it => it.trim()) });
+		setIsLoading(false);
+	};
 
 	return (
 		<>
