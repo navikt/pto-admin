@@ -36,6 +36,10 @@ export function batchStartOppfolgingMedForrigeAoKontor(input: { aktorIdList: str
 	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/batch/start-oppfolging-med-forrige-kontor'), input);
 }
 
+export function batchKandidatForUtmelding(input: { oppfolgingsperiodeIder: string[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/batch/opprett-utmeldingskandidater-ikke-lenger-arbeidssoker'), input);
+}
+
 export interface AvslutningsStatusDto {
 	erArbeidssoeker: boolean;
 	erDeltakerIUngdomsprogrammet: boolean;
