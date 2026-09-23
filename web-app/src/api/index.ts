@@ -170,6 +170,12 @@ export function republiserVedtaksIderPaBigQuery(request: { vedtaksIDer: string[]
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-bigquery`, request);
 }
 
+export function publiserSakStatistikkRadPaBigQuery(request: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, {
+		sekvensnummer: parseInt(request)
+	});
+}
+
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {
