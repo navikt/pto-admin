@@ -7,7 +7,8 @@ import {
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh,
 	republiserVedtaksIderPaKafkaTopic,
-	republiserVedtaksIderPaBigQuery
+	republiserVedtaksIderPaBigQuery,
+	publiserSakStatistikkRadPaBigQuery
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import BekreftModal from '../../component/bekreft-modal';
@@ -49,6 +50,13 @@ export function RepubliseringKafka() {
 				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på BigQuery i veilarbvedtaksstotte."
 				inputLabel="VedtaksIDer"
 				request={republiserVedtaksIderPaBigQuery}
+			/>
+			<RepubliseringsKortMedInput
+				tittel="Publiser sakstatistikkrad på BigQuery"
+				beskrivelse="Publiser sakstatistikkrad på BigQuery basert på sekvensnummer."
+				inputLabel={'Sekvensnummer'}
+				request={publiserSakStatistikkRadPaBigQuery}
+				topicNavn={''}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
