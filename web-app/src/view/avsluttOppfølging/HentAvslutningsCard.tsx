@@ -64,47 +64,73 @@ export function HentAvslutningsstatusCard() {
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Kan avslutte</Table.DataCell>
 												<Table.DataCell>
-													{<BooleanTag value={item?.kanAvslutte} />}
+													{item?.kanAvslutte ? (
+														<BooleanTag value={item?.kanAvslutte} />
+													) : (
+														'null'
+													)}
 												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Under oppfølging</Table.DataCell>
 												<Table.DataCell>
-													{<BooleanTag value={item?.underOppfolging} />}
+													{item?.underOppfolging ? (
+														<BooleanTag value={item?.underOppfolging} />
+													) : (
+														'null'
+													)}
 												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Er arbeidssøker</Table.DataCell>
 												<Table.DataCell>
-													{<BooleanTag value={item?.erArbeidssoeker} />}
+													{item?.erArbeidssoeker ? (
+														<BooleanTag value={item?.erArbeidssoeker} />
+													) : (
+														'null'
+													)}
 												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Har AAP</Table.DataCell>
-												<Table.DataCell>{<BooleanTag value={item?.harAap} />}</Table.DataCell>
+												<Table.DataCell>
+													{item?.harAap ? <BooleanTag value={item?.harAap} /> : 'null'}
+												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Er ISERV</Table.DataCell>
-												<Table.DataCell>{<BooleanTag value={item?.erIserv} />}</Table.DataCell>
+												<Table.DataCell>
+													{item?.erIserv ? <BooleanTag value={item?.erIserv} /> : 'null'}
+												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">
 													Er deltaker i ungdomsprogrammet
 												</Table.DataCell>
 												<Table.DataCell>
-													{<BooleanTag value={item?.erDeltakerIUngdomsprogrammet} />}
+													{item?.erDeltakerIUngdomsprogrammet ? (
+														<BooleanTag value={item?.erDeltakerIUngdomsprogrammet} />
+													) : (
+														'null'
+													)}
 												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">Under KVP</Table.DataCell>
-												<Table.DataCell>{<BooleanTag value={item?.underKvp} />}</Table.DataCell>
+												<Table.DataCell>
+													{item?.underKvp ? <BooleanTag value={item?.underKvp} /> : 'null'}
+												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
 												<Table.DataCell scope="row">
 													Har aktive tiltaksdeltakelser
 												</Table.DataCell>
 												<Table.DataCell>
-													{<BooleanTag value={item?.harAktiveTiltaksdeltakelser} />}
+													{item?.harAktiveTiltaksdeltakelser ? (
+														<BooleanTag value={item?.harAktiveTiltaksdeltakelser} />
+													) : (
+														'null'
+													)}
 												</Table.DataCell>
 											</Table.Row>
 											<Table.Row key={periodeId}>
