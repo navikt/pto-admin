@@ -1,10 +1,11 @@
 import { fetchInstance, JobId } from './index';
 import { graphqlPayload } from './graphql';
 
-const veilarboppfolgingProxyUrl = (appPath: string) => `/api/veilarboppfolging/api/admin/veilarboppfolging${appPath}`;
-const veilarboppfolgingV2ProxyUrl = (appPath: string) =>
-	`/api/veilarboppfolging/api/v2/admin/veilarboppfolging${appPath}`;
-const veilarboppfolgingGraphqlUrl = `/api/veilarboppfolging/veilarboppfolging/api/graphql`;
+const routingPath = '/api/veilarboppfolging';
+
+const veilarboppfolgingProxyUrl = (appPath: string) => `${routingPath}/api/admin/veilarboppfolging${appPath}`;
+const veilarboppfolgingV2ProxyUrl = (appPath: string) => `${routingPath}/api/v2/admin/veilarboppfolging${appPath}`;
+const veilarboppfolgingGraphqlUrl = `${routingPath}/veilarboppfolging/api/graphql`;
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/republiser/oppfolgingsperioder'), {
@@ -37,7 +38,10 @@ export function batchStartOppfolgingMedForrigeAoKontor(input: { aktorIdList: str
 }
 
 export function batchKandidatForUtmelding(input: { oppfolgingsperiodeIder: string[] }): Promise<{ data: JobId }> {
-	return fetchInstance.post(veilarboppfolgingV2ProxyUrl('/batch/opprett-utmeldingskandidater-ikke-lenger-arbeidssoker'), input);
+	return fetchInstance.post(
+		veilarboppfolgingV2ProxyUrl('/batch/opprett-utmeldingskandidater-ikke-lenger-arbeidssoker'),
+		input
+	);
 }
 
 export interface AvslutningsStatusDto {
