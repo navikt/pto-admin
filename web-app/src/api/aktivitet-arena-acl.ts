@@ -1,9 +1,8 @@
 import { fetchInstance } from './index';
 
-const springContextPath = '/aktivitet-arena-acl';
 const apiPath = '/api/admin';
 const poaoAdminRoutingPath = '/api/aktivitet-arena-acl';
-const aktivitetArenaAclAdminUrl = `${poaoAdminRoutingPath}${springContextPath}${apiPath}`;
+const aktivitetArenaAclAdminUrl = `${poaoAdminRoutingPath}${apiPath}`;
 
 async function getJson<T>(path: string): Promise<{ data: T }> {
 	return fetchInstance.get<T>(`${aktivitetArenaAclAdminUrl}${path}`);
