@@ -30,7 +30,7 @@ spring:
       server:
         webflux:
           default-filters:
-            - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
+            - RewritePath=^(/api/admin)(/[a-z\d-]+)(.*), $\2$\1$\3
             - RemoveRequestHeader=Cookie
           routes:
             - id: veilarbvedtaksstotte
