@@ -34,7 +34,7 @@ class GatewayConfig {
 
             override fun filter(exchange: ServerWebExchange, chain: GatewayFilterChain): Mono<Void> {
                 val routeId =  (exchange.attributes[ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR] as? Route)?.id
-                log.info("RouteId: $routeId")
+                log.info("RouteId: $routeId - ${exchange.request.path}")
 
                 val token = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.get(0)?.replace("Bearer ", "")
                     ?: throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Feil ved oppslag av token")

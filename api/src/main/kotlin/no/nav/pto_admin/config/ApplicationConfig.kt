@@ -35,59 +35,55 @@ class ApplicationConfig {
 
     @Bean
     fun azureOboTokenProvider(oboClient: AzureAdOnBehalfOfTokenClient): AzureOboTokenProvider {
+        val env = if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
+
         val veilarbportefoljeTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(
-                String.format(
-                    "api://%s-gcp.obo.veilarbportefolje/.default",
-                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                ),
+                "api://${env}-gcp.obo.veilarbportefolje/.default",
                 token
             )
         }
         val veilarbvedtaksstotteTokenProvider: (token: String) -> String = { token ->
             oboClient.exchangeOnBehalfOfToken(
-                String.format(
-                    "api://%s-gcp.obo.veilarbvedtaksstotte/.default",
-                    if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-                ),
+                "api://${env}-gcp.obo.veilarbvedtaksstotte/.default",
                 token
             )
         }
         val veilarboppfolgingTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.poao.veilarboppfolging/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.poao.veilarboppfolging/.default",
+                token
+            )
         }
         val veilarbdialogTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.veilarbdialog/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.dab.veilarbdialog/.default",
+                token
+            )
         }
         val veilarbaktivitetTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.veilarbaktivitet/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.dab.veilarbaktivitet/.default",
+                token
+            )
         }
         val aoKontorTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.ao-oppfolgingskontor/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.dab.ao-oppfolgingskontor/.default",
+                token
+            )
         }
         val aktivitetArenaAclTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-gcp.dab.aktivitet-arena-acl/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.dab.aktivitet-arena-acl/.default",
+                token
+            )
         }
         val veilarbarenaTokenProvider: (token: String) -> String = { token ->
-            oboClient.exchangeOnBehalfOfToken(String.format(
-                "api://%s-fss.pto.veilarbarena/.default",
-                if (EnvironmentUtils.isProduction().orElseThrow()) "prod" else "dev"
-            ), token)
+            oboClient.exchangeOnBehalfOfToken(
+                "api://${env}-gcp.fss.pto.veilarbarena/.default",
+                token
+            )
         }
 
 

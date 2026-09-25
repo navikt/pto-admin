@@ -29,58 +29,70 @@ spring:
     gateway:
       server:
         webflux:
-          default-filters:
-            - RewritePath=(/api/admin)(/[a-z\d]+)(.*), $\2$\1$\3
-            - RemoveRequestHeader=Cookie
           routes:
             - id: veilarbvedtaksstotte
               uri: ${VEILARBVEDTAKSSTOTTE_ADMIN_API_URL}
               predicates:
                 - Path=/api/admin/veilarbvedtaksstotte/**
+              filters:
+                - RewritePath=^(/api/admin)(/[a-z\d-]+)(.*), $\2$\1$\3
+                - RemoveRequestHeader=Cookie
             - id: veilarboppfolging-v2
               uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
               predicates:
                 - Path=/api/veilarboppfolging/api/v2/admin/veilarboppfolging/**
               filters:
                 - RewritePath=/api/veilarboppfolging/api/v2/admin/veilarboppfolging/(?<remainingPath>.*), /veilarboppfolging/api/v2/admin/${remainingPath}
+                - RemoveRequestHeader=Cookie
             - id: veilarboppfolging
               uri: ${VEILARBOPPFOLGING_ADMIN_API_URL}
               predicates:
                 - Path=/api/veilarboppfolging/**
               filters:
                 - RewritePath=/api/veilarboppfolging/(?<remainingPath>.*), /${remainingPath}
+                - RemoveRequestHeader=Cookie
             - id: veilarbarena
               uri: ${VEILARBARENA_ADMIN_API_URL}
               predicates:
                 - Path=/api/admin/veilarbarena/**
+              filters:
+                - RewritePath=^(/api/admin)(/[a-z\d-]+)(.*), $\2$\1$\3
+                - RemoveRequestHeader=Cookie
             - id: veilarbdialog
               uri: ${VEILARBDIALOG_ADMIN_API_URL}
               predicates:
                 - Path=/api/veilarbdialog/**
               filters:
                 - RewritePath=/api/veilarbdialog/(?<remainingPath>.*), /${remainingPath}
+                - RemoveRequestHeader=Cookie
             - id: veilarbaktivitet
               uri: ${VEILARBAKTIVITET_ADMIN_API_URL}
               predicates:
                 - Path=/api/veilarbaktivitet/**
               filters:
                 - RewritePath=/api/veilarbaktivitet/(?<remainingPath>.*), /${remainingPath}
+                - RemoveRequestHeader=Cookie
             - id: veilarbportefolje
               uri: ${VEILARBPORTEFOLJE_ADMIN_API_URL}
               predicates:
                 - Path=/api/admin/veilarbportefolje/**
+              filters:
+                - RewritePath=^(/api/admin)(/[a-z\d-]+)(.*), $\2$\1$\3
+                - RemoveRequestHeader=Cookie
             - id: ao-oppfolgingskontor
               uri: ${AO_OPPFOLGINGSKONTOR_API_URL}
               predicates:
                 - Path=/api/ao-oppfolgingskontor/**
               filters:
                 - RewritePath=/api/ao-oppfolgingskontor/(?<remainingPath>.*), /${remainingPath}
+                - RemoveRequestHeader=Cookie
             - id: aktivitet-arena-acl
               uri: ${AKTIVITET_ARENA_ACL_API_URL}
               predicates:
                 - Path=/api/aktivitet-arena-acl/**
               filters:
                 - RewritePath=/api/aktivitet-arena-acl/(?<remainingPath>.*), /${remainingPath}
+                - RemoveRequestHeader=Cookie
 
 app:
   env:
