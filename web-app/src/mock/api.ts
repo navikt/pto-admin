@@ -182,6 +182,135 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),
+	http.get('/api/aktivitet-arena-acl/api/admin/deltaker/mapping', async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json([
+			{
+				deltakelseId: 101,
+				aktivitetId: 'arena-akt-1',
+				aktivitetKategori: 'ARBEIDSSOKER',
+				oppfolgingsPeriodeId: '550e8400-e29b-41d4-a716-446655440000',
+				oppfolgingsPeriodeSluttTidspunkt: null
+			},
+			{
+				deltakelseId: 102,
+				aktivitetId: 'arena-akt-2',
+				aktivitetKategori: 'TILTAK',
+				oppfolgingsPeriodeId: '550e8400-e29b-41d4-a716-446655440001',
+				oppfolgingsPeriodeSluttTidspunkt: '2025-01-01T00:00:00.000Z'
+			}
+		]);
+	}),
+	http.get('/api/aktivitet-arena-acl/api/admin/arena/:arenaId/data', async ({ params }) => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		const arenaId = String(params.arenaId);
+		return HttpResponse.json([
+			{
+				id: 1,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'INSERT',
+				operationPosition: '1',
+				operationTimestamp: '2026-09-22T10:30:00.000Z',
+				ingestStatus: 'FAILED',
+				ingestedTimestamp: null,
+				ingestAttempts: 4,
+				lastAttempted: '2026-09-25T12:15:00.000Z',
+				note: 'Feilet etter gjentatte forsøk.\nManglende referanse i Arena.'
+			},
+			{
+				id: 2,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'UPDATE',
+				operationPosition: '2',
+				operationTimestamp: '2026-09-24T08:00:00.000Z',
+				ingestStatus: 'IGNORED',
+				ingestedTimestamp: '2026-09-24T08:01:00.000Z',
+				ingestAttempts: 1,
+				lastAttempted: '2026-09-24T08:01:00.000Z',
+				note: 'Ignorert fordi raden allerede var identisk.'
+			},
+			{
+				id: 3,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'INSERT',
+				operationPosition: '3',
+				operationTimestamp: '2026-09-23T09:10:00.000Z',
+				ingestStatus: 'HANDLED',
+				ingestedTimestamp: '2026-09-23T09:11:00.000Z',
+				ingestAttempts: 1,
+				lastAttempted: '2026-09-23T09:11:00.000Z',
+				note: 'Håndtert normalt.'
+			},
+			{
+				id: 4,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'INSERT',
+				operationPosition: '4',
+				operationTimestamp: '2026-09-23T10:00:00.000Z',
+				ingestStatus: 'HANDLED_AND_IGNORED',
+				ingestedTimestamp: '2026-09-23T10:02:00.000Z',
+				ingestAttempts: 1,
+				lastAttempted: '2026-09-23T10:02:00.000Z',
+				note: 'Håndtert, men en del av payloaden ble ignorert.'
+			},
+			{
+				id: 5,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'INSERT',
+				operationPosition: '5',
+				operationTimestamp: '2026-09-25T07:30:00.000Z',
+				ingestStatus: 'QUEUED',
+				ingestedTimestamp: null,
+				ingestAttempts: 0,
+				lastAttempted: null,
+				note: 'Ligger i kø og venter på neste kjøring.'
+			},
+			{
+				id: 6,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'UPDATE',
+				operationPosition: '6',
+				operationTimestamp: '2026-09-20T14:00:00.000Z',
+				ingestStatus: 'RETRY',
+				ingestedTimestamp: null,
+				ingestAttempts: 2,
+				lastAttempted: '2026-09-25T11:00:00.000Z',
+				note: 'Skal prøves igjen etter transient feil.'
+			},
+			{
+				id: 7,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'DELETE',
+				operationPosition: '7',
+				operationTimestamp: '2026-09-18T13:15:00.000Z',
+				ingestStatus: 'INVALID',
+				ingestedTimestamp: null,
+				ingestAttempts: 1,
+				lastAttempted: '2026-09-18T13:16:00.000Z',
+				note: 'Ugyldig dataformat i kilde.'
+			},
+			{
+				id: 8,
+				arenaTableName: 'ARENA_OPPFOLGING',
+				arenaId,
+				operation: 'INSERT',
+				operationPosition: '8',
+				operationTimestamp: '2026-09-19T08:45:00.000Z',
+				ingestStatus: 'NEW',
+				ingestedTimestamp: null,
+				ingestAttempts: 0,
+				lastAttempted: null,
+				note: 'Ny rad som ikke er behandlet enda.'
+			}
+		]);
+	}),
 	http.post(`/api/veilarboppfolging/veilarboppfolging/api/graphql`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json({

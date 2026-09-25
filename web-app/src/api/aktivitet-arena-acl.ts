@@ -31,7 +31,7 @@ export interface AdminArenaDataDto {
 }
 
 export interface HentDeltakerAktivitetMappingRequest {
-	deltakerId: number;
+	deltakerId?: number;
 	funksjonellId?: string;
 	oppfolgingsperiodeId?: string;
 }
@@ -40,6 +40,9 @@ export function hentDeltakerAktivitetMapping(
 	request: HentDeltakerAktivitetMappingRequest
 ): Promise<{ data: AdminDeltakerAktivitetMappingDto[] }> {
 	const queryParams = new URLSearchParams();
+	if (request.deltakerId !== undefined) {
+		queryParams.set('deltakerId', String(request.deltakerId));
+	}
 	if (request.funksjonellId) {
 		queryParams.set('funksjonellId', request.funksjonellId);
 	}
