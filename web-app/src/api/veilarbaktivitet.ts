@@ -9,6 +9,7 @@ interface PeriodeMedAktiviteter {
 export interface Aktivitet {
 	id: string;
 	funksjonellId: string;
+	portefoljeKafkaOffsetAiven?: number;
 	versjon: number;
 	endretDato: string;
 	opprettetDato: string;

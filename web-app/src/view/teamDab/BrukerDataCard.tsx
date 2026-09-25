@@ -56,6 +56,7 @@ const AKTIVITET_FELT_OPTIONS: AktivitetFeltOption[] = [
 	{ label: 'Oppfølgingsperiode id', value: 'oppfolgingsperiodeId' },
 	{ label: 'Etikett', value: 'etikett' },
 	{ label: 'Kontaktperson', value: 'kontaktperson' },
+	{ label: 'Portefølje Kafka offset Aiven', value: 'portefoljeKafkaOffsetAiven' },
 	{ label: 'Arbeidsgiver', value: 'arbeidsgiver' },
 	{ label: 'Arbeidssted', value: 'arbeidssted' },
 	{ label: 'Stillingstittel', value: 'stillingsTittel' },
@@ -194,13 +195,13 @@ export const BrukerDataCard = () => {
 	};
 
 	return (
-		<Card className="large-card" innholdClassName=" flex flex-col space-y-4">
+		<Card className="" innholdClassName=" flex flex-col space-y-4">
 			<Heading size="medium">Brukerdata</Heading>
-			<form className="space-y-4" onSubmit={fetchBrukerData}>
+			<form className="flex flex-row gap-4 items-end space-y-4" onSubmit={fetchBrukerData}>
 				<TextField name="fnr" label={'Fnr'} />
 				<Button>Hent</Button>
 			</form>
-			<div className="flex items-end gap-2">
+			<div className="flex self-end items-end gap-2">
 				<Combobox
 					key={komboboxKey}
 					label="Legg til kolonne"
