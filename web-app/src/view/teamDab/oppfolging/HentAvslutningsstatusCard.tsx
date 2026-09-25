@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Card } from '../../component/card/card';
+import { Card } from '../../../component/card/card';
 import { Button, Heading, Textarea, BodyShort, Table } from '@navikt/ds-react';
-import { AvslutningsStatusDto, hentAvslutningStatusForOppfolgingsperioder } from '../../api/veilarboppfolging';
-import { BooleanTag } from '../../component/BooleanTag';
-import { IdWithCopy } from '../../component/IdWithCopy';
+import { AvslutningsStatusDto, hentAvslutningStatusForOppfolgingsperioder } from '../../../api/veilarboppfolging';
+import { BooleanTag } from '../../../component/BooleanTag';
+import { IdWithCopy } from '../../../component/IdWithCopy';
 
 export function HentAvslutningsstatusCard() {
 	const [oppfolgingsperiodeIder, setOppfolgingsperiodeIder] = useState('');

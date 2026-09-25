@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Alert, Button, Heading, Table } from '@navikt/ds-react';
 import { TrashIcon } from '@navikt/aksel-icons';
-import { deleteFailedMessage, FailedMessage, fetchFailedMessages } from '../../api/ao-oppfolgingskontor';
-import BekreftModal from '../../component/bekreft-modal';
-import { errorToast, successToast } from '../../utils/toast-utils';
+import { deleteFailedMessage, FailedMessage, fetchFailedMessages } from '../../../api/ao-oppfolgingskontor';
+import BekreftModal from '../../../component/bekreft-modal';
+import { errorToast, successToast } from '../../../utils/toast-utils';
 
 export const AoKontorFailedMessages = () => {
 	const [messages, setMessages] = useState<FailedMessage[] | null>(null);

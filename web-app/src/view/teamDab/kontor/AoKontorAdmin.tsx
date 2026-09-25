@@ -6,11 +6,11 @@ import {
 	republiserForUtvalgteOppfolgingsperioder,
 	republiserTombstone,
 	syncArenaKontorForBruker
-} from '../../api/ao-oppfolgingskontor';
+} from '../../../api/ao-oppfolgingskontor';
 import { Alert, Button, Heading, TextField } from '@navikt/ds-react';
 import { AoKontorFailedMessages } from './AoKontorFailedMessages';
-import { Card } from '../../component/card/card';
-import { republiserOppfolgingshendelse } from '../../api/veilarboppfolging';
+import { Card } from '../../../component/card/card';
+import { republiserOppfolgingshendelse } from '../../../api/veilarboppfolging';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);

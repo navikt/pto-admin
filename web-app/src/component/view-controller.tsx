@@ -3,7 +3,7 @@ import { useViewStore, ViewType } from '../store/view-store';
 import { Hovedside } from '../view/hovedside/hovedside';
 import { RepubliseringKafka } from '../view/republisering-kafka/republisering-kafka';
 import { Veilarbportefolje } from '../view/veilarbportefolje/veilarbportefolje';
-import { TeamDabOppfolgingView } from '../view/avsluttOppfølging/TeamDabOppfolgingView';
+import { TeamDabOppfolgingView } from '../view/teamDab/TeamDabOppfolgingView';
 import { Vedtaksstotte } from '../view/vedtaksstotte/vedtaksstotte';
 
 export function ViewController() {

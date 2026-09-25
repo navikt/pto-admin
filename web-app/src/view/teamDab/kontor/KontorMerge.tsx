@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Button, Heading, TextField } from '@navikt/ds-react';
-import { kontortelling, mergeKontorer } from '../../api/ao-oppfolgingskontor';
+import { kontortelling, mergeKontorer } from '../../../api/ao-oppfolgingskontor';
 
 export const KontorMerge = () => {
 	const [fraKontorer, setFraKontorer] = useState<string[]>(['']);

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Heading, TextField } from '@navikt/ds-react';
-import { Card } from '../../component/card/card';
-import { BooleanTag } from '../../component/BooleanTag';
-import { hentBrukerStatus, BrukerStatusDto } from '../../api/veilarboppfolging';
-import { UserQuery, UserQueryResultsContainer } from '../../component/UserQueryResults';
+import { Card } from '../../../component/card/card';
+import { BooleanTag } from '../../../component/BooleanTag';
+import { hentBrukerStatus, BrukerStatusDto } from '../../../api/veilarboppfolging';
+import { UserQuery, UserQueryResultsContainer } from '../../../component/UserQueryResults';
 
 export const BrukerStatusCard = () => {
 	const [results, setResults] = useState<UserQuery[]>([]);

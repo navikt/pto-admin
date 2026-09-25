@@ -4,9 +4,9 @@ import {
 	hentKontorerMedHistorikk,
 	type KontorHistorikkQueryDto,
 	type KontorTilhorigheter as KontorTilhorigheterDto
-} from '../../api/ao-oppfolgingskontor';
+} from '../../../api/ao-oppfolgingskontor';
 import dayjs from 'dayjs';
-import { UserQuery, UserQueryResultsContainer } from '../../component/UserQueryResults';
+import { UserQuery, UserQueryResultsContainer } from '../../../component/UserQueryResults';
 
 const KontorCard = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
