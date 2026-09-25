@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 import { hentOppfolgingsperioder } from '../../api/veilarboppfolging';
-import { Aktivitet, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
-import { Button, TextField, Heading, Loader, Accordion, ExpansionCard, Timeline, Label, Table } from '@navikt/ds-react';
+import { Aktivitet, DEFAULT_AKTIVITET_FELTER, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
+import { Button, TextField, Heading, Loader, Timeline, Table, UNSAFE_Combobox as Combobox } from '@navikt/ds-react';
 import { Card } from '../../component/card/card';
 import { BooleanTag } from '../../component/BooleanTag';
 import { IdWithCopy } from '../../component/IdWithCopy';
@@ -18,21 +18,142 @@ interface PeriodeMedDialoger {
 	tiltaksAktiviteter: TiltaksAktivitet[];
 }
 
+interface AktivitetKolonne {
+	label: string;
+	felt: string;
+}
+
+interface AktivitetFeltOption {
+	label: string;
+	value: string;
+}
+
+const DEFAULT_AKTIVITET_KOLONNER: AktivitetKolonne[] = [
+	{ label: 'Versjon', felt: 'versjon' },
+	{ label: 'Sist endret', felt: 'endretDato' }
+];
+
+const RESERVERT_AKTIVITET_FELTER = ['id', ...DEFAULT_AKTIVITET_KOLONNER.map(kolonne => kolonne.felt)];
+
+const AKTIVITET_FELT_OPTIONS: AktivitetFeltOption[] = [
+	{ label: 'Tittel', value: 'tittel' },
+	{ label: 'Beskrivelse', value: 'beskrivelse' },
+	{ label: 'Lenke', value: 'lenke' },
+	{ label: 'Fra dato', value: 'fraDato' },
+	{ label: 'Til dato', value: 'tilDato' },
+	{ label: 'Opprettet dato', value: 'opprettetDato' },
+	{ label: 'Endret dato', value: 'endretDato' },
+	{ label: 'Endret av', value: 'endretAv' },
+	{ label: 'Avsluttet kommentar', value: 'avsluttetKommentar' },
+	{ label: 'Avtalt', value: 'avtalt' },
+	{ label: 'Forhåndsorientering id', value: 'forhaandsorientering.id' },
+	{ label: 'Forhåndsorientering type', value: 'forhaandsorientering.type' },
+	{ label: 'Forhåndsorientering tekst', value: 'forhaandsorientering.tekst' },
+	{ label: 'Forhåndsorientering lest dato', value: 'forhaandsorientering.lestDato' },
+	{ label: 'Endret av type', value: 'endretAvType' },
+	{ label: 'Transaksjonstype', value: 'transaksjonsType' },
+	{ label: 'Målid', value: 'malid' },
+	{ label: 'Oppfølgingsperiode id', value: 'oppfolgingsperiodeId' },
+	{ label: 'Etikett', value: 'etikett' },
+	{ label: 'Kontaktperson', value: 'kontaktperson' },
+	{ label: 'Arbeidsgiver', value: 'arbeidsgiver' },
+	{ label: 'Arbeidssted', value: 'arbeidssted' },
+	{ label: 'Stillingstittel', value: 'stillingsTittel' },
+	{ label: 'Hensikt', value: 'hensikt' },
+	{ label: 'Oppfølging', value: 'oppfolging' },
+	{ label: 'Antall stillinger søkes', value: 'antallStillingerSokes' },
+	{ label: 'Antall stillinger i uken', value: 'antallStillingerIUken' },
+	{ label: 'Avtale oppfølging', value: 'avtaleOppfolging' },
+	{ label: 'Jobbstatus', value: 'jobbStatus' },
+	{ label: 'Ansettelsesforhold', value: 'ansettelsesforhold' },
+	{ label: 'Arbeidstid', value: 'arbeidstid' },
+	{ label: 'Behandling type', value: 'behandlingType' },
+	{ label: 'Behandling sted', value: 'behandlingSted' },
+	{ label: 'Effekt', value: 'effekt' },
+	{ label: 'Behandling oppfølging', value: 'behandlingOppfolging' },
+	{ label: 'Adresse', value: 'adresse' },
+	{ label: 'Forberedelser', value: 'forberedelser' },
+	{ label: 'Kanal', value: 'kanal' },
+	{ label: 'Referat', value: 'referat' },
+	{ label: 'Referat publisert', value: 'erReferatPublisert' },
+	{ label: 'CV kan deles', value: 'stillingFraNavData.cvKanDelesData.kanDeles' },
+	{ label: 'CV delt endret tidspunkt', value: 'stillingFraNavData.cvKanDelesData.endretTidspunkt' },
+	{ label: 'CV delt endret av', value: 'stillingFraNavData.cvKanDelesData.endretAv' },
+	{ label: 'CV delt endret av type', value: 'stillingFraNavData.cvKanDelesData.endretAvType' },
+	{ label: 'CV delt avtalt dato', value: 'stillingFraNavData.cvKanDelesData.avtaltDato' },
+	{ label: 'Søknadsfrist', value: 'stillingFraNavData.soknadsfrist' },
+	{ label: 'Svarfrist', value: 'stillingFraNavData.svarfrist' },
+	{ label: 'Stilling fra NAV arbeidsgiver', value: 'stillingFraNavData.arbeidsgiver' },
+	{ label: 'Bestillings id', value: 'stillingFraNavData.bestillingsId' },
+	{ label: 'Stillings id', value: 'stillingFraNavData.stillingsId' },
+	{ label: 'Stilling fra NAV arbeidssted', value: 'stillingFraNavData.arbeidssted' },
+	{ label: 'Søknadsstatus', value: 'stillingFraNavData.soknadsstatus' },
+	{ label: 'Livsløpsstatus', value: 'stillingFraNavData.livslopsStatus' },
+	{ label: 'Varsel id', value: 'stillingFraNavData.varselId' },
+	{ label: 'Detaljer', value: 'stillingFraNavData.detaljer' },
+	{ label: 'Kontaktperson navn', value: 'stillingFraNavData.kontaktpersonData.navn' },
+	{ label: 'Kontaktperson tittel', value: 'stillingFraNavData.kontaktpersonData.tittel' },
+	{ label: 'Kontaktperson mobil', value: 'stillingFraNavData.kontaktpersonData.mobil' },
+	{ label: 'Ekstern aktivitet type', value: 'eksternAktivitet.type' }
+];
+
 export const BrukerDataCard = () => {
 	const [oppfolgingsperioder, setOppfolgingsperioder] = useState<PeriodeMedDialoger[] | null>(null);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState(false);
+	const [aktivitetKolonner, setAktivitetKolonner] = useState<AktivitetKolonne[]>(DEFAULT_AKTIVITET_KOLONNER);
+	const [fnr, setFnr] = useState<string>('');
+	const [valgtKolonneFelt, setValgtKolonneFelt] = useState<string>('');
+	const [komboboxKey, setKomboboxKey] = useState(0);
 
-	const fetchBrukerData = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-		const fnr = formData.get('fnr') as string;
-		if (!fnr) {
-			setError('Fnr er påkrevd');
+	const tilgjengeligeKolonner = useMemo(
+		() =>
+			AKTIVITET_FELT_OPTIONS.filter(
+				option =>
+					!RESERVERT_AKTIVITET_FELTER.includes(option.value) &&
+					!aktivitetKolonner.some(kolonne => kolonne.felt === option.value)
+			),
+		[aktivitetKolonner]
+	);
+
+	const leggTilAktivitetKolonne = (felt: string) => {
+		const valgtFelt = tilgjengeligeKolonner.find(option => option.value === felt);
+		if (!valgtFelt) {
 			return;
 		}
+
+		const nesteKolonner = [...aktivitetKolonner, { label: valgtFelt.label, felt: valgtFelt.value }];
+		setAktivitetKolonner(nesteKolonner);
+		setValgtKolonneFelt('');
+		setKomboboxKey(current => current + 1);
+
+		if (fnr) {
+			void fetchBrukerDataMedFnr(fnr, nesteKolonner);
+		}
+	};
+
+	const getValueByPath = (value: unknown, path: string) =>
+		path.split('.').reduce<unknown>((acc, key) => {
+			if (!acc || typeof acc !== 'object') {
+				return undefined;
+			}
+
+			return (acc as Record<string, unknown>)[key];
+		}, value);
+
+	const fetchBrukerDataMedFnr = (fnr: string, kolonner: AktivitetKolonne[]) => {
 		setIsLoading(true);
-		Promise.all([hentDialoger({ fnr }), hentOppfolgingsperioder({ fnr }), hentAktiviteter({ fnr })])
+		return Promise.all([
+			hentDialoger({ fnr }),
+			hentOppfolgingsperioder({ fnr }),
+			hentAktiviteter({
+				fnr,
+				aktivitetFelter: [
+					...DEFAULT_AKTIVITET_FELTER,
+					...kolonner.map(kolonne => kolonne.felt).filter((felt, index, list) => list.indexOf(felt) === index)
+				]
+			})
+		])
 			.then(([dialogerResponse, oppfolgingsperioderResponse, aktiviteterResponse]) => {
 				const perioderMedAktiviteter = aktiviteterResponse?.data?.perioder || [];
 				const tiltaksAktiviteter = aktiviteterResponse?.data?.tiltaksaktiviteter || [];
@@ -60,6 +181,18 @@ export const BrukerDataCard = () => {
 			});
 	};
 
+	const fetchBrukerData = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const submittedFnr = formData.get('fnr') as string;
+		if (!submittedFnr) {
+			setError('Fnr er påkrevd');
+			return;
+		}
+		setFnr(submittedFnr);
+		void fetchBrukerDataMedFnr(submittedFnr, aktivitetKolonner);
+	};
+
 	return (
 		<Card className="large-card" innholdClassName=" flex flex-col space-y-4">
 			<Heading size="medium">Brukerdata</Heading>
@@ -67,6 +200,32 @@ export const BrukerDataCard = () => {
 				<TextField name="fnr" label={'Fnr'} />
 				<Button>Hent</Button>
 			</form>
+			<div className="flex items-end gap-2">
+				<Combobox
+					key={komboboxKey}
+					label="Legg til kolonne"
+					placeholder="Velg felt"
+					options={tilgjengeligeKolonner}
+					selectedOptions={
+						valgtKolonneFelt
+							? tilgjengeligeKolonner.filter(option => option.value === valgtKolonneFelt)
+							: []
+					}
+					onToggleSelected={(felt, selected) => {
+						setValgtKolonneFelt(selected ? felt : '');
+					}}
+					shouldAutocomplete
+				/>
+				<Button
+					type="button"
+					size="small"
+					variant="secondary"
+					disabled={!valgtKolonneFelt}
+					onClick={() => leggTilAktivitetKolonne(valgtKolonneFelt)}
+				>
+					Legg til
+				</Button>
+			</div>
 
 			{isLoading && <Loader size="small" />}
 			{error && <div className="error-message">{error}</div>}
@@ -91,85 +250,100 @@ export const BrukerDataCard = () => {
 			)}
 			{oppfolgingsperioder &&
 				oppfolgingsperioder.map((periode: PeriodeMedDialoger) => (
-					<div key={periode.id} className="mt-4 bg-gray-100 p-1 border border-gray-200">
+					<div key={periode.id} className="mt-6 bg-gray-100 p-2 border border-gray-200 rounded-xl">
 						<div className="flex ml-2 items-center">
-							<span>Periode</span>
+							<span className="font-bold">Periode:</span>
 							<IdWithCopy id={periode.id} label="" />
 						</div>
-						<div className=" bg-white m-1 border-gray-200 border p-1">
-							<div>
-								<span className="font-bold">Start:</span>{' '}
-								{new Date(periode.startTidspunkt).toISOString()}
-							</div>
-							<div>
-								<span className="font-bold">Slutt:</span>{' '}
-								{periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toISOString() : 'Aktiv'}
-							</div>
-							<div>
-								<span className="font-bold">Startet begrunnelse:</span>
-								{periode.startetBegrunnelse}
+						<div className="flex flex-col gap-8 p-1">
+							<div className="bg-white shadow-sm rounded-xl p-2">
+								<div className="flex-1">
+									<span className="font-medium">Start:</span>{' '}
+									{new Date(periode.startTidspunkt).toISOString()}
+								</div>
+								<div>
+									<span className="font-medium">Slutt:</span>{' '}
+									{periode.sluttTidspunkt ? new Date(periode.sluttTidspunkt).toISOString() : 'Aktiv'}
+								</div>
+								<div>
+									<span className="font-medium">Startet begrunnelse:</span>
+									{periode.startetBegrunnelse}
+								</div>
 							</div>
 
-							<div className="mt-4  font-bold">Dialoger ({periode.dialoger.length})</div>
-							<Table size="small">
-								<Table.Header>
-									<Table.Row>
-										<Table.HeaderCell />
-										<Table.HeaderCell>Id</Table.HeaderCell>
-										<Table.HeaderCell>Opprettet</Table.HeaderCell>
-									</Table.Row>
-								</Table.Header>
-								<Table.Body>
-									{periode.dialoger.map(dialog => (
-										<Table.ExpandableRow
-											aria-label={`Dialog ${dialog.id}`}
-											key={dialog.id}
-											content={
-												<div className="ml-4">
-													<div>
-														Venter på svar fra: <BooleanTag value={dialog.venterPaSvar} />
-													</div>
-													<div>
-														Ferdig behandlet: <BooleanTag value={dialog.ferdigBehandlet} />
-													</div>
-													<div>
-														Lest: <BooleanTag value={dialog.lest} />
-													</div>
-													<div>
-														Er lest av bruker: <BooleanTag value={dialog.erLestAvBruker} />
-													</div>
-													<div>
-														Historisk: <BooleanTag value={dialog.historisk} />
-													</div>
-													<div>Opprettet dato: {dialog.opprettetDato}</div>
-													<div>Siste dato: {dialog.sisteDato}</div>
-													{dialog.lestAvBrukerTidspunkt && (
-														<div>
-															Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}
-														</div>
-													)}
-												</div>
-											}
-										>
-											<Table.DataCell>
-												<IdWithCopy id={dialog.id} label="DialogId" />
-											</Table.DataCell>
-											<Table.DataCell>
-												{new Date(dialog.opprettetDato).toLocaleString()}
-											</Table.DataCell>
-										</Table.ExpandableRow>
-									))}
-								</Table.Body>
-							</Table>
-							<div className="mt-2 space-y-2">
-								<div className="font-bold">Aktiviteter ({periode.aktiviteter.length})</div>
-								<Table size="small">
+							<div className="bg-white shadow-sm rounded-xl ">
+								<div className="font-bold p-2 border-b border-dashed border-gray-400">
+									Dialoger ({periode.dialoger.length})
+								</div>
+								<Table size="small" className="p-2">
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell />
 											<Table.HeaderCell>Id</Table.HeaderCell>
-											<Table.HeaderCell>Versjon</Table.HeaderCell>
-											<Table.HeaderCell>Sist endret</Table.HeaderCell>
+											<Table.HeaderCell>Opprettet</Table.HeaderCell>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										{periode.dialoger.map(dialog => (
+											<Table.ExpandableRow
+												aria-label={`Dialog ${dialog.id}`}
+												key={dialog.id}
+												content={
+													<div className="ml-4">
+														<div>
+															Venter på svar fra:{' '}
+															<BooleanTag value={dialog.venterPaSvar} />
+														</div>
+														<div>
+															Ferdig behandlet:{' '}
+															<BooleanTag value={dialog.ferdigBehandlet} />
+														</div>
+														<div>
+															Lest: <BooleanTag value={dialog.lest} />
+														</div>
+														<div>
+															Er lest av bruker:{' '}
+															<BooleanTag value={dialog.erLestAvBruker} />
+														</div>
+														<div>
+															Historisk: <BooleanTag value={dialog.historisk} />
+														</div>
+														<div>Opprettet dato: {dialog.opprettetDato}</div>
+														<div>Siste dato: {dialog.sisteDato}</div>
+														{dialog.lestAvBrukerTidspunkt && (
+															<div>
+																Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}
+															</div>
+														)}
+													</div>
+												}
+											>
+												<Table.DataCell>
+													<IdWithCopy id={dialog.id} label="DialogId" />
+												</Table.DataCell>
+												<Table.DataCell>
+													{new Date(dialog.opprettetDato).toLocaleString()}
+												</Table.DataCell>
+											</Table.ExpandableRow>
+										))}
+									</Table.Body>
+								</Table>
+							</div>
+							<div className="bg-white shadow-sm rounded-xl mt-2 space-y-2">
+								<div className="font-bold border-b border-dashed border-gray-400 p-2">
+									Aktiviteter ({periode.aktiviteter.length})
+								</div>
+								<Table size="small" className="p-2">
+									<Table.Header>
+										<Table.Row>
+											<Table.HeaderCell />
+											<Table.HeaderCell>Id</Table.HeaderCell>
+											{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
+												<Table.HeaderCell key={kolonne.felt}>{kolonne.label}</Table.HeaderCell>
+											))}
+											{aktivitetKolonner.map(kolonne => (
+												<Table.HeaderCell key={kolonne.felt}>{kolonne.label}</Table.HeaderCell>
+											))}
 										</Table.Row>
 									</Table.Header>
 									<Table.Body>
@@ -201,16 +375,26 @@ export const BrukerDataCard = () => {
 												<Table.DataCell>
 													<IdWithCopy id={aktivitet.id} label="AktivitetId" />
 												</Table.DataCell>
-												<Table.DataCell>{aktivitet.versjon}</Table.DataCell>
-												<Table.DataCell>{aktivitet.endretDato}</Table.DataCell>
+												{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
+													<Table.DataCell key={kolonne.felt}>
+														{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
+													</Table.DataCell>
+												))}
+												{aktivitetKolonner.map(kolonne => (
+													<Table.DataCell key={kolonne.felt}>
+														{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
+													</Table.DataCell>
+												))}
 											</Table.ExpandableRow>
 										))}
 									</Table.Body>
 								</Table>
-								<div className="font-bold">
+							</div>
+							<div className="bg-white shadow-sm rounded-xl">
+								<div className="font-bold p-2 border-b border-dashed border-gray-400">
 									Gamle arenaaktiviteter (tiltaksaktiviteter) ({periode.tiltaksAktiviteter.length})
 								</div>
-								<Table size="small">
+								<Table size="small" className="p-2">
 									<Table.Header>
 										<Table.Row>
 											<Table.HeaderCell />

@@ -35,22 +35,65 @@ export interface TiltaksAktivitet {
 	oppfolgingsperiodeId: string;
 }
 
-const graphqlQuery = `
+export const DEFAULT_AKTIVITET_FELTER = [
+	'id',
+	'funksjonellId',
+	'versjon',
+	'endretDato',
+	'opprettetDato',
+	'status',
+	'historisk',
+	'type',
+	'eksternAktivitet.type'
+];
+
+interface SelectionTree {
+	[key: string]: SelectionTree | true;
+}
+
+const leggTilFelt = (tree: SelectionTree, felt: string) => {
+	const deler = felt.split('.').filter(Boolean);
+	let currentTree = tree;
+
+	deler.forEach((del, index) => {
+		const erSiste = index === deler.length - 1;
+		if (erSiste) {
+			currentTree[del] = true;
+			return;
+		}
+
+		const existing = currentTree[del];
+		if (!existing || existing === true) {
+			currentTree[del] = {};
+		}
+
+		currentTree = currentTree[del] as SelectionTree;
+	});
+};
+
+const byggUtvalg = (tree: SelectionTree, indent = 2): string => {
+	const pad = '\t'.repeat(indent);
+	return Object.entries(tree)
+		.map(([felt, verdi]) => {
+			if (verdi === true) {
+				return `${pad}${felt}`;
+			}
+
+			return `${pad}${felt} {\n${byggUtvalg(verdi, indent + 1)}\n${pad}}`;
+		})
+		.join('\n');
+};
+
+const graphqlQuery = (aktivitetFelter: string[]) => {
+	const tree: SelectionTree = {};
+	aktivitetFelter.forEach(felt => leggTilFelt(tree, felt));
+
+	return `
 query hentAktiviteter($fnr: String!) {
 	perioder(fnr: $fnr) {
 		id
 		aktiviteter {
-			id
-			funksjonellId
-			versjon
-			endretDato
-			opprettetDato
-			status
-			historisk
-			type
-			eksternAktivitet {
-				type
-			}
+${byggUtvalg(tree)}
 		}
 	}
 	tiltaksaktiviteter(fnr: $fnr) {
@@ -65,6 +108,7 @@ query hentAktiviteter($fnr: String!) {
 	}
 }
 `;
+};
 
 const aktivitetQuery = `
 query hentAktivitet($aktivitetId: String!, $versjon: String) {
@@ -76,11 +120,13 @@ query hentAktivitet($aktivitetId: String!, $versjon: String) {
 
 export function hentAktiviteter(payload: {
 	fnr: string;
+	aktivitetFelter?: string[];
 }): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
+	const query = graphqlQuery(payload.aktivitetFelter ?? DEFAULT_AKTIVITET_FELTER);
 	return fetchInstance
 		.post<{
 			data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] };
-		}>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(graphqlQuery, payload.fnr))
+		}>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(query, payload.fnr))
 		.then(response => response.data);
 }
 
