@@ -597,6 +597,10 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),
+	http.post(`/api/admin/veilarbportefolje/lastInnUforetrygd`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
 	http.post(`/api/admin/veilarbvedtaksstotte/aktoridSjekk`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(true);
