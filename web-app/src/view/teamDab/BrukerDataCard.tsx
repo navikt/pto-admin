@@ -2,7 +2,16 @@ import React, { useMemo, useState } from 'react';
 import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 import { hentOppfolgingsperioder } from '../../api/veilarboppfolging';
 import { Aktivitet, DEFAULT_AKTIVITET_FELTER, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
-import { Button, TextField, Heading, Loader, Timeline, Table, UNSAFE_Combobox as Combobox } from '@navikt/ds-react';
+import {
+	Button,
+	TextField,
+	Heading,
+	Loader,
+	Timeline,
+	Table,
+	UNSAFE_Combobox as Combobox,
+	ExpansionCard
+} from '@navikt/ds-react';
 import { Card } from '../../component/card/card';
 import { BooleanTag } from '../../component/BooleanTag';
 import { IdWithCopy } from '../../component/IdWithCopy';
@@ -257,7 +266,7 @@ export const BrukerDataCard = () => {
 							<IdWithCopy id={periode.id} label="" />
 						</div>
 						<div className="flex flex-col gap-8 p-1">
-							<div className="bg-white shadow-sm rounded-xl p-2">
+							<div className="bg-white border border-gray-500 rounded-xl p-2">
 								<div className="flex-1">
 									<span className="font-medium">Start:</span>{' '}
 									{new Date(periode.startTidspunkt).toISOString()}
@@ -272,163 +281,183 @@ export const BrukerDataCard = () => {
 								</div>
 							</div>
 
-							<div className="bg-white shadow-sm rounded-xl ">
-								<div className="font-bold p-2 border-b border-dashed border-gray-400">
-									Dialoger ({periode.dialoger.length})
-								</div>
-								<Table size="small" className="p-2">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell />
-											<Table.HeaderCell>Id</Table.HeaderCell>
-											<Table.HeaderCell>Opprettet</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										{periode.dialoger.map(dialog => (
-											<Table.ExpandableRow
-												aria-label={`Dialog ${dialog.id}`}
-												key={dialog.id}
-												content={
-													<div className="ml-4">
-														<div>
-															Venter på svar fra:{' '}
-															<BooleanTag value={dialog.venterPaSvar} />
-														</div>
-														<div>
-															Ferdig behandlet:{' '}
-															<BooleanTag value={dialog.ferdigBehandlet} />
-														</div>
-														<div>
-															Lest: <BooleanTag value={dialog.lest} />
-														</div>
-														<div>
-															Er lest av bruker:{' '}
-															<BooleanTag value={dialog.erLestAvBruker} />
-														</div>
-														<div>
-															Historisk: <BooleanTag value={dialog.historisk} />
-														</div>
-														<div>Opprettet dato: {dialog.opprettetDato}</div>
-														<div>Siste dato: {dialog.sisteDato}</div>
-														{dialog.lestAvBrukerTidspunkt && (
+							<ExpansionCard size="small" aria-labelledby={'dialoger'}>
+								<ExpansionCard.Header>
+									<ExpansionCard.Title size="small">
+										Dialoger ({periode.dialoger.length})
+									</ExpansionCard.Title>
+								</ExpansionCard.Header>
+								<ExpansionCard.Content>
+									<Table size="small" className="p-2">
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell />
+												<Table.HeaderCell>Id</Table.HeaderCell>
+												<Table.HeaderCell>Opprettet</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+										<Table.Body>
+											{periode.dialoger.map(dialog => (
+												<Table.ExpandableRow
+													aria-label={`Dialog ${dialog.id}`}
+													key={dialog.id}
+													content={
+														<div className="ml-4">
 															<div>
-																Lest av bruker tidspunkt: {dialog.lestAvBrukerTidspunkt}
+																Venter på svar fra:{' '}
+																<BooleanTag value={dialog.venterPaSvar} />
 															</div>
-														)}
-													</div>
-												}
-											>
-												<Table.DataCell>
-													<IdWithCopy id={dialog.id} label="DialogId" />
-												</Table.DataCell>
-												<Table.DataCell>
-													{new Date(dialog.opprettetDato).toLocaleString()}
-												</Table.DataCell>
-											</Table.ExpandableRow>
-										))}
-									</Table.Body>
-								</Table>
-							</div>
-							<div className="bg-white shadow-sm rounded-xl mt-2 space-y-2">
-								<div className="font-bold border-b border-dashed border-gray-400 p-2">
-									Aktiviteter ({periode.aktiviteter.length})
-								</div>
-								<Table size="small" className="p-2">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell />
-											<Table.HeaderCell>Id</Table.HeaderCell>
-											{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
-												<Table.HeaderCell key={kolonne.felt}>{kolonne.label}</Table.HeaderCell>
-											))}
-											{aktivitetKolonner.map(kolonne => (
-												<Table.HeaderCell key={kolonne.felt}>{kolonne.label}</Table.HeaderCell>
-											))}
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										{periode.aktiviteter.map(aktivitet => (
-											<Table.ExpandableRow
-												key={aktivitet.id}
-												content={
-													<div className="ml-4">
-														<IdWithCopy
-															id={aktivitet.funksjonellId}
-															label="FunksjonellId"
-														/>
-														<div>Endret dato: {aktivitet.endretDato}</div>
-														<div>Opprettet dato: {aktivitet.opprettetDato}</div>
-														<div>Status: {aktivitet.status}</div>
-														<div>
-															Historisk: <BooleanTag value={aktivitet.historisk} />
-														</div>
-														<div>Type: {aktivitet.type}</div>
-														{aktivitet.type === 'EKSTERNAKTIVITET' ? (
 															<div>
-																Ekstern aktivitet type:{' '}
-																{aktivitet.eksternAktivitet.type}
+																Ferdig behandlet:{' '}
+																<BooleanTag value={dialog.ferdigBehandlet} />
 															</div>
-														) : null}
-													</div>
-												}
-											>
-												<Table.DataCell>
-													<IdWithCopy id={aktivitet.id} label="AktivitetId" />
-												</Table.DataCell>
-												{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
-													<Table.DataCell key={kolonne.felt}>
-														{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
+															<div>
+																Lest: <BooleanTag value={dialog.lest} />
+															</div>
+															<div>
+																Er lest av bruker:{' '}
+																<BooleanTag value={dialog.erLestAvBruker} />
+															</div>
+															<div>
+																Historisk: <BooleanTag value={dialog.historisk} />
+															</div>
+															<div>Opprettet dato: {dialog.opprettetDato}</div>
+															<div>Siste dato: {dialog.sisteDato}</div>
+															{dialog.lestAvBrukerTidspunkt && (
+																<div>
+																	Lest av bruker tidspunkt:{' '}
+																	{dialog.lestAvBrukerTidspunkt}
+																</div>
+															)}
+														</div>
+													}
+												>
+													<Table.DataCell>
+														<IdWithCopy id={dialog.id} label="DialogId" />
 													</Table.DataCell>
+													<Table.DataCell>
+														{new Date(dialog.opprettetDato).toLocaleString()}
+													</Table.DataCell>
+												</Table.ExpandableRow>
+											))}
+										</Table.Body>
+									</Table>
+								</ExpansionCard.Content>
+							</ExpansionCard>
+
+							<ExpansionCard size="small" aria-labelledby={'aktiviteter'}>
+								<ExpansionCard.Header>
+									<ExpansionCard.Title size="small">
+										Aktiviteter ({periode.aktiviteter.length})
+									</ExpansionCard.Title>
+								</ExpansionCard.Header>
+								<ExpansionCard.Content>
+									<Table size="small" className="p-2">
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell />
+												<Table.HeaderCell>Id</Table.HeaderCell>
+												{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
+													<Table.HeaderCell key={kolonne.felt}>
+														{kolonne.label}
+													</Table.HeaderCell>
 												))}
 												{aktivitetKolonner.map(kolonne => (
-													<Table.DataCell key={kolonne.felt}>
-														{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
-													</Table.DataCell>
+													<Table.HeaderCell key={kolonne.felt}>
+														{kolonne.label}
+													</Table.HeaderCell>
 												))}
-											</Table.ExpandableRow>
-										))}
-									</Table.Body>
-								</Table>
-							</div>
-							<div className="bg-white shadow-sm rounded-xl">
-								<div className="font-bold p-2 border-b border-dashed border-gray-400">
-									Gamle arenaaktiviteter (tiltaksaktiviteter) ({periode.tiltaksAktiviteter.length})
-								</div>
-								<Table size="small" className="p-2">
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell />
-											<Table.HeaderCell>Id</Table.HeaderCell>
-											<Table.HeaderCell>Opprettet dato</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-									<Table.Body>
-										{periode.tiltaksAktiviteter.map(aktivitet => (
-											<Table.ExpandableRow
-												key={aktivitet.id}
-												content={
-													<div className="ml-4">
-														<div>Fra dato: {aktivitet.fraDato}</div>
-														<div>Til dato: {aktivitet.tilDato}</div>
-														<div>Opprettet dato: {aktivitet.opprettetDato}</div>
-														<div>Status: {aktivitet.status}</div>
-														<div>
-															Avtalt: <BooleanTag value={aktivitet.avtalt} />
+											</Table.Row>
+										</Table.Header>
+										<Table.Body>
+											{periode.aktiviteter.map(aktivitet => (
+												<Table.ExpandableRow
+													key={aktivitet.id}
+													content={
+														<div className="ml-4">
+															<IdWithCopy
+																id={aktivitet.funksjonellId}
+																label="FunksjonellId"
+															/>
+															<div>Endret dato: {aktivitet.endretDato}</div>
+															<div>Opprettet dato: {aktivitet.opprettetDato}</div>
+															<div>Status: {aktivitet.status}</div>
+															<div>
+																Historisk: <BooleanTag value={aktivitet.historisk} />
+															</div>
+															<div>Type: {aktivitet.type}</div>
+															{aktivitet.type === 'EKSTERNAKTIVITET' ? (
+																<div>
+																	Ekstern aktivitet type:{' '}
+																	{aktivitet.eksternAktivitet.type}
+																</div>
+															) : null}
 														</div>
-														<div>Type: {aktivitet.type}</div>
-													</div>
-												}
-											>
-												<Table.DataCell>
-													<IdWithCopy id={aktivitet.id} label="AktivitetId" />
-												</Table.DataCell>
-												<Table.DataCell>{aktivitet.opprettetDato}</Table.DataCell>
-											</Table.ExpandableRow>
-										))}
-									</Table.Body>
-								</Table>
-							</div>
+													}
+												>
+													<Table.DataCell>
+														<IdWithCopy id={aktivitet.id} label="AktivitetId" />
+													</Table.DataCell>
+													{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
+														<Table.DataCell key={kolonne.felt}>
+															{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
+														</Table.DataCell>
+													))}
+													{aktivitetKolonner.map(kolonne => (
+														<Table.DataCell key={kolonne.felt}>
+															{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
+														</Table.DataCell>
+													))}
+												</Table.ExpandableRow>
+											))}
+										</Table.Body>
+									</Table>
+								</ExpansionCard.Content>
+							</ExpansionCard>
+
+							<ExpansionCard size="small" aria-labelledby={'gamle arenaaktiviteter'}>
+								<ExpansionCard.Header>
+									<ExpansionCard.Title size="small">
+										Gamle arenaaktiviteter (tiltaksaktiviteter) ({periode.tiltaksAktiviteter.length}
+										)
+									</ExpansionCard.Title>
+								</ExpansionCard.Header>
+								<ExpansionCard.Content>
+									<Table size="small" className="p-2">
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell />
+												<Table.HeaderCell>Id</Table.HeaderCell>
+												<Table.HeaderCell>Opprettet dato</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
+										<Table.Body>
+											{periode.tiltaksAktiviteter.map(aktivitet => (
+												<Table.ExpandableRow
+													key={aktivitet.id}
+													content={
+														<div className="ml-4">
+															<div>Fra dato: {aktivitet.fraDato}</div>
+															<div>Til dato: {aktivitet.tilDato}</div>
+															<div>Opprettet dato: {aktivitet.opprettetDato}</div>
+															<div>Status: {aktivitet.status}</div>
+															<div>
+																Avtalt: <BooleanTag value={aktivitet.avtalt} />
+															</div>
+															<div>Type: {aktivitet.type}</div>
+														</div>
+													}
+												>
+													<Table.DataCell>
+														<IdWithCopy id={aktivitet.id} label="AktivitetId" />
+													</Table.DataCell>
+													<Table.DataCell>{aktivitet.opprettetDato}</Table.DataCell>
+												</Table.ExpandableRow>
+											))}
+										</Table.Body>
+									</Table>
+								</ExpansionCard.Content>
+							</ExpansionCard>
 						</div>
 					</div>
 				))}
