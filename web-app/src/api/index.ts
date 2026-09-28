@@ -233,6 +233,10 @@ export function hentTilordningsdatoBatch(antall: string): Promise<{ data: JobId 
 	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere?limit=${antall}`);
 }
 
+export function hentUforetrygdBatch(antall: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnUforetrygd?limit=${antall}`);
+}
+
 export function hentMuligeDataTyperSomKanHentes(): Promise<{ data: AdminDataTypeResponse[] }> {
 	return fetchInstance.get(`/api/admin/veilarbportefolje/hentData/hentDataForBruker/muligeValg`);
 }
