@@ -7,6 +7,7 @@ import {
 	hentEnsligForsorgerDataBatch,
 	hentMuligeDataTyperSomKanHentes,
 	hentTilordningsdatoBatch,
+	hentUforetrygdBatch,
 	hentValgteDataForBruker,
 	hovedindeksering,
 	hovedindekseringNyttAlias,
@@ -99,6 +100,12 @@ export function Veilarbportefolje() {
 				beskrivelse="Hent tilordningsdato for x antall brukere som ikke alt har den"
 				inputType="Antall"
 				request={hentTilordningsdatoBatch}
+			/>
+			<AdminKnappMedInput
+				tittel="Hent uføretrygd for x antall"
+				beskrivelse="Hent uføretrygd for x antall brukere"
+				inputType="Antall"
+				request={hentUforetrygdBatch}
 			/>
 			<AdminCheckboxerMedInput
 				tittel={'Hent valgte data for en bruker'}
