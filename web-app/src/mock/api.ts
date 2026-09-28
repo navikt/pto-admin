@@ -8,6 +8,57 @@ const antallAvsluttet = {
 	antallKunneIkkeAvsluttes: 2
 };
 
+const aktivitetMock = {
+	id: '123321123',
+	funksjonellId: '4e123456-7890-1234-5678-901234567890',
+	versjon: 7,
+	endretDato: '2026-09-25T10:15:00.000Z',
+	opprettetDato: '2026-09-20T08:00:00.000Z',
+	status: 'GJENNOMFORES',
+	historisk: false,
+	type: 'EKSTERNAKTIVITET',
+	eksternAktivitet: {
+		type: 'SOKEAVTALE'
+	},
+	tittel: 'Mock aktivitet',
+	beskrivelse: 'Mock data for single aktivitet lookup',
+	lenke: 'https://example.invalid/aktivitet/123321123',
+	avtalt: true,
+	arbeidsgiver: 'NAV',
+	arbeidssted: 'Oslo',
+	oppfolgingsperiodeId: '550e8400-e29b-41d4-a716-446655440000',
+	forhaandsorientering: {
+		id: 'fo-1',
+		type: 'SMS',
+		tekst: 'Forhåndsorientering sendt',
+		lestDato: '2026-09-21T09:00:00.000Z'
+	},
+	stillingFraNavData: {
+		cvKanDelesData: {
+			kanDeles: true,
+			endretTidspunkt: '2026-09-21T09:00:00.000Z',
+			endretAv: 'Z123456',
+			endretAvType: 'SYSTEM',
+			avtaltDato: '2026-09-22T09:00:00.000Z'
+		},
+		soknadsfrist: '2026-10-01',
+		svarfrist: '2026-10-05',
+		arbeidsgiver: 'NAV',
+		bestillingsId: 'best-1',
+		stillingsId: 'still-1',
+		arbeidssted: 'Oslo',
+		soknadsstatus: 'SENDT',
+		livslopsStatus: 'AKTIV',
+		varselId: 'varsel-1',
+		detaljer: 'Detaljer for mock aktivitet',
+		kontaktpersonData: {
+			navn: 'Kari Nordmann',
+			tittel: 'HR',
+			mobil: '99999999'
+		}
+	}
+};
+
 export const handlers: RequestHandler[] = [
 	http.get('/api/auth/me', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
@@ -372,8 +423,18 @@ export const handlers: RequestHandler[] = [
 			}
 		});
 	}),
-	http.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, async () => {
+	http.post(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, async ({ request }) => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
+		const body = (await request.json()) as { query?: string };
+		const query = body.query ?? '';
+		if (query.includes('query hentAktivitet')) {
+			return HttpResponse.json({
+				data: {
+					aktivitet: aktivitetMock
+				}
+			});
+		}
+
 		return HttpResponse.json({
 			data: {
 				perioder: [
@@ -381,14 +442,13 @@ export const handlers: RequestHandler[] = [
 						id: '550e8400-e29b-41d4-a716-446655440000',
 						aktiviteter: [
 							{
-								id: '123321123',
-								funksjonellId: '4e123456-7890-1234-5678-901234567890',
+								...aktivitetMock,
 								versjon: 1,
-								endretDato: '2021-01-01T00:00:00.000Z',
-								opprettetDato: '2021-01-01T00:00:00.000Z',
-								status: 'GJENNOMFORES',
+								type: 'SOKEAVTALE',
 								historisk: false,
-								type: 'SOKEAVTALE'
+								eksternAktivitet: {
+									type: 'SOKEAVTALE'
+								}
 							},
 							{
 								id: '125321312',

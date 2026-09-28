@@ -15,6 +15,7 @@ import {
 import { Card } from '../../component/card/card';
 import { BooleanTag } from '../../component/BooleanTag';
 import { IdWithCopy } from '../../component/IdWithCopy';
+import { AktivitetKolonne, getValueByPath, renderAktivitetTabellKolonner } from './aktivitetTable';
 import dayjs from 'dayjs';
 
 interface PeriodeMedDialoger {
@@ -25,11 +26,6 @@ interface PeriodeMedDialoger {
 	dialoger: Dialog[];
 	aktiviteter: Aktivitet[];
 	tiltaksAktiviteter: TiltaksAktivitet[];
-}
-
-interface AktivitetKolonne {
-	label: string;
-	felt: string;
 }
 
 interface AktivitetFeltOption {
@@ -141,15 +137,6 @@ export const BrukerDataCard = () => {
 			void fetchBrukerDataMedFnr(fnr, nesteKolonner);
 		}
 	};
-
-	const getValueByPath = (value: unknown, path: string) =>
-		path.split('.').reduce<unknown>((acc, key) => {
-			if (!acc || typeof acc !== 'object') {
-				return undefined;
-			}
-
-			return (acc as Record<string, unknown>)[key];
-		}, value);
 
 	const fetchBrukerDataMedFnr = (fnr: string, kolonner: AktivitetKolonne[]) => {
 		setIsLoading(true);
@@ -398,16 +385,8 @@ export const BrukerDataCard = () => {
 													<Table.DataCell>
 														<IdWithCopy id={aktivitet.id} label="AktivitetId" />
 													</Table.DataCell>
-													{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
-														<Table.DataCell key={kolonne.felt}>
-															{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
-														</Table.DataCell>
-													))}
-													{aktivitetKolonner.map(kolonne => (
-														<Table.DataCell key={kolonne.felt}>
-															{String(getValueByPath(aktivitet, kolonne.felt) ?? '')}
-														</Table.DataCell>
-													))}
+													{renderAktivitetTabellKolonner(aktivitet, DEFAULT_AKTIVITET_KOLONNER)}
+													{renderAktivitetTabellKolonner(aktivitet, aktivitetKolonner)}
 												</Table.ExpandableRow>
 											))}
 										</Table.Body>

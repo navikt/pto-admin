@@ -12,6 +12,7 @@ import { AvsluttOppfolgingForMangeBrukereCard } from './oppfolging/AvsluttOppfol
 import { UtmeldingskandidaterCard } from './oppfolging/UtmeldingskandidaterCard';
 import { AvsluttOppfolgingsperiode } from './oppfolging/AvsluttOppfolgingsperiode';
 import { AktivitetArenaAclCard } from './ArenaAclCard';
+import { AktivitetDataCard } from './AktivitetDataCard';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -74,6 +75,7 @@ enum TabKey {
 	'ao-kontor-admin' = 'ao-kontor-admin',
 	'kontor-merge' = 'kontor-merge',
 	'aktiviteter' = 'aktiviteter',
+	'aktivitet-data' = 'aktivitet-data',
 	'bruker-status' = 'bruker-status',
 	'utmeldingskandidater' = 'utmeldingskandidater',
 	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
@@ -107,6 +109,7 @@ const menuGroups: Array<{
 		label: 'Data',
 		items: [
 			{ value: TabKey.aktiviteter, label: 'Dialog og aktiviteter' },
+			{ value: TabKey['aktivitet-data'], label: 'Aktivitet' },
 			{ value: TabKey['flytt-aktiviteter'], label: 'Flytt aktiviteter' },
 			{ value: TabKey['aktivitet-arena-acl'], label: 'Aktivitet Arena ACL' }
 		]
@@ -126,6 +129,8 @@ function renderTabContent(tab: TabKey) {
 			return <HentAvslutningsstatusCard />;
 		case TabKey.aktiviteter:
 			return <BrukerDataCard />;
+		case TabKey['aktivitet-data']:
+			return <AktivitetDataCard />;
 		case TabKey.kontor:
 			return <KontorCard />;
 		case TabKey['ao-kontor-admin']:
