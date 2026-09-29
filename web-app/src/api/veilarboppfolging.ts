@@ -1,10 +1,11 @@
 import { fetchInstance, JobId } from './index';
 import { graphqlPayload } from './graphql';
 
+
 const routingPath = '/api/veilarboppfolging';
 
-const veilarboppfolgingProxyUrl = (appPath: string) => `${routingPath}/api/admin/veilarboppfolging${appPath}`;
-const veilarboppfolgingV2ProxyUrl = (appPath: string) => `${routingPath}/api/v2/admin/veilarboppfolging${appPath}`;
+const veilarboppfolgingProxyUrl = (appPath: string) => `${routingPath}/veilarboppfolging/api/admin${appPath}`;
+const veilarboppfolgingV2ProxyUrl = (appPath: string) => `${routingPath}/veilarboppfolging/api/v2/admin${appPath}`;
 const veilarboppfolgingGraphqlUrl = `${routingPath}/veilarboppfolging/api/graphql`;
 
 export function republiserOppfolgingsperiodeForBruker(aktorId: string): Promise<{ data: JobId }> {
