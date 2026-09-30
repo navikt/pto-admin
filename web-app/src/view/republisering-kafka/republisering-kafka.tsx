@@ -2,13 +2,13 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
+	publiserSakStatistikkRadPaBigQuery,
 	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh,
-	republiserVedtaksIderPaKafkaTopic,
 	republiserVedtaksIderPaBigQuery,
-	publiserSakStatistikkRadPaBigQuery
+	republiserVedtaksIderPaKafkaTopic
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import BekreftModal from '../../component/bekreft-modal';
@@ -41,22 +41,39 @@ export function RepubliseringKafka() {
 			<RepubliseringsKortMedDropdownOgTextfield
 				tittel="Republiser vedtaksIDer på Kafka-topic i veilarbvedtaksstotte"
 				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på valgt Kafka-topic i veilarbvedtaksstotte."
-				inputLabel="VedtaksIDer"
-				request={republiserVedtaksIderPaKafkaTopic}
+				inputLabel="VedtaksIDer (en per linje)"
+				onSubmit={async (input: { fritekstInput: string; optionInput: string }) => {
+					const request = {
+						vedtaksIDer: input.fritekstInput.split('\n'),
+						kafkaTopic: input.optionInput
+					};
+					const r = await republiserVedtaksIderPaKafkaTopic(request);
+					return r.data;
+				}}
 				options={['pto.siste-14a-vedtak-v1', 'pto.vedtak-sendt-v1']}
 			/>
 			<RepubliseringsKortMedDropdownOgTextfield
 				tittel="Republiser vedtaksIDer på BigQuery i veilarbvedtaksstotte"
 				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på BigQuery i veilarbvedtaksstotte."
-				inputLabel="VedtaksIDer"
-				request={republiserVedtaksIderPaBigQuery}
+				inputLabel="VedtaksIDer (en per linje)"
+				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
+					const response = await republiserVedtaksIderPaBigQuery({
+						vedtaksIDer: fritekstInput.split('\n')
+					});
+					return response.data;
+				}}
 			/>
-			<RepubliseringsKortMedInput
-				tittel="Publiser sakstatistikkrad på BigQuery"
-				beskrivelse="Publiser sakstatistikkrad på BigQuery basert på sekvensnummer."
-				inputLabel={'Sekvensnummer'}
-				request={publiserSakStatistikkRadPaBigQuery}
-				topicNavn={''}
+			<RepubliseringsKortMedDropdownOgTextfield
+				tittel="Republiser sekvensnumre på BigQuery"
+				beskrivelse="Republiser sakstatistikkrader på BigQuery basert på sekvensnummer. Legg inn ett sekvensnummer per linje."
+				inputLabel="Sekvensnummer (ett per linje)"
+				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
+					const sekvensnumre = fritekstInput.split('\n');
+					const response = await publiserSakStatistikkRadPaBigQuery({
+						sekvensnumre: sekvensnumre.map(Number)
+					});
+					return response.data;
+				}}
 			/>
 			<RepubliseringsKort
 				tittel="Republiser endring på dialog i veilarbdialog"
@@ -132,41 +149,34 @@ interface RepubliseringsKortProps {
 interface RepubliseringsKortMedInputProps {
 	tittel: string;
 	beskrivelse: string;
-	topicNavn: string;
+	topicNavn?: string;
 	inputLabel: string;
 	request: (input: string) => Promise<{ data: JobId }>;
 }
 
-interface RepubliseringsKortMedDropdownOgTextfieldProps {
+type RepubliseringsKortMedDropdownOgTextfieldProps = {
 	tittel: string;
 	beskrivelse: string;
 	inputLabel: string;
-	options?: string[];
-	request: (input: { vedtaksIDer: string[]; kafkaTopic: string }) => Promise<{ data: JobId }>;
-}
+} & (
+	| {
+			options: string[];
+			onSubmit: (input: { fritekstInput: string; optionInput: string }) => Promise<JobId>;
+	  }
+	| {
+			options?: never;
+			onSubmit: (input: { fritekstInput: string }) => Promise<JobId>;
+	  }
+);
 
-function RepubliseringsKortMedDropdownOgTextfield({
-	tittel,
-	beskrivelse,
-	inputLabel,
-	request,
-	options
-}: RepubliseringsKortMedDropdownOgTextfieldProps) {
+function RepubliseringsKortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfieldProps) {
+	const { tittel, beskrivelse, inputLabel, options } = props;
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
-	const [input, setInput] = useState<{ vedtaksIDer: string[]; kafkaTopic: string }>({
-		vedtaksIDer: [],
-		kafkaTopic: ''
+	const [input, setInput] = useState<{ fritekstInput: string; optionInput: string }>({
+		fritekstInput: '',
+		optionInput: ''
 	});
-
-	const handleRepubliseringsResponse = () => {
-		request({ vedtaksIDer: input.vedtaksIDer, kafkaTopic: input.kafkaTopic })
-			.then(resp => {
-				setJobId(resp.data);
-				successToast(`${tittel} er startet`);
-			})
-			.catch(() => errorToast(`Klarte ikke å starte republisering av ${tittel}`));
-	};
 
 	return (
 		<>
@@ -174,9 +184,9 @@ function RepubliseringsKortMedDropdownOgTextfield({
 				<BodyShort className="blokk-xxs">{beskrivelse}</BodyShort>
 				<Textarea
 					label={inputLabel}
-					value={input.vedtaksIDer.join('\n')}
+					value={input.fritekstInput}
 					onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-						setInput({ ...input, vedtaksIDer: e.target.value.split('\n') })
+						setInput({ ...input, fritekstInput: e.target.value })
 					}
 				/>
 				{jobId && (
@@ -188,9 +198,9 @@ function RepubliseringsKortMedDropdownOgTextfield({
 					<div>
 						<Select
 							label="Velg en topic"
-							value={input.kafkaTopic}
+							value={input.optionInput}
 							onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-								setInput({ ...input, kafkaTopic: e.target.value })
+								setInput({ ...input, optionInput: e.target.value })
 							}
 						>
 							<option value="">- Velg en topic -</option>
@@ -208,7 +218,21 @@ function RepubliseringsKortMedDropdownOgTextfield({
 			</Card>
 
 			<BekreftModal
-				action={handleRepubliseringsResponse}
+				action={async () => {
+					try {
+						const jobId =
+							props.options !== undefined
+								? await props.onSubmit({
+										fritekstInput: input.fritekstInput,
+										optionInput: input.optionInput
+									})
+								: await props.onSubmit({ fritekstInput: input.fritekstInput });
+						setJobId(jobId);
+						successToast(`${tittel} er startet`);
+					} catch {
+						errorToast(`Klarte ikke å starte republisering av ${tittel}`);
+					}
+				}}
 				isOpen={isOpen}
 				setOpen={setOpen}
 				description={tittel}
