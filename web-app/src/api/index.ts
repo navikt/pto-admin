@@ -170,10 +170,8 @@ export function republiserVedtaksIderPaBigQuery(request: { vedtaksIDer: string[]
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-bigquery`, request);
 }
 
-export function publiserSakStatistikkRadPaBigQuery(request: string): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, {
-		sekvensnummer: parseInt(request)
-	});
+export function republiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: number[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, request);
 }
 
 // Republisering veilarbarena
