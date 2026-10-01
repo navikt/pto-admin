@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
-	publiserSakStatistikkRadPaBigQuery,
+	republiserSakStatistikkRadPaBigQuery,
 	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
 	republiserSiste14aVedtak,
@@ -69,7 +69,7 @@ export function RepubliseringKafka() {
 				inputLabel="Sekvensnummer (ett per linje)"
 				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
 					const sekvensnumre = fritekstInput.split('\n');
-					const response = await publiserSakStatistikkRadPaBigQuery({
+					const response = await republiserSakStatistikkRadPaBigQuery({
 						sekvensnumre: sekvensnumre.map(Number)
 					});
 					return response.data;

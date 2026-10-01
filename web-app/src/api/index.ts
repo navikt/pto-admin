@@ -170,7 +170,7 @@ export function republiserVedtaksIderPaBigQuery(request: { vedtaksIDer: string[]
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-bigquery`, request);
 }
 
-export function publiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: number[] }): Promise<{ data: JobId }> {
+export function republiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: number[] }): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, request);
 }
 
