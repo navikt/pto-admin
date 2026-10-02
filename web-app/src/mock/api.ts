@@ -427,7 +427,7 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		const body = (await request.json()) as { query?: string };
 		const query = body.query ?? '';
-		if (query.includes('query hentAktivitet')) {
+		if (/query\s+hentAktivitet\s*\(/.test(query)) {
 			return HttpResponse.json({
 				data: {
 					aktivitet: aktivitetMock

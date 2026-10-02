@@ -338,59 +338,69 @@ export const BrukerDataCard = () => {
 										Aktiviteter ({periode.aktiviteter.length})
 									</ExpansionCard.Title>
 								</ExpansionCard.Header>
-								<ExpansionCard.Content>
-									<Table size="small" className="p-2">
-										<Table.Header>
-											<Table.Row>
-												<Table.HeaderCell />
-												<Table.HeaderCell>Id</Table.HeaderCell>
-												{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
-													<Table.HeaderCell key={kolonne.felt}>
-														{kolonne.label}
-													</Table.HeaderCell>
-												))}
-												{aktivitetKolonner.map(kolonne => (
-													<Table.HeaderCell key={kolonne.felt}>
-														{kolonne.label}
-													</Table.HeaderCell>
-												))}
-											</Table.Row>
-										</Table.Header>
-										<Table.Body>
-											{periode.aktiviteter.map(aktivitet => (
-												<Table.ExpandableRow
-													key={aktivitet.id}
-													content={
-														<div className="ml-4">
-															<IdWithCopy
-																id={aktivitet.funksjonellId}
-																label="FunksjonellId"
-															/>
-															<div>Endret dato: {aktivitet.endretDato}</div>
-															<div>Opprettet dato: {aktivitet.opprettetDato}</div>
-															<div>Status: {aktivitet.status}</div>
-															<div>
-																Historisk: <BooleanTag value={aktivitet.historisk} />
-															</div>
-															<div>Type: {aktivitet.type}</div>
-															{aktivitet.type === 'EKSTERNAKTIVITET' ? (
-																<div>
-																	Ekstern aktivitet type:{' '}
-																	{aktivitet.eksternAktivitet.type}
+								<ExpansionCard.Content style={{ overflowX: 'visible' }}>
+									<div className="w-full overflow-x-auto">
+										<div className="min-w-max">
+											<Table size="small" className="p-2 whitespace-nowrap">
+												<Table.Header>
+													<Table.Row>
+														<Table.HeaderCell />
+														<Table.HeaderCell>Id</Table.HeaderCell>
+														{DEFAULT_AKTIVITET_KOLONNER.map(kolonne => (
+															<Table.HeaderCell key={kolonne.felt}>
+																{kolonne.label}
+															</Table.HeaderCell>
+														))}
+														{aktivitetKolonner.map(kolonne => (
+															<Table.HeaderCell key={kolonne.felt}>
+																{kolonne.label}
+															</Table.HeaderCell>
+														))}
+													</Table.Row>
+												</Table.Header>
+												<Table.Body>
+													{periode.aktiviteter.map(aktivitet => (
+														<Table.ExpandableRow
+															key={aktivitet.id}
+															content={
+																<div className="ml-4">
+																	<IdWithCopy
+																		id={aktivitet.funksjonellId}
+																		label="FunksjonellId"
+																	/>
+																	<div>Endret dato: {aktivitet.endretDato}</div>
+																	<div>Opprettet dato: {aktivitet.opprettetDato}</div>
+																	<div>Status: {aktivitet.status}</div>
+																	<div>
+																		Historisk: <BooleanTag value={aktivitet.historisk} />
+																	</div>
+																	<div>Type: {aktivitet.type}</div>
+																	{aktivitet.type === 'EKSTERNAKTIVITET' ? (
+																		<div>
+																			Ekstern aktivitet type:{' '}
+																			{aktivitet.eksternAktivitet.type}
+																		</div>
+																	) : null}
 																</div>
-															) : null}
-														</div>
-													}
-												>
-													<Table.DataCell>
-														<IdWithCopy id={aktivitet.id} label="AktivitetId" />
-													</Table.DataCell>
-													{renderAktivitetTabellKolonner(aktivitet, DEFAULT_AKTIVITET_KOLONNER)}
-													{renderAktivitetTabellKolonner(aktivitet, aktivitetKolonner)}
-												</Table.ExpandableRow>
-											))}
-										</Table.Body>
-									</Table>
+															}
+														>
+															<Table.DataCell>
+																<IdWithCopy id={aktivitet.id} label="AktivitetId" />
+															</Table.DataCell>
+															{renderAktivitetTabellKolonner(
+																aktivitet,
+																DEFAULT_AKTIVITET_KOLONNER
+															)}
+															{renderAktivitetTabellKolonner(
+																aktivitet,
+																aktivitetKolonner
+															)}
+														</Table.ExpandableRow>
+													))}
+												</Table.Body>
+											</Table>
+										</div>
+									</div>
 								</ExpansionCard.Content>
 							</ExpansionCard>
 
