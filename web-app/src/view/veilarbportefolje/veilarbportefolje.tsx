@@ -7,19 +7,28 @@ import {
 	hentBatchjobbForDatakilde,
 	hentMuligeDataTyperSomKanHentes,
 	hentTilordningsdatoBatch,
-	hentUforetrygdBatch,
 	hentValgteDataForBruker,
 	hovedindeksering,
 	hovedindekseringNyttAlias,
 	indekserAktoer,
 	indekserFnr,
-	JobId,
-	pdlLastInnData
+	JobId
 } from '../../api';
 import { errorToast, successToast } from '../../utils/toast-utils';
 import { Card } from '../../component/card/card';
 import BekreftModal from '../../component/bekreft-modal';
-import { Alert, BodyShort, Button, Checkbox, CheckboxGroup, TextField } from '@navikt/ds-react';
+import {
+	Alert,
+	BodyShort,
+	Button,
+	Checkbox,
+	CheckboxGroup,
+	DatePicker,
+	Radio,
+	RadioGroup,
+	TextField,
+	useDatepicker
+} from '@navikt/ds-react';
 
 import './veilarbportefolje.less';
 
@@ -85,28 +94,17 @@ export function Veilarbportefolje() {
 				inputType="Indeks navn"
 				request={deleteIndex}
 			/>
-			<AdminKnapp
-				tittel="Hent PDL data"
-				beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
-				request={pdlLastInnData}
-			/>
 			<AdminKnappMedInput
 				tittel="Hent tilordningsdato for x antall"
 				beskrivelse="Hent tilordningsdato for x antall brukere som ikke alt har den"
 				inputType="Antall"
 				request={hentTilordningsdatoBatch}
 			/>
-			<AdminKnappMedInput
-				tittel="Hent uføretrygd for x antall"
-				beskrivelse="Hent uføretrygd for x antall brukere"
-				inputType="Antall"
-				request={hentUforetrygdBatch}
-			/>
-			<AdminKnappMedInput
+			<AdminBatchjobb
 				tittel="Hent batchjobb for en gitt datakilde"
-				beskrivelse="Hent batchjobb for en gitt datakilde"
-				inputType="Datakilde"
+				beskrivelse="Går gjennom alle brukere under oppfølging og henter inn data fra valgt datakilde. Tidsrom for oppfølging startet er valgfritt, default er å hente alle. Sett 'Start fra' for å hoppe over et gitt antall brukere (f.eks. om en jobb feilet halvveis). For å stoppe en påstartet jobb, toggle på veilarbportefolje.stopp_kjoerende_batchjobber i unleash."
 				request={hentBatchjobbForDatakilde}
+				dataTyper={dataTyper}
 			/>
 			<AdminCheckboxerMedInput
 				tittel={'Hent valgte data for en bruker'}
@@ -127,6 +125,13 @@ export interface AdminDataTypeResponse {
 export interface AdminDataForBrukerRequest {
 	aktorId: string;
 	valg: string[];
+}
+
+export interface AdminBatchjobbRequest {
+	datakilde: string;
+	startFra?: number;
+	oppfolgingStartetFra?: string;
+	oppfolgingStarterTil?: string;
 }
 
 interface AdminKnappProps {
@@ -291,6 +296,102 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
 			<BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel} />
 		</>
 	);
+}
+
+interface AdminBatchjobbProps {
+	dataTyper: AdminDataTypeResponse[];
+	tittel: string;
+	beskrivelse: string;
+	request: (requestBody: AdminBatchjobbRequest) => Promise<{ data: JobId }>;
+}
+
+function AdminBatchjobb(props: AdminBatchjobbProps) {
+	const [datakilde, setDatakilde] = useState('');
+	const [startFra, setStartFra] = useState('');
+	const [oppfolgingStartetEtter, setOppfolgingStartetEtter] = useState('');
+	const [oppfolgingStarterFor, setOppfolgingStarterFor] = useState('');
+	const [jobId, setJobId] = useState<string | undefined>(undefined);
+	const [isOpen, setOpen] = useState(false);
+
+	const handleAdminResponse = () => {
+		if (!datakilde) {
+			errorToast('Velg en datakilde');
+			return;
+		}
+		const startFraTall = startFra ? Number(startFra) : 0;
+		if (!Number.isInteger(startFraTall) || startFraTall < 0) {
+			errorToast('Start fra må være et positivt heltall');
+			return;
+		}
+		props
+			.request({
+				datakilde,
+				startFra: startFraTall,
+				oppfolgingStartetFra: oppfolgingStartetEtter || undefined,
+				oppfolgingStarterTil: oppfolgingStarterFor || undefined
+			})
+			.then(resp => {
+				setJobId(JSON.stringify(resp.data));
+				successToast(`${props.tittel} er startet`);
+			})
+			.catch(() => errorToast(`Klarte ikke å utføre handling: ${props.tittel}`));
+	};
+
+	return (
+		<>
+			<Card title={props.tittel} className="veilarbportefolje-card">
+				<BodyShort className="blokk-xxs">{props.beskrivelse}</BodyShort>
+				{jobId && (
+					<Alert size="small" variant="success" inline>
+						Jobb startet med jobId: {jobId}
+					</Alert>
+				)}
+				<br />
+				<RadioGroup legend="Datakilde" onChange={setDatakilde} value={datakilde}>
+					{props.dataTyper.map(type => (
+						<Radio value={type.name} key={type.name}>
+							{type.displayName}
+						</Radio>
+					))}
+				</RadioGroup>
+				<br />
+				<TextField
+					label="Start jobb fra (valgfritt)"
+					type="number"
+					min={0}
+					value={startFra}
+					onChange={e => setStartFra(e.target.value)}
+				/>
+				<br />
+				<Datovelger label="Oppfølging startet fra dato (valgfritt)" onChange={setOppfolgingStartetEtter} />
+				<br />
+				<Datovelger label="Oppfølging startet til dato (valgfritt)" onChange={setOppfolgingStarterFor} />
+				<br />
+				<Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
+					{props.tittel}
+				</Button>
+			</Card>
+			<BekreftModal action={handleAdminResponse} isOpen={isOpen} setOpen={setOpen} description={props.tittel} />
+		</>
+	);
+}
+
+function Datovelger({ label, onChange }: { label: string; onChange: (dato: string) => void }) {
+	const { datepickerProps, inputProps } = useDatepicker({
+		onDateChange: dato => onChange(dato ? tilIsoDato(dato) : '')
+	});
+
+	return (
+		<DatePicker {...datepickerProps}>
+			<DatePicker.Input {...inputProps} label={label} />
+		</DatePicker>
+	);
+}
+
+function tilIsoDato(dato: Date): string {
+	const mnd = String(dato.getMonth() + 1).padStart(2, '0');
+	const dag = String(dato.getDate()).padStart(2, '0');
+	return `${dato.getFullYear()}-${mnd}-${dag}`;
 }
 
 function isJsonString(str: string): boolean {

@@ -1,4 +1,8 @@
-import { AdminDataForBrukerRequest, AdminDataTypeResponse } from '../view/veilarbportefolje/veilarbportefolje';
+import {
+	AdminBatchjobbRequest,
+	AdminDataForBrukerRequest,
+	AdminDataTypeResponse
+} from '../view/veilarbportefolje/veilarbportefolje';
 
 async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ data: T }> {
 	const headers: Record<string, string> = {
@@ -219,20 +223,12 @@ export function getAliases(): Promise<{ data: string }> {
 	return fetchInstance.get(`/api/admin/veilarbportefolje/opensearch/getAliases`);
 }
 
-export function pdlLastInnData(): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
-}
-
 export function hentTilordningsdatoBatch(antall: string): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere?limit=${antall}`);
 }
 
-export function hentUforetrygdBatch(antall: string): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnUforetrygd?limit=${antall}`);
-}
-
-export function hentBatchjobbForDatakilde(datakilde: string): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnDataIBatchjobb?datakilde=${datakilde}`);
+export function hentBatchjobbForDatakilde(request: AdminBatchjobbRequest): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnDataIBatchjobb`, request);
 }
 
 export function hentMuligeDataTyperSomKanHentes(): Promise<{ data: AdminDataTypeResponse[] }> {
