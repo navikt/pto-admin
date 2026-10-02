@@ -170,10 +170,8 @@ export function republiserVedtaksIderPaBigQuery(request: { vedtaksIDer: string[]
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/vedtak-pa-bigquery`, request);
 }
 
-export function publiserSakStatistikkRadPaBigQuery(request: string): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, {
-		sekvensnummer: parseInt(request)
-	});
+export function republiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: number[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, request);
 }
 
 // Republisering veilarbarena
@@ -225,16 +223,16 @@ export function pdlLastInnData(): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbportefolje/pdl/lastInnDataFraPdl`);
 }
 
-export function hentEnsligForsorgerDataBatch(): Promise<{ data: JobId }> {
-	return fetchInstance.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerDataBatch`);
-}
-
 export function hentTilordningsdatoBatch(antall: string): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere?limit=${antall}`);
 }
 
 export function hentUforetrygdBatch(antall: string): Promise<{ data: JobId }> {
 	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnUforetrygd?limit=${antall}`);
+}
+
+export function hentBatchjobbForDatakilde(datakilde: string): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbportefolje/lastInnDataIBatchjobb?datakilde=${datakilde}`);
 }
 
 export function hentMuligeDataTyperSomKanHentes(): Promise<{ data: AdminDataTypeResponse[] }> {
