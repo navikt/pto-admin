@@ -229,10 +229,6 @@ export const handlers: RequestHandler[] = [
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),
-	http.post(`/api/admin/veilarbportefolje/hentEnsligForsorgerData`, async () => {
-		await delay(DEFAULT_DELAY_MILLISECONDS);
-		return HttpResponse.json(window.crypto.randomUUID());
-	}),
 	http.get('/api/aktivitet-arena-acl/api/admin/deltaker/mapping', async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json([
@@ -598,6 +594,10 @@ export const handlers: RequestHandler[] = [
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),
 	http.post(`/api/admin/veilarbportefolje/lastInnUforetrygd`, async () => {
+		await delay(DEFAULT_DELAY_MILLISECONDS);
+		return HttpResponse.json(window.crypto.randomUUID());
+	}),
+	http.post(`/api/admin/veilarbportefolje/lastInnTildelingsdatoForBrukere`, async () => {
 		await delay(DEFAULT_DELAY_MILLISECONDS);
 		return HttpResponse.json(window.crypto.randomUUID());
 	}),

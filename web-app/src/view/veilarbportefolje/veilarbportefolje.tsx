@@ -4,7 +4,7 @@ import {
 	createIndex,
 	deleteIndex,
 	getAliases,
-	hentEnsligForsorgerDataBatch,
+	hentBatchjobbForDatakilde,
 	hentMuligeDataTyperSomKanHentes,
 	hentTilordningsdatoBatch,
 	hentUforetrygdBatch,
@@ -90,11 +90,6 @@ export function Veilarbportefolje() {
 				beskrivelse="Hent PDL data for alle oppfølgingsbrukere."
 				request={pdlLastInnData}
 			/>
-			<AdminKnapp
-				tittel="Hent overgangsstønad for alle"
-				beskrivelse="Hent overgangsstønad data for alle oppfølgingsbrukere."
-				request={hentEnsligForsorgerDataBatch}
-			/>
 			<AdminKnappMedInput
 				tittel="Hent tilordningsdato for x antall"
 				beskrivelse="Hent tilordningsdato for x antall brukere som ikke alt har den"
@@ -106,6 +101,12 @@ export function Veilarbportefolje() {
 				beskrivelse="Hent uføretrygd for x antall brukere"
 				inputType="Antall"
 				request={hentUforetrygdBatch}
+			/>
+			<AdminKnappMedInput
+				tittel="Hent batchjobb for en gitt datakilde"
+				beskrivelse="Hent batchjobb for en gitt datakilde"
+				inputType="Datakilde"
+				request={hentBatchjobbForDatakilde}
 			/>
 			<AdminCheckboxerMedInput
 				tittel={'Hent valgte data for en bruker'}
