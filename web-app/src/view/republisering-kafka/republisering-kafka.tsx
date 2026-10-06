@@ -2,9 +2,10 @@ import React, { ChangeEvent, useState } from 'react';
 import { Card } from '../../component/card/card';
 import {
 	JobId,
-	republiserSakStatistikkRadPaBigQuery,
+	publiserSakStatistikkRadPaBigQuery,
 	republiserEndringPaaOppfolgingsbruker,
 	republiserEndringPaaOppfolgingsbrukere,
+	republiserSakStatistikkRadPaBigQuery,
 	republiserSiste14aVedtak,
 	republiserVedtak14aFattetDvh,
 	republiserVedtaksIderPaBigQuery,
@@ -70,6 +71,18 @@ export function RepubliseringKafka() {
 				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
 					const sekvensnumre = fritekstInput.split('\n');
 					const response = await republiserSakStatistikkRadPaBigQuery({
+						sekvensnumre: sekvensnumre.map(Number)
+					});
+					return response.data;
+				}}
+			/>
+			<RepubliseringsKortMedDropdownOgTextfield
+				tittel="Publiser sekvensnumre på BigQuery"
+				beskrivelse="Publiser sakstatistikkrader på BigQuery basert på sekvensnummer. Legg inn ett sekvensnummer per linje."
+				inputLabel="Sekvensnummer (ett per linje)"
+				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
+					const sekvensnumre = fritekstInput.split('\n');
+					const response = await publiserSakStatistikkRadPaBigQuery({
 						sekvensnumre: sekvensnumre.map(Number)
 					});
 					return response.data;

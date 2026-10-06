@@ -178,6 +178,10 @@ export function republiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: nu
 	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/republiser/sakstatistikkrad-pa-bigquery`, request);
 }
 
+export function publiserSakStatistikkRadPaBigQuery(request: { sekvensnumre: number[] }): Promise<{ data: JobId }> {
+	return fetchInstance.post(`/api/admin/veilarbvedtaksstotte/publiser/sakstatistikkrad-pa-bigquery`, request);
+}
+
 // Republisering veilarbarena
 
 export function republiserEndringPaaOppfolgingsbrukere(): Promise<{ data: JobId }> {
