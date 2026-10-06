@@ -39,7 +39,7 @@ export function RepubliseringKafka() {
 				request={republiserVedtak14aFattetDvh}
 				topicNavn={'<ukjent topic>'}
 			/>
-			<RepubliseringsKortMedDropdownOgTextfield
+			<KortMedDropdownOgTextfield
 				tittel="Republiser vedtaksIDer på Kafka-topic i veilarbvedtaksstotte"
 				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på valgt Kafka-topic i veilarbvedtaksstotte."
 				inputLabel="VedtaksIDer (en per linje)"
@@ -53,7 +53,7 @@ export function RepubliseringKafka() {
 				}}
 				options={['pto.siste-14a-vedtak-v1', 'pto.vedtak-sendt-v1']}
 			/>
-			<RepubliseringsKortMedDropdownOgTextfield
+			<KortMedDropdownOgTextfield
 				tittel="Republiser vedtaksIDer på BigQuery i veilarbvedtaksstotte"
 				beskrivelse="Republiserer vedtak knyttet til vedtaksIDer på BigQuery i veilarbvedtaksstotte."
 				inputLabel="VedtaksIDer (en per linje)"
@@ -64,7 +64,7 @@ export function RepubliseringKafka() {
 					return response.data;
 				}}
 			/>
-			<RepubliseringsKortMedDropdownOgTextfield
+			<KortMedDropdownOgTextfield
 				tittel="Republiser sekvensnumre på BigQuery"
 				beskrivelse="Republiser sakstatistikkrader på BigQuery basert på sekvensnummer. Legg inn ett sekvensnummer per linje."
 				inputLabel="Sekvensnummer (ett per linje)"
@@ -76,7 +76,7 @@ export function RepubliseringKafka() {
 					return response.data;
 				}}
 			/>
-			<RepubliseringsKortMedDropdownOgTextfield
+			<KortMedDropdownOgTextfield
 				tittel="Publiser sekvensnumre på BigQuery"
 				beskrivelse="Publiser sakstatistikkrader på BigQuery basert på sekvensnummer. Legg inn ett sekvensnummer per linje."
 				inputLabel="Sekvensnummer (ett per linje)"
@@ -182,7 +182,7 @@ type RepubliseringsKortMedDropdownOgTextfieldProps = {
 	  }
 );
 
-function RepubliseringsKortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfieldProps) {
+function KortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfieldProps) {
 	const { tittel, beskrivelse, inputLabel, options } = props;
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
