@@ -80,6 +80,8 @@ export function RepubliseringKafka() {
 				tittel="Publiser sekvensnumre på BigQuery"
 				beskrivelse="Publiser sakstatistikkrader på BigQuery basert på sekvensnummer. Legg inn ett sekvensnummer per linje."
 				inputLabel="Sekvensnummer (ett per linje)"
+				submitKnappLabel="Utfør publisering"
+				feilmelding="Klarte ikke å starte publisering"
 				onSubmit={async ({ fritekstInput }: { fritekstInput: string }) => {
 					const sekvensnumre = fritekstInput.split('\n');
 					const response = await publiserSakStatistikkRadPaBigQuery({
@@ -171,6 +173,8 @@ type RepubliseringsKortMedDropdownOgTextfieldProps = {
 	tittel: string;
 	beskrivelse: string;
 	inputLabel: string;
+	submitKnappLabel?: string;
+	feilmelding?: string;
 } & (
 	| {
 			options: string[];
@@ -183,7 +187,7 @@ type RepubliseringsKortMedDropdownOgTextfieldProps = {
 );
 
 function KortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfieldProps) {
-	const { tittel, beskrivelse, inputLabel, options } = props;
+	const { tittel, beskrivelse, inputLabel, options, submitKnappLabel, feilmelding } = props;
 	const [jobId, setJobId] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
 	const [input, setInput] = useState<{ fritekstInput: string; optionInput: string }>({
@@ -226,7 +230,7 @@ function KortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfi
 					</div>
 				)}
 				<div>
-					<Button onClick={() => setOpen(true)}>Utfør republisering</Button>
+					<Button onClick={() => setOpen(true)}>{submitKnappLabel ?? 'Utfør republisering'}</Button>
 				</div>
 			</Card>
 
@@ -243,7 +247,7 @@ function KortMedDropdownOgTextfield(props: RepubliseringsKortMedDropdownOgTextfi
 						setJobId(jobId);
 						successToast(`${tittel} er startet`);
 					} catch {
-						errorToast(`Klarte ikke å starte republisering av ${tittel}`);
+						errorToast(feilmelding ?? `Klarte ikke å starte republisering av ${tittel}`);
 					}
 				}}
 				isOpen={isOpen}
