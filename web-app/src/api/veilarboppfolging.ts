@@ -206,6 +206,61 @@ export function hentUtmeldingskandidat(
 		.then(response => response.data);
 }
 
+const oppfolgingsperiodeDetaljerQuery = `
+	query hentOppfolgingsperiodeDetaljer($id: ID!) {
+		oppfolgingsperiode(id: $id) {
+			startTidspunkt
+			sluttTidspunkt
+			aktorId
+			ident
+			kontor
+			oppdatertTidspunkt
+			startet {
+				startetAv
+				startetAvType
+				registreringsType
+			}
+			avsluttet {
+				avsluttetAv
+				avsluttetAvType
+				avregistreringsType
+			}
+		}
+	}
+`;
+
+export interface OppfolgingsperiodeDetaljerDto {
+	startTidspunkt: string;
+	sluttTidspunkt: string | null;
+	aktorId: string;
+	ident: string | null;
+	kontor: string | null;
+	oppdatertTidspunkt: string;
+	startet: {
+		startetAv: string | null;
+		startetAvType: string | null;
+		registreringsType: string | null;
+	};
+	avsluttet: {
+		avsluttetAv: string | null;
+		avsluttetAvType: string | null;
+		avregistreringsType: string | null;
+	} | null;
+}
+
+export function hentOppfolgingsperiodeDetaljer(
+	id: string
+): Promise<{ data: { oppfolgingsperiode: OppfolgingsperiodeDetaljerDto | null } }> {
+	return fetchInstance
+		.post<{
+			data: { oppfolgingsperiode: OppfolgingsperiodeDetaljerDto | null };
+		}>(veilarboppfolgingGraphqlUrl, {
+			query: oppfolgingsperiodeDetaljerQuery,
+			variables: { id }
+		})
+		.then(response => response.data);
+}
+
 export function republiserOppfolgingshendelse(aktorId: string): Promise<void> {
 	return fetchInstance.post(veilarboppfolgingProxyUrl('/republiser/oppfolgingshendelse'), aktorId).then(() => {});
 }

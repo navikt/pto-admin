@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Dialog, hentDialoger } from '../../api/veilarbdialog';
 import { hentOppfolgingsperioder } from '../../api/veilarboppfolging';
 import { Aktivitet, DEFAULT_AKTIVITET_FELTER, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
@@ -15,7 +15,7 @@ import {
 import { Card } from '../../component/card/card';
 import { BooleanTag } from '../../component/BooleanTag';
 import { IdWithCopy } from '../../component/IdWithCopy';
-import { AktivitetKolonne, getValueByPath, renderAktivitetTabellKolonner } from './aktivitetTable';
+import { AktivitetKolonne, renderAktivitetTabellKolonner } from './aktivitetTable';
 import dayjs from 'dayjs';
 
 interface PeriodeMedDialoger {
@@ -103,12 +103,18 @@ const AKTIVITET_FELT_OPTIONS: AktivitetFeltOption[] = [
 	{ label: 'Ekstern aktivitet type', value: 'eksternAktivitet.type' }
 ];
 
-export const BrukerDataCard = () => {
+interface BrukerDataCardProps {
+	autoLookupFnr?: string;
+	autoLookupRequestId?: number;
+}
+
+export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDataCardProps) => {
 	const [oppfolgingsperioder, setOppfolgingsperioder] = useState<PeriodeMedDialoger[] | null>(null);
 	const [error, setError] = useState<string | undefined>(undefined);
 	const [isLoading, setIsLoading] = useState(false);
 	const [aktivitetKolonner, setAktivitetKolonner] = useState<AktivitetKolonne[]>(DEFAULT_AKTIVITET_KOLONNER);
 	const [fnr, setFnr] = useState<string>('');
+	const lastAutoLookupRequestId = useRef<number | undefined>(undefined);
 	const [valgtKolonneFelt, setValgtKolonneFelt] = useState<string>('');
 	const [komboboxKey, setKomboboxKey] = useState(0);
 
@@ -189,6 +195,18 @@ export const BrukerDataCard = () => {
 		setFnr(submittedFnr);
 		void fetchBrukerDataMedFnr(submittedFnr, aktivitetKolonner);
 	};
+
+	useEffect(() => {
+		if (!autoLookupFnr || !autoLookupRequestId) {
+			return;
+		}
+		if (autoLookupRequestId === lastAutoLookupRequestId.current) {
+			return;
+		}
+		lastAutoLookupRequestId.current = autoLookupRequestId;
+		setFnr(autoLookupFnr);
+		void fetchBrukerDataMedFnr(autoLookupFnr, aktivitetKolonner);
+	}, [autoLookupFnr, autoLookupRequestId, aktivitetKolonner]);
 
 	return (
 		<Card className="" innholdClassName=" flex flex-col space-y-4">

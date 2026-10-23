@@ -14,13 +14,20 @@ import { AvsluttOppfolgingsperiode } from './oppfolging/AvsluttOppfolgingsperiod
 import { AktivitetArenaAclCard } from './ArenaAclCard';
 import { AktivitetDataCard } from './AktivitetDataCard';
 import { SlettAktivitetCard } from './SlettAktivitetCard';
+import { OppfolgingsperiodeDetaljerCard } from './oppfolging/OppfolgingsperiodeDetaljerCard';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
+	const [brukerDataOppslag, setBrukerDataOppslag] = useState<{ fnr: string; requestId: number } | null>(null);
 
 	useEffect(() => {
 		setTabInLocalStorage(tab);
 	}, [tab]);
+
+	const slaOppDialogerOgAktiviteter = (fnr: string) => {
+		setBrukerDataOppslag(prev => ({ fnr, requestId: (prev?.requestId ?? 0) + 1 }));
+		setTab(TabKey.aktiviteter);
+	};
 
 	return (
 		<div className="flex justify-center p-2">
@@ -62,7 +69,12 @@ export function TeamDabOppfolgingView() {
 							</nav>
 						</div>
 					</aside>
-					<section className="min-w-0 flex-1 p-1 lg:p-2">{renderTabContent(tab)}</section>
+					<section className="min-w-0 flex-1 p-1 lg:p-2">
+						{renderTabContent(tab, {
+							brukerDataOppslag,
+							onSlaOppDialogerOgAktiviteter: slaOppDialogerOgAktiviteter
+						})}
+					</section>
 				</div>
 			</div>
 		</div>
@@ -70,19 +82,20 @@ export function TeamDabOppfolgingView() {
 }
 
 enum TabKey {
-	'avsluttBrukere' = 'avsluttBrukere',
-	'hentAvslutningsstatus' = 'hentAvslutningsstatus',
-	'kontor' = 'kontor',
+	avsluttBrukere = 'avsluttBrukere',
+	hentAvslutningsstatus = 'hentAvslutningsstatus',
+	kontor = 'kontor',
 	'ao-kontor-admin' = 'ao-kontor-admin',
 	'kontor-merge' = 'kontor-merge',
-	'aktiviteter' = 'aktiviteter',
+	aktiviteter = 'aktiviteter',
 	'aktivitet-data' = 'aktivitet-data',
 	'bruker-status' = 'bruker-status',
-	'utmeldingskandidater' = 'utmeldingskandidater',
+	utmeldingskandidater = 'utmeldingskandidater',
 	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
 	'start-oppfolging' = 'start-oppfolging',
 	'flytt-aktiviteter' = 'flytt-aktiviteter',
-	'slett-aktivitet' = 'slett-aktivitet'
+	'slett-aktivitet' = 'slett-aktivitet',
+	'oppfolgingsperiode-uuid' = 'oppfolgingsperiode-uuid'
 }
 
 const menuGroups: Array<{
@@ -96,7 +109,8 @@ const menuGroups: Array<{
 			{ value: TabKey.avsluttBrukere, label: 'Avslutt oppfølging' },
 			{ value: TabKey.hentAvslutningsstatus, label: 'Hent avslutningsstatus' },
 			{ value: TabKey['bruker-status'], label: 'Brukerstatus' },
-			{ value: TabKey.utmeldingskandidater, label: 'Utmeldingskandidater' }
+			{ value: TabKey.utmeldingskandidater, label: 'Utmeldingskandidater' },
+			{ value: TabKey['oppfolgingsperiode-uuid'], label: 'Oppslag oppfølgingsperiode' }
 		]
 	},
 	{
@@ -119,7 +133,16 @@ const menuGroups: Array<{
 	}
 ];
 
-function renderTabContent(tab: TabKey) {
+function renderTabContent(
+	tab: TabKey,
+	{
+		brukerDataOppslag,
+		onSlaOppDialogerOgAktiviteter
+	}: {
+		brukerDataOppslag: { fnr: string; requestId: number } | null;
+		onSlaOppDialogerOgAktiviteter: (fnr: string) => void;
+	}
+) {
 	switch (tab) {
 		case TabKey.avsluttBrukere:
 			return (
@@ -131,7 +154,12 @@ function renderTabContent(tab: TabKey) {
 		case TabKey.hentAvslutningsstatus:
 			return <HentAvslutningsstatusCard />;
 		case TabKey.aktiviteter:
-			return <BrukerDataCard />;
+			return (
+				<BrukerDataCard
+					autoLookupFnr={brukerDataOppslag?.fnr}
+					autoLookupRequestId={brukerDataOppslag?.requestId}
+				/>
+			);
 		case TabKey['aktivitet-data']:
 			return <AktivitetDataCard />;
 		case TabKey.kontor:
@@ -152,6 +180,8 @@ function renderTabContent(tab: TabKey) {
 			return <FlyttAktiviteterTilSistePeriodeCard />;
 		case TabKey['slett-aktivitet']:
 			return <SlettAktivitetCard />;
+		case TabKey['oppfolgingsperiode-uuid']:
+			return <OppfolgingsperiodeDetaljerCard onSlaOppDialogerOgAktiviteter={onSlaOppDialogerOgAktiviteter} />;
 		default:
 			return <BrukerDataCard />;
 	}
