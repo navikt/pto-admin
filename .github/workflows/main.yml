@@ -40,31 +40,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 
-      - name: Install pnpm
-        uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # ratchet:pnpm/setup@v3
-        with:
-          working-directory: ./web-app
-          cache-dependency-path: web-app/pnpm-lock.yaml
-          cache: true
-          install: true
-          runtime: node@24
-          version: 12
-        env:
-          pnpm_config__auth: |
-            {
-              "https://npm.pkg.github.com": {
-                "@navikt": {
-                  "authToken": ${{ secrets.READER_TOKEN }}
-                }
-              }
-            }
-
       - name: Build frontend assets
-        working-directory: web-app
-        run: pnpm run build
-
-      - name: Move frontend assets to public folder
-        run: mv ./web-app/build ./api/src/main/resources/public
+        uses: ./.github/actions/frontend-build
+        with:
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Set up Java
         uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # ratchet:actions/setup-java@v6.0.0
