@@ -17,7 +17,6 @@ runs:
         cache: true
         install: true
         runtime: node@24
-        version: 12
       env:
         pnpm_config__auth: |
           {
