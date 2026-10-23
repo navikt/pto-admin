@@ -40,6 +40,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 
+      - name: Build frontend assets
+        uses: ./.github/actions/frontend-build
+        with:
+          reader-token: ${{ secrets.READER_TOKEN }}
+
       - name: Set up Java
         uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # ratchet:actions/setup-java@v6.0.0
         with:
@@ -51,31 +56,6 @@ jobs:
         with:
           gradle-version: "8.13"
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # ratchet:pnpm/action-setup@v6.1.0
-        with:
-          cache_dependency_path: web-app/pnpm-lock.yaml
-          cache: true
-          version: 11
-
-      - name: Setup node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # ratchet:actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: web-app/pnpm-lock.yaml
-
-      - name: Install dependencies
-        working-directory: web-app
-        run: pnpm ci
-
-      - name: Build frontend assets
-        working-directory: web-app
-        run: pnpm run build
-
-      - name: Move frontend assets to public folder
-        run: mv ./web-app/build ./api/src/main/resources/public
 
       - name: Build gradle
         run: ./gradlew build

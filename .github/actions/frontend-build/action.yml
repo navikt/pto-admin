@@ -1,0 +1,37 @@
+name: Build frontend assets
+description: Install frontend dependencies, build and move assets to API public folder
+
+inputs:
+  reader-token:
+    description: Token for reading private npm packages from GitHub Packages
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # ratchet:pnpm/setup@v3
+      with:
+        working-directory: ./web-app
+        cache-dependency-path: web-app/pnpm-lock.yaml
+        cache: true
+        install: true
+        runtime: node@24
+      env:
+        pnpm_config__auth: |
+          {
+            "https://npm.pkg.github.com": {
+              "@navikt": {
+                "authToken": "${{ inputs.reader-token }}"
+              }
+            }
+          }
+
+    - name: Build frontend assets
+      working-directory: web-app
+      shell: bash
+      run: pnpm run build
+
+    - name: Move frontend assets to public folder
+      shell: bash
+      run: mv ./web-app/build ./api/src/main/resources/public
