@@ -13,6 +13,7 @@ import { UtmeldingskandidaterCard } from './oppfolging/UtmeldingskandidaterCard'
 import { AvsluttOppfolgingsperiode } from './oppfolging/AvsluttOppfolgingsperiode';
 import { AktivitetArenaAclCard } from './ArenaAclCard';
 import { AktivitetDataCard } from './AktivitetDataCard';
+import { SlettAktivitetCard } from './SlettAktivitetCard';
 
 export function TeamDabOppfolgingView() {
 	const [tab, setTab] = useState<TabKey>(getTabFromLocalStorage());
@@ -80,7 +81,8 @@ enum TabKey {
 	'utmeldingskandidater' = 'utmeldingskandidater',
 	'aktivitet-arena-acl' = 'aktivitet-arena-acl',
 	'start-oppfolging' = 'start-oppfolging',
-	'flytt-aktiviteter' = 'flytt-aktiviteter'
+	'flytt-aktiviteter' = 'flytt-aktiviteter',
+	'slett-aktivitet' = 'slett-aktivitet'
 }
 
 const menuGroups: Array<{
@@ -110,6 +112,7 @@ const menuGroups: Array<{
 		items: [
 			{ value: TabKey.aktiviteter, label: 'Dialog og aktiviteter' },
 			{ value: TabKey['aktivitet-data'], label: 'Aktivitet' },
+			{ value: TabKey['slett-aktivitet'], label: 'Slett aktivitet' },
 			{ value: TabKey['flytt-aktiviteter'], label: 'Flytt aktiviteter' },
 			{ value: TabKey['aktivitet-arena-acl'], label: 'Aktivitet Arena ACL' }
 		]
@@ -147,6 +150,8 @@ function renderTabContent(tab: TabKey) {
 			return <StartOppfolging />;
 		case TabKey['flytt-aktiviteter']:
 			return <FlyttAktiviteterTilSistePeriodeCard />;
+		case TabKey['slett-aktivitet']:
+			return <SlettAktivitetCard />;
 		default:
 			return <BrukerDataCard />;
 	}

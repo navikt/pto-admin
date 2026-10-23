@@ -4,6 +4,31 @@ import {
 	AdminDataTypeResponse
 } from '../view/veilarbportefolje/veilarbportefolje';
 
+async function parseErrorMessage(response: Response): Promise<string> {
+	const fallbackMessage = `HTTP error ${response.status}: ${response.statusText}`;
+	const readStringField = (value: unknown): string | undefined =>
+		typeof value === 'string' && value.length > 0 ? value : undefined;
+	try {
+		const text = await response.text();
+		if (!text) {
+			return fallbackMessage;
+		}
+		const contentType = response.headers.get('content-type') ?? '';
+		if (contentType.includes('application/json')) {
+			const parsed = JSON.parse(text) as Record<string, unknown>;
+			const message =
+				readStringField(parsed.message) ??
+				readStringField(parsed.detail) ??
+				readStringField(parsed.error) ??
+				readStringField(parsed.reason);
+			return message ?? fallbackMessage;
+		}
+		return text;
+	} catch {
+		return fallbackMessage;
+	}
+}
+
 async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ data: T }> {
 	const headers: Record<string, string> = {
 		'Nav-Consumer-Id': 'poao-admin',
@@ -18,7 +43,7 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 		headers
 	});
 	if (!response.ok) {
-		throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+		throw new Error(await parseErrorMessage(response));
 	}
 	const text = await response.text();
 	if (!text) {
@@ -44,7 +69,7 @@ export const fetchInstance = {
 			headers: { 'Nav-Consumer-Id': 'poao-admin' }
 		});
 		if (!response.ok) {
-			throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+			throw new Error(await parseErrorMessage(response));
 		}
 	}
 };

@@ -156,3 +156,7 @@ export function flyttAktiviteterTilSistePeriode(payload: { aktorIds: string[] })
 		>(`/api/veilarbaktivitet/veilarbaktivitet/admin/flytt-aktiviteter-til-siste-periode`, payload)
 		.then(response => response.data);
 }
+
+export function slettAktivitet(aktivitetId: string): Promise<void> {
+	return fetchInstance.delete(`/api/veilarbaktivitet/api/admin/aktiviteter/${aktivitetId}`);
+}
