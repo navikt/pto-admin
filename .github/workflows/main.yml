@@ -47,7 +47,7 @@ jobs:
           cache-dependency-path: web-app/pnpm-lock.yaml
           cache: true
           install: true
-          runtime: node24
+          runtime: node@24
           version: 12
         env:
           pnpm_config__auth: |
