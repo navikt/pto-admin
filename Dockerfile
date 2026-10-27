@@ -1,13 +1,6 @@
-FROM busybox:1.36.1-uclibc AS busybox
-
-FROM gcr.io/distroless/java21
-
-COPY --from=busybox /bin/sh /bin/sh
-COPY --from=busybox /bin/printenv /bin/printenv
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-21
 
 ENV TZ="Europe/Oslo"
 WORKDIR /app
 COPY api/build/libs/api-1.0.0.jar ./app.jar
-EXPOSE 8080
-USER nonroot
-CMD ["app.jar"]
+CMD ["-jar", "app.jar"]
