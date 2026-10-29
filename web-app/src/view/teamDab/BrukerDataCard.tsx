@@ -299,6 +299,7 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 												<Table.HeaderCell />
 												<Table.HeaderCell>Id</Table.HeaderCell>
 												<Table.HeaderCell>Opprettet</Table.HeaderCell>
+												<Table.HeaderCell>Siste</Table.HeaderCell>
 											</Table.Row>
 										</Table.Header>
 										<Table.Body>
@@ -309,12 +310,12 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 													content={
 														<div className="ml-4">
 															<div>
-																Venter på svar fra:{' '}
-																<BooleanTag value={dialog.venterPaSvar} />
+																Venter på svar fra Bruker:{' '}
+																<BooleanTag noIsGood value={dialog.venterPaSvar} />
 															</div>
 															<div>
-																Ferdig behandlet:{' '}
-																<BooleanTag value={dialog.ferdigBehandlet} />
+																Venter på svar fra Nav (Ferdig behandlet):{' '}
+																<BooleanTag noIsGood value={!dialog.ferdigBehandlet} />
 															</div>
 															<div>
 																Lest: <BooleanTag value={dialog.lest} />
@@ -342,6 +343,9 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 													</Table.DataCell>
 													<Table.DataCell>
 														{new Date(dialog.opprettetDato).toLocaleString()}
+													</Table.DataCell>
+													<Table.DataCell>
+														{new Date(dialog.sisteDato).toLocaleString()}
 													</Table.DataCell>
 												</Table.ExpandableRow>
 											))}
@@ -390,7 +394,8 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 																	<div>Opprettet dato: {aktivitet.opprettetDato}</div>
 																	<div>Status: {aktivitet.status}</div>
 																	<div>
-																		Historisk: <BooleanTag value={aktivitet.historisk} />
+																		Historisk:{' '}
+																		<BooleanTag value={aktivitet.historisk} />
 																	</div>
 																	<div>Type: {aktivitet.type}</div>
 																	{aktivitet.type === 'EKSTERNAKTIVITET' ? (

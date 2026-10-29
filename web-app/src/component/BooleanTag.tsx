@@ -3,13 +3,25 @@ import React from 'react';
 
 interface BooleanTagProps {
 	value: boolean;
+	noIsGood?: boolean | undefined;
 }
 
-export function BooleanTag({ value }: BooleanTagProps) {
+export function BooleanTag({ value, noIsGood }: BooleanTagProps) {
 	const text = value ? 'Ja' : 'Nei';
 	return (
-		<Tag size="small" variant={value ? 'success-moderate' : 'error-moderate'}>
-            {text}
-        </Tag>
+		<Tag
+			size="small"
+			variant={
+				value
+					? noIsGood || false
+						? 'error-moderate'
+						: 'success-moderate'
+					: noIsGood
+						? 'success-moderate'
+						: 'error-moderate'
+			}
+		>
+			{text}
+		</Tag>
 	);
-} 
+}
