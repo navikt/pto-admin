@@ -4,6 +4,7 @@ import { hentOppfolgingsperioder } from '../../api/veilarboppfolging';
 import { Aktivitet, DEFAULT_AKTIVITET_FELTER, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
 import {
 	Button,
+	Alert,
 	TextField,
 	Heading,
 	Loader,
@@ -145,6 +146,8 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 	};
 
 	const fetchBrukerDataMedFnr = (fnr: string, kolonner: AktivitetKolonne[]) => {
+		setError(undefined);
+		setOppfolgingsperioder(null);
 		setIsLoading(true);
 		return Promise.all([
 			hentDialoger({ fnr }),
@@ -178,6 +181,7 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 			})
 			.catch(e => {
 				console.error(e);
+				setError(e instanceof Error ? e.message : 'En ukjent feil oppstod ved henting av brukerdata.');
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -243,7 +247,15 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 			</div>
 
 			{isLoading && <Loader size="small" />}
-			{error && <div className="error-message">{error}</div>}
+			{error && (
+				<Alert variant="error" role="alert">
+					<Heading size="small" level="3">
+						Kunne ikke hente brukerdata
+					</Heading>
+					<div className="whitespace-pre-wrap">{error}</div>
+					<p>Brukerdata vises ikke fordi oppslaget feilet. Prøv å hente på nytt.</p>
+				</Alert>
+			)}
 			{oppfolgingsperioder && oppfolgingsperioder.length > 0 && (
 				<Timeline>
 					<Timeline.Row label={'Oppfølgingsperioder'}>

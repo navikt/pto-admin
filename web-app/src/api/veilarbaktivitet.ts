@@ -1,4 +1,4 @@
-import { graphqlPayload } from './graphql';
+import { GraphqlResponse, graphqlPayload, validateGraphqlResponse } from './graphql';
 import { fetchInstance } from './index';
 
 interface PeriodeMedAktiviteter {
@@ -124,10 +124,11 @@ export function hentAktiviteter(payload: {
 }): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
 	const query = graphqlQuery(payload.aktivitetFelter ?? DEFAULT_AKTIVITET_FELTER);
 	return fetchInstance
-		.post<{
-			data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] };
-		}>(`/api/veilarbaktivitet/veilarbaktivitet/graphql`, graphqlPayload(query, payload.fnr))
-		.then(response => response.data);
+		.post<GraphqlResponse<{ perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] }>>(
+			`/api/veilarbaktivitet/veilarbaktivitet/graphql`,
+			graphqlPayload(query, payload.fnr)
+		)
+		.then(response => validateGraphqlResponse(response.data, 'veilarbaktivitet'));
 }
 
 export function hentAktivitet(payload: {

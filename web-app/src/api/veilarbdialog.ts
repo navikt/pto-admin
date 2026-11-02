@@ -1,4 +1,5 @@
 import { fetchInstance, JobId } from './index';
+import { GraphqlResponse, validateGraphqlResponse } from './graphql';
 
 export interface Dialog {
 	id: string;
@@ -37,10 +38,11 @@ const hentDialogerGraphqlBody = (fnr: string) => ({
 
 export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialoger: Dialog[] } }> => {
 	return fetchInstance
-		.post<{
-			data: { dialoger: Dialog[] };
-		}>(`/api/veilarbdialog/veilarbdialog/graphql`, hentDialogerGraphqlBody(fnr))
-		.then(response => response.data);
+		.post<GraphqlResponse<{ dialoger: Dialog[] }>>(
+			`/api/veilarbdialog/veilarbdialog/graphql`,
+			hentDialogerGraphqlBody(fnr)
+		)
+		.then(response => validateGraphqlResponse(response.data, 'veilarbdialog'));
 };
 
 // Republisering veilarbdialog
