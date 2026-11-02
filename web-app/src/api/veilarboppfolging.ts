@@ -1,5 +1,5 @@
 import { fetchInstance, JobId } from './index';
-import { graphqlPayload } from './graphql';
+import { GraphqlResponse, graphqlPayload, validateGraphqlResponse } from './graphql';
 
 
 const routingPath = '/api/veilarboppfolging';
@@ -97,10 +97,11 @@ export function hentOppfolgingsperioder(payload: {
 	fnr: string;
 }): Promise<{ data: { oppfolgingsPerioder: OppfolgingsPeriode[] } }> {
 	return fetchInstance
-		.post<{
-			data: { oppfolgingsPerioder: OppfolgingsPeriode[] };
-		}>(veilarboppfolgingGraphqlUrl, graphqlPayload(graphqlQuery, payload.fnr))
-		.then(response => response.data);
+		.post<GraphqlResponse<{ oppfolgingsPerioder: OppfolgingsPeriode[] }>>(
+			veilarboppfolgingGraphqlUrl,
+			graphqlPayload(graphqlQuery, payload.fnr)
+		)
+		.then(response => validateGraphqlResponse(response.data, 'veilarboppfolging'));
 }
 
 const brukerStatusQuery = `
