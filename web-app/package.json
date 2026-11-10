@@ -30,12 +30,12 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@microlink/react-json-view": "1.31.42",
-    "@navikt/aksel-icons": "8.20.1",
-    "@navikt/ds-css": "8.20.1",
-    "@navikt/ds-react": "8.20.1",
+    "@microlink/react-json-view": "1.31.46",
+    "@navikt/aksel-icons": "8.21.0",
+    "@navikt/ds-css": "8.21.0",
+    "@navikt/ds-react": "8.21.0",
     "@navikt/fnrvalidator": "2.2.1",
-    "@tailwindcss/vite": "4.3.3",
+    "@tailwindcss/vite": "4.3.4",
     "@types/react-modal": "3.16.3",
     "classnames": "2.5.1",
     "constate": "4.0.0",
@@ -44,8 +44,8 @@
     "prop-types": "15.8.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "react-toastify": "11.1.0",
-    "tailwindcss": "4.3.3",
+    "react-toastify": "11.2.0",
+    "tailwindcss": "4.3.4",
     "typescript": "6.0.3",
     "vite": "8.3.5"
   },
@@ -53,7 +53,7 @@
     "@eslint/js": "^9.0.0",
     "@types/react": "^19.2.3",
     "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-react": "^6.2.1",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-react": "^7.37.0",
@@ -63,7 +63,7 @@
     "msw": "2.15.0",
     "prettier": "3.9.10",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^5.0.5"
+    "vitest": "^5.1.0"
   },
   "msw": {
     "workerDirectory": [
