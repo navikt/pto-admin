@@ -32,7 +32,7 @@ jobs:
           cache: gradle
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # ratchet:gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # ratchet:gradle/actions/setup-gradle@v6
         with:
           gradle-version: "8.13"
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew build
 
       - name: Build and push Docker image
-        uses: nais/docker-build-push@dd7421d5068057a020ca46ead966c26190c516b1 # ratchet:nais/docker-build-push@v0
+        uses: nais/docker-build-push@ceabe305c64640175f133b7e59af6666b0a3c46c # ratchet:nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: poao
@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # ratchet:actions/checkout@v7.0.1
 
       - name: Deploy application
-        uses: nais/deploy/actions/deploy@7b60caaded00332e9aa117a8342daa0876851dfe # ratchet:nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@6a9dcd6df697ec2d38edc78cadb0b9acd1232f50 # ratchet:nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: nais-dev.yaml
