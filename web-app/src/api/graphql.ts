@@ -7,7 +7,12 @@ export interface GraphqlResponse<T> {
 	}[];
 }
 
-export function validateGraphqlResponse<T>(response: GraphqlResponse<T> | null, service: string): { data: T } {
+export interface GraphqlResult<T> {
+	data: T | null;
+	error?: string;
+}
+
+export function validateGraphqlResponse<T>(response: GraphqlResponse<T> | null, service: string): GraphqlResult<T> {
 	if (response?.errors?.length) {
 		const details = response.errors
 			.map(error =>
@@ -20,10 +25,10 @@ export function validateGraphqlResponse<T>(response: GraphqlResponse<T> | null, 
 					.join(' - ')
 			)
 			.join('\n');
-		throw new Error(`GraphQL-feil fra ${service}:\n${details}`);
+		return { data: response.data ?? null, error: `GraphQL-feil fra ${service}:\n${details}` };
 	}
 	if (response?.data == null) {
-		throw new Error(`Mangler data i GraphQL-svaret fra ${service}.`);
+		return { data: null, error: `Mangler data i GraphQL-svaret fra ${service}.` };
 	}
 	return { data: response.data };
 }

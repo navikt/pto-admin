@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Dialog, hentDialoger } from '../../api/veilarbdialog';
-import { hentOppfolgingsperioder } from '../../api/veilarboppfolging';
-import { Aktivitet, DEFAULT_AKTIVITET_FELTER, hentAktiviteter, TiltaksAktivitet } from '../../api/veilarbaktivitet';
+import { Dialog } from '../../api/veilarbdialog';
+import { hentBrukerdata } from '../../api/brukerdata';
+import { Aktivitet, DEFAULT_AKTIVITET_FELTER, TiltaksAktivitet } from '../../api/veilarbaktivitet';
 import {
 	Button,
 	Alert,
@@ -149,35 +149,13 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 		setError(undefined);
 		setOppfolgingsperioder(null);
 		setIsLoading(true);
-		return Promise.all([
-			hentDialoger({ fnr }),
-			hentOppfolgingsperioder({ fnr }),
-			hentAktiviteter({
-				fnr,
-				aktivitetFelter: [
-					...DEFAULT_AKTIVITET_FELTER,
-					...kolonner.map(kolonne => kolonne.felt).filter((felt, index, list) => list.indexOf(felt) === index)
-				]
-			})
+		return hentBrukerdata(fnr, [
+			...DEFAULT_AKTIVITET_FELTER,
+			...kolonner.map(kolonne => kolonne.felt).filter((felt, index, list) => list.indexOf(felt) === index)
 		])
-			.then(([dialogerResponse, oppfolgingsperioderResponse, aktiviteterResponse]) => {
-				const perioderMedAktiviteter = aktiviteterResponse?.data?.perioder || [];
-				const tiltaksAktiviteter = aktiviteterResponse?.data?.tiltaksaktiviteter || [];
-				const dialoger = dialogerResponse?.data?.dialoger || [];
-				const perioder = (oppfolgingsperioderResponse?.data?.oppfolgingsPerioder || [])
-					.map(periode => {
-						return {
-							...periode,
-							dialoger: dialoger.filter(dialog => dialog.oppfolgingsperiode === periode.id),
-							aktiviteter:
-								perioderMedAktiviteter.find(
-									periodeMedAktiviteter => periodeMedAktiviteter.id === periode.id
-								)?.aktiviteter || [],
-							tiltaksAktiviteter
-						};
-					})
-					.sort((a, b) => new Date(b.startTidspunkt).getTime() - new Date(a.startTidspunkt).getTime());
+			.then(({ perioder, error }) => {
 				setOppfolgingsperioder(perioder);
+				setError(error);
 			})
 			.catch(e => {
 				console.error(e);
@@ -253,7 +231,10 @@ export const BrukerDataCard = ({ autoLookupFnr, autoLookupRequestId }: BrukerDat
 						Kunne ikke hente brukerdata
 					</Heading>
 					<div className="whitespace-pre-wrap">{error}</div>
-					<p>Brukerdata vises ikke fordi oppslaget feilet. Prøv å hente på nytt.</p>
+					<p>
+						Tilgjengelige brukerdata vises nedenfor, men resultatet kan være ufullstendig. Prøv å hente på
+						nytt.
+					</p>
 				</Alert>
 			)}
 			{oppfolgingsperioder && oppfolgingsperioder.length > 0 && (

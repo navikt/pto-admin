@@ -1,5 +1,5 @@
 import { fetchInstance, JobId } from './index';
-import { GraphqlResponse, validateGraphqlResponse } from './graphql';
+import { GraphqlResponse, GraphqlResult, validateGraphqlResponse } from './graphql';
 
 export interface Dialog {
 	id: string;
@@ -36,9 +36,9 @@ const hentDialogerGraphqlBody = (fnr: string) => ({
 	variables: { fnr }
 });
 
-export const hentDialoger = ({ fnr }: { fnr: string }): Promise<{ data: { dialoger: Dialog[] } }> => {
+export const hentDialoger = ({ fnr }: { fnr: string }): Promise<GraphqlResult<{ dialoger: Dialog[] | null }>> => {
 	return fetchInstance
-		.post<GraphqlResponse<{ dialoger: Dialog[] }>>(
+		.post<GraphqlResponse<{ dialoger: Dialog[] | null }>>(
 			`/api/veilarbdialog/veilarbdialog/graphql`,
 			hentDialogerGraphqlBody(fnr)
 		)

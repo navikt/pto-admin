@@ -1,9 +1,18 @@
-import { GraphqlResponse, graphqlPayload, validateGraphqlResponse } from './graphql';
+import { GraphqlResponse, GraphqlResult, graphqlPayload, validateGraphqlResponse } from './graphql';
 import { fetchInstance } from './index';
+
+const veilarbaktivtietRoutePrefix = '/api/veilarbaktivitet';
+const veilarbaktivtietContextRoute = '/veilarbaktivitet';
+const veilarbaktivitetUrl = `${veilarbaktivtietRoutePrefix}${veilarbaktivtietContextRoute}`;
 
 interface PeriodeMedAktiviteter {
 	id: string;
 	aktiviteter: Aktivitet[];
+}
+
+interface AktiviteterData {
+	perioder: PeriodeMedAktiviteter[] | null;
+	tiltaksaktiviteter: TiltaksAktivitet[] | null;
 }
 
 export interface Aktivitet {
@@ -110,10 +119,12 @@ ${byggUtvalg(tree)}
 const aktivitetQuery = (aktivitetFelter: string[]) => `
 query hentAktivitet($aktivitetId: String!, $versjon: String) {
 	aktivitet(aktivitetId: $aktivitetId, versjon: $versjon) {
-${byggUtvalg(aktivitetFelter.reduce<SelectionTree>((tree, felt) => {
+${byggUtvalg(
+	aktivitetFelter.reduce<SelectionTree>((tree, felt) => {
 		leggTilFelt(tree, felt);
 		return tree;
-	}, {}))}
+	}, {})
+)}
 	}
 }
 `;
@@ -121,13 +132,10 @@ ${byggUtvalg(aktivitetFelter.reduce<SelectionTree>((tree, felt) => {
 export function hentAktiviteter(payload: {
 	fnr: string;
 	aktivitetFelter?: string[];
-}): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
+}): Promise<GraphqlResult<AktiviteterData>> {
 	const query = graphqlQuery(payload.aktivitetFelter ?? DEFAULT_AKTIVITET_FELTER);
 	return fetchInstance
-		.post<GraphqlResponse<{ perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] }>>(
-			`/api/veilarbaktivitet/veilarbaktivitet/graphql`,
-			graphqlPayload(query, payload.fnr)
-		)
+		.post<GraphqlResponse<AktiviteterData>>(`${veilarbaktivitetUrl}/graphql`, graphqlPayload(query, payload.fnr))
 		.then(response => validateGraphqlResponse(response.data, 'veilarbaktivitet'));
 }
 
@@ -141,7 +149,7 @@ export function hentAktivitet(payload: {
 		.post<{
 			data: { aktivitet: Aktivitet | null };
 		}>(
-			`/api/veilarbaktivitet/veilarbaktivitet/graphql`,
+			`${veilarbaktivitetUrl}/graphql`,
 			graphqlPayload(query, {
 				aktivitetId: payload.aktivitetId,
 				versjon: payload.versjon ?? null
@@ -152,12 +160,10 @@ export function hentAktivitet(payload: {
 
 export function flyttAktiviteterTilSistePeriode(payload: { aktorIds: string[] }): Promise<Record<string, number>> {
 	return fetchInstance
-		.post<
-			Record<string, number>
-		>(`/api/veilarbaktivitet/veilarbaktivitet/admin/flytt-aktiviteter-til-siste-periode`, payload)
+		.post<Record<string, number>>(`${veilarbaktivitetUrl}/api/admin/flytt-aktiviteter-til-siste-periode`, payload)
 		.then(response => response.data);
 }
 
 export function slettAktivitet(aktivitetId: string): Promise<void> {
-	return fetchInstance.delete(`/api/veilarbaktivitet/api/admin/aktiviteter/${aktivitetId}`);
+	return fetchInstance.delete(`${veilarbaktivitetUrl}/api/admin/aktiviteter/${aktivitetId}`);
 }
