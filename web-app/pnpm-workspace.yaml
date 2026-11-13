@@ -6,3 +6,4 @@ minimumReleaseAge: 10080
 
 minimumReleaseAgeExclude:
   - "@navikt/*"
+  - "@tailwindcss/oxide@4.3.5"
