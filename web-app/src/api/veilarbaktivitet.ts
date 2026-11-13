@@ -1,9 +1,14 @@
-import { GraphqlResponse, graphqlPayload, validateGraphqlResponse } from './graphql';
+import { GraphqlResponse, GraphqlResult, graphqlPayload, validateGraphqlResponse } from './graphql';
 import { fetchInstance } from './index';
 
 interface PeriodeMedAktiviteter {
 	id: string;
 	aktiviteter: Aktivitet[];
+}
+
+interface AktiviteterData {
+	perioder: PeriodeMedAktiviteter[] | null;
+	tiltaksaktiviteter: TiltaksAktivitet[] | null;
 }
 
 export interface Aktivitet {
@@ -121,10 +126,10 @@ ${byggUtvalg(aktivitetFelter.reduce<SelectionTree>((tree, felt) => {
 export function hentAktiviteter(payload: {
 	fnr: string;
 	aktivitetFelter?: string[];
-}): Promise<{ data: { perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] } }> {
+}): Promise<GraphqlResult<AktiviteterData>> {
 	const query = graphqlQuery(payload.aktivitetFelter ?? DEFAULT_AKTIVITET_FELTER);
 	return fetchInstance
-		.post<GraphqlResponse<{ perioder: PeriodeMedAktiviteter[]; tiltaksaktiviteter: TiltaksAktivitet[] }>>(
+		.post<GraphqlResponse<AktiviteterData>>(
 			`/api/veilarbaktivitet/veilarbaktivitet/graphql`,
 			graphqlPayload(query, payload.fnr)
 		)
