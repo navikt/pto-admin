@@ -4,14 +4,27 @@ import {
 	AdminDataTypeResponse
 } from '../view/veilarbportefolje/veilarbportefolje';
 
-async function parseErrorMessage(response: Response): Promise<string> {
+export class HttpError extends Error {
+	constructor(
+		public readonly status: number,
+		message: string,
+		public readonly responseText: string
+	) {
+		super(message);
+		this.name = 'HttpError';
+	}
+}
+
+async function parseHttpError(response: Response): Promise<HttpError> {
 	const fallbackMessage = `HTTP error ${response.status}: ${response.statusText}`;
+	let text = '';
+	const createError = (message: string) => new HttpError(response.status, message, text);
 	const readStringField = (value: unknown): string | undefined =>
 		typeof value === 'string' && value.length > 0 ? value : undefined;
 	try {
-		const text = await response.text();
+		text = await response.text();
 		if (!text) {
-			return fallbackMessage;
+			return createError(fallbackMessage);
 		}
 		const contentType = response.headers.get('content-type') ?? '';
 		if (contentType.includes('application/json')) {
@@ -21,11 +34,11 @@ async function parseErrorMessage(response: Response): Promise<string> {
 				readStringField(parsed.detail) ??
 				readStringField(parsed.error) ??
 				readStringField(parsed.reason);
-			return message ?? fallbackMessage;
+			return createError(message ?? fallbackMessage);
 		}
-		return text;
+		return createError(text);
 	} catch {
-		return fallbackMessage;
+		return createError(fallbackMessage);
 	}
 }
 
@@ -43,7 +56,7 @@ async function apiFetch<T>(url: string, options: RequestInit = {}): Promise<{ da
 		headers
 	});
 	if (!response.ok) {
-		throw new Error(await parseErrorMessage(response));
+		throw await parseHttpError(response);
 	}
 	const text = await response.text();
 	if (!text) {
@@ -69,7 +82,7 @@ export const fetchInstance = {
 			headers: { 'Nav-Consumer-Id': 'poao-admin' }
 		});
 		if (!response.ok) {
-			throw new Error(await parseErrorMessage(response));
+			throw await parseHttpError(response);
 		}
 	}
 };

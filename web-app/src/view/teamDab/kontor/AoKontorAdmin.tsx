@@ -11,6 +11,7 @@ import { Alert, Button, Heading, TextField } from '@navikt/ds-react';
 import { AoKontorFailedMessages } from './AoKontorFailedMessages';
 import { Card } from '../../../component/card/card';
 import { republiserOppfolgingshendelse } from '../../../api/veilarboppfolging';
+import { httpErrorToast } from '../../../utils/toast-utils';
 
 export const AoKontorAdmin = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,8 +30,13 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('identer') as string;
 		setIsLoading(true);
-		await syncArenaKontorForBruker({ identer });
-		setIsLoading(false);
+		try {
+			await syncArenaKontorForBruker({ identer });
+		} catch (error) {
+			httpErrorToast('Kunne ikke synkronisere Arena-kontor', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const republiserKontorordningForUtvalgteOppfolgingsperioder = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,8 +44,13 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const oppfolgingsperiodeIder = formData.get('oppfolgingsperiodeIder') as string;
 		setIsLoading(true);
-		await republiserForUtvalgteOppfolgingsperioder({ oppfolgingsperiodeIder: oppfolgingsperiodeIder });
-		setIsLoading(false);
+		try {
+			await republiserForUtvalgteOppfolgingsperioder({ oppfolgingsperiodeIder });
+		} catch (error) {
+			httpErrorToast('Kunne ikke republisere kontortilordninger', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const dryRunFinnKontor = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,9 +58,15 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('identer2') as string;
 		setIsLoading(true);
-		const result = await doDryRunFinnKontor({ identer });
-		setDryRunKontorResult(result.data);
-		setIsLoading(false);
+		setDryRunKontorResult(null);
+		try {
+			const result = await doDryRunFinnKontor({ identer });
+			setDryRunKontorResult(result.data);
+		} catch (error) {
+			httpErrorToast('Kunne ikke utføre dry-run finn kontor', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const tombstoneIdenter = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,8 +74,13 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const identer = formData.get('tombstoneIdenter') as string;
 		setIsLoading(true);
-		await republiserTombstone({ identer });
-		setIsLoading(false);
+		try {
+			await republiserTombstone({ identer });
+		} catch (error) {
+			httpErrorToast('Kunne ikke republisere tombstone', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const hentInternIdentForBruker = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,9 +88,15 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const ident = formData.get('internIdent') as string;
 		setIsLoading(true);
-		const result = await hentInternIdent({ ident });
-		setInternIdentResult(result.data.internIdent);
-		setIsLoading(false);
+		setInternIdentResult(null);
+		try {
+			const result = await hentInternIdent({ ident });
+			setInternIdentResult(result.data.internIdent);
+		} catch (error) {
+			httpErrorToast('Kunne ikke hente intern-ID', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const hentIdenterForInternIdentForBruker = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -76,9 +104,15 @@ export const AoKontorAdmin = () => {
 		const formData = new FormData(e.currentTarget);
 		const internIdent = Number(formData.get('identerForInternIdent') as string);
 		setIsLoading(true);
-		const result = await hentIdenterForInternIdent({ internIdent });
-		setIdenterForInternIdentResult(result.data);
-		setIsLoading(false);
+		setIdenterForInternIdentResult(null);
+		try {
+			const result = await hentIdenterForInternIdent({ internIdent });
+			setIdenterForInternIdentResult(result.data);
+		} catch (error) {
+			httpErrorToast('Kunne ikke hente identer for intern-ID', error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const sendRepubliserOppfolgingshendelse = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -90,8 +124,9 @@ export const AoKontorAdmin = () => {
 		try {
 			await republiserOppfolgingshendelse(aktorId);
 			setRepubliserOppfolgingshendelseSuccess(true);
-		} catch {
+		} catch (error) {
 			setRepubliserOppfolgingshendelseSuccess(false);
+			httpErrorToast('Kunne ikke republisere oppfølgingshendelse', error);
 		} finally {
 			setIsLoading(false);
 		}

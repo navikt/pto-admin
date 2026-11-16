@@ -3,7 +3,7 @@ import { Alert, Button, Heading, Table } from '@navikt/ds-react';
 import { TrashIcon } from '@navikt/aksel-icons';
 import { deleteFailedMessage, FailedMessage, fetchFailedMessages } from '../../../api/ao-oppfolgingskontor';
 import BekreftModal from '../../../component/bekreft-modal';
-import { errorToast, successToast } from '../../../utils/toast-utils';
+import { httpErrorToast, successToast } from '../../../utils/toast-utils';
 
 export const AoKontorFailedMessages = () => {
 	const [messages, setMessages] = useState<FailedMessage[] | null>(null);
@@ -17,7 +17,10 @@ export const AoKontorFailedMessages = () => {
 		setError(null);
 		fetchFailedMessages()
 			.then(response => setMessages(response.data))
-			.catch(err => setError(err.message ?? 'Ukjent feil ved henting av meldinger'))
+			.catch((error: unknown) => {
+				setError('Kunne ikke hente meldinger');
+				httpErrorToast('Kunne ikke hente meldinger', error);
+			})
 			.finally(() => setIsLoading(false));
 	};
 
@@ -33,7 +36,7 @@ export const AoKontorFailedMessages = () => {
 				successToast(`Melding ${deleteTarget.id} slettet`);
 				handleFetch();
 			})
-			.catch(err => errorToast(`Kunne ikke slette melding: ${err.message}`));
+			.catch((error: unknown) => httpErrorToast('Kunne ikke slette melding', error));
 	};
 
 	return (
