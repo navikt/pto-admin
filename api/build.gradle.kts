@@ -7,7 +7,7 @@
 plugins {
     kotlin("jvm") version "2.4.21"
     kotlin("plugin.spring") version "2.4.21"
-    id("org.springframework.boot") version "4.1.2"
+    id("org.springframework.boot") version "4.2.0"
 }
 
 java {
@@ -57,8 +57,8 @@ dependencies {
 
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security.oauth2.client)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.security)
-    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.1.2")
-    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.1.2")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux-test:4.2.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test:4.2.0")
     testImplementation(libs.no.nav.security.mock.oauth2.server)
     testImplementation(libs.org.mockito.kotlin.mockito.kotlin)
     testImplementation(libs.org.springframework.boot.spring.boot.starter.test)
