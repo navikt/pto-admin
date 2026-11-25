@@ -26,6 +26,7 @@ import {
 	DatePicker,
 	Radio,
 	RadioGroup,
+	Textarea,
 	TextField,
 	useDatepicker
 } from '@navikt/ds-react';
@@ -109,7 +110,7 @@ export function Veilarbportefolje() {
 			<AdminCheckboxerMedInput
 				tittel={'Hent valgte data for en bruker'}
 				beskrivelse={'Hent / oppdater data for en bruker basert på valg av datatypene under'}
-				inputType={'AktørId'}
+				inputType={'AktørIder (en per linje)'}
 				request={hentValgteDataForBruker}
 				dataTyper={dataTyper}
 			/>
@@ -123,7 +124,7 @@ export interface AdminDataTypeResponse {
 }
 
 export interface AdminDataForBrukerRequest {
-	aktorId: string;
+	aktorIder: string[];
 	valg: string[];
 }
 
@@ -245,13 +246,13 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
 	const [valg, setValg] = useState<string[]>([]);
 	const [respons, setRespons] = useState<string | undefined>(undefined);
 	const [isOpen, setOpen] = useState(false);
-	const [id, setid] = useState('');
+	const [ider, setider] = useState('');
 	const inputType = props.inputType;
 
 	const handleAdminResponse = () => {
-		if (id) {
+		if (ider) {
 			props
-				.request({ aktorId: id, valg })
+				.request({ aktorIder: ider.split('\n'), valg })
 				.then(resp => {
 					const data = resp.data;
 					if (typeof data === 'string' && isJsonString(data)) {
@@ -287,7 +288,7 @@ function AdminCheckboxerMedInput(props: AdminCheckboxerMedInputProps) {
 					))}
 				</CheckboxGroup>
 				<br />
-				<TextField label={inputType} value={id} onChange={e => setid(e.target.value)} />
+				<Textarea label={inputType} value={ider} onChange={e => setider(e.target.value)} />
 				<br />
 				<Button className="veilarbportefolje-knapp" onClick={() => setOpen(true)}>
 					{props.tittel}
